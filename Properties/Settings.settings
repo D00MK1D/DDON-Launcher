@@ -1,0 +1,15 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="DDO_Launcher.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="accountText" Type="System.String" Scope="User">
+      <Value Profile="(Default)">textAccount.Text</Value>
+    </Setting>
+    <Setting Name="passwordText" Type="System.String" Scope="User">
+      <Value Profile="(Default)">textPassword.Text</Value>
+    </Setting>
+    <Setting Name="rememberMe" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>
