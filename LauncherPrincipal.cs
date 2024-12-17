@@ -93,7 +93,7 @@ namespace DDO_Launcher
             this.Close();
         }
 
-        private void Operation(string Action)
+        private async void Operation(string Action)
         {
 
             string[] lines = File.ReadAllLines("LaunchConfig.cfg");
@@ -114,7 +114,7 @@ namespace DDO_Launcher
             {
 
 
-                if (Action == "create" || Action == "login")
+                if (Action == "create" || Action == "login" && (textAccount.Text != null && textPassword.Text != null) && (lines[2] != null && lines[3] != null))
                 {
 
                     string jsonData = JsonSerializer.Serialize(requestData);
@@ -171,18 +171,20 @@ namespace DDO_Launcher
                                     MessageBoxIcon.Information);
                                 if (serverResponse.Message == "Login Success")
                                 {
-                                    Process.Start("ddo.exe", 
-                                        " addr=" + 
-                                        lines[0] + 
-                                        " port=" + 
-                                        lines[1] + 
-                                        " token=" + 
-                                        serverResponse.Token + 
-                                        " DL=http://" + 
-                                        lines[2] + 
-                                        ":" + 
-                                        lines[3] + 
+                                    Process.Start("ddo.exe",
+                                        " addr=" +
+                                        lines[0] +
+                                        " port=" +
+                                        lines[1] +
+                                        " token=" +
+                                        serverResponse.Token +
+                                        " DL=http://" +
+                                        lines[2] +
+                                        ":" +
+                                        lines[3] +
                                         "/win/ LVer=03.04.003.20181115.0 RVer=3040008");
+                                   
+                                    this.Close();
                                 }
                             }
                             else
@@ -196,7 +198,8 @@ namespace DDO_Launcher
                         }
                     }
                 }
-
+                 
+                /* --------COMMENTED UNTIL E-MAIL USE TURN INTO A REAL THING------
                 else
                 {
                     MessageBox.Show(
@@ -205,15 +208,25 @@ namespace DDO_Launcher
                         MessageBoxButtons.OK,
                         MessageBoxIcon.Exclamation);
                 }
-
+                */
             }
             catch (Exception ex)
             {
-                MessageBox.Show(
-                    ex.Message, 
-                    "Erro", 
-                    MessageBoxButtons.OK, 
-                    MessageBoxIcon.Error);
+
+                if(ex.Message == "The input string '' was not in a correct format.")
+                {
+                    FormServerSettings f2 = new FormServerSettings();
+                    f2.ShowDialog();
+                }
+                else
+                {
+                    MessageBox.Show(
+                        ex.Message,    
+                        "Erro",    
+                        MessageBoxButtons.OK,    
+                        MessageBoxIcon.Error);
+                }
+
             }
         }
 

@@ -94,7 +94,7 @@
             textDownloadServerPort.ForeColor = SystemColors.ActiveCaptionText;
             textDownloadServerPort.ImeMode = ImeMode.NoControl;
             textDownloadServerPort.Location = new Point(267, 60);
-            textDownloadServerPort.MaxLength = 200;
+            textDownloadServerPort.MaxLength = 5;
             textDownloadServerPort.Name = "textDownloadServerPort";
             textDownloadServerPort.Size = new Size(69, 20);
             textDownloadServerPort.TabIndex = 4;
@@ -108,7 +108,7 @@
             textGameServerPort.ForeColor = SystemColors.ActiveCaptionText;
             textGameServerPort.ImeMode = ImeMode.NoControl;
             textGameServerPort.Location = new Point(267, 31);
-            textGameServerPort.MaxLength = 200;
+            textGameServerPort.MaxLength = 5;
             textGameServerPort.Name = "textGameServerPort";
             textGameServerPort.Size = new Size(69, 20);
             textGameServerPort.TabIndex = 2;
