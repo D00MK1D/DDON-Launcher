@@ -3,6 +3,8 @@ using System.Text.Json;
 using System.Runtime.InteropServices;
 using System.Net.Sockets;
 using System.Diagnostics;
+using IniParser.Model;
+using IniParser;
 
 namespace DDO_Launcher
 {
@@ -95,14 +97,6 @@ namespace DDO_Launcher
 
         private async void Operation(string Action)
         {
-
-            string[] lines = File.ReadAllLines("LaunchConfig.cfg");
-
-            var url = lines[2];
-            var port = lines[3];
-            var path = "/api/account";
-
-
             var requestData = new
             {
                 Action = Action,
@@ -110,17 +104,26 @@ namespace DDO_Launcher
                 Password = textPassword.Text,
                 Email = ""
             };
+
             try
             {
+                var parser = new FileIniDataParser();
+                IniData data = parser.ReadFile("DDO_Launcher.ini");
 
+                var dlIp = data["General"]["DLIP"];
+                var dlPort = data["General"]["DLPort"];
+                var lobbyIp = data["General"]["LobbyIP"];
+                var lobbyPort = data["General"]["LPort"];
 
-                if (Action == "create" || Action == "login" && (textAccount.Text != null && textPassword.Text != null) && (lines[2] != null && lines[3] != null))
+                var path = "/api/account";
+
+                if (Action == "create" || Action == "login" && (textAccount.Text != null && textPassword.Text != null) && (dlIp != null && dlPort != null))
                 {
 
                     string jsonData = JsonSerializer.Serialize(requestData);
 
                     string request = $"POST {path} HTTP/1.1\r\n";
-                    request += $"Host: {url}:{port}\r\n";
+                    request += $"Host: {dlIp}:{dlPort}\r\n";
                     request += "Content-Type: application/json\r\n";
                     request += $"Content-Length: {jsonData.Length}\r\n";
                     request += "Connection: close\r\n";
@@ -133,7 +136,7 @@ namespace DDO_Launcher
                     {
                         client.ReceiveTimeout = 5000;
                         client.SendTimeout = 5000;
-                        client.Connect(url, int.Parse(port));
+                        client.Connect(dlIp, int.Parse(dlPort));
 
                         using (NetworkStream stream = client.GetStream())
 
@@ -173,15 +176,15 @@ namespace DDO_Launcher
                                 {
                                     Process.Start("ddo.exe",
                                         " addr=" +
-                                        lines[0] +
+                                        lobbyIp +
                                         " port=" +
-                                        lines[1] +
+                                        lobbyPort +
                                         " token=" +
                                         serverResponse.Token +
                                         " DL=http://" +
-                                        lines[2] +
+                                        dlIp +
                                         ":" +
-                                        lines[3] +
+                                        dlPort +
                                         "/win/ LVer=03.04.003.20181115.0 RVer=3040008");
                                    
                                     this.Close();
@@ -222,7 +225,7 @@ namespace DDO_Launcher
                 {
                     MessageBox.Show(
                         ex.Message,    
-                        "Erro",    
+                        "Error",    
                         MessageBoxButtons.OK,    
                         MessageBoxIcon.Error);
                 }

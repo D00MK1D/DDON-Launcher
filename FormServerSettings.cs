@@ -7,15 +7,22 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using IniParser.Model;
+using IniParser;
+using IniParser.Parser;
 
 namespace DDO_Launcher
 {
     public partial class FormServerSettings : Form
     {
+        private FileIniDataParser parser;
+
         public FormServerSettings()
         {
             InitializeComponent();
             this.StartPosition = FormStartPosition.CenterScreen;
+
+            this.parser = new FileIniDataParser();
         }
 
         private void buttonSave_Click(object sender, EventArgs e)
@@ -32,7 +39,13 @@ namespace DDO_Launcher
             };
 
             // Criar o arquivo e escrever as informações nas linhas
-            File.WriteAllLines("LaunchConfig.cfg", lines);
+            IniData data = new IniData();
+            data.Sections.AddSection("General");
+            data["General"].AddKey("LobbyIP", textGameServerIp.Text);
+            data["General"].AddKey("LPort", textGameServerPort.Text);
+            data["General"].AddKey("DLIP", textDownloadServerIP.Text);
+            data["General"].AddKey("DLPort", textDownloadServerPort.Text);
+            this.parser.WriteFile("DDO_Launcher.ini", data);
 
             this.Close();
         }
@@ -44,18 +57,16 @@ namespace DDO_Launcher
 
         private void FormServerSettings_Load(object sender, EventArgs e)
         {
-            if (File.Exists("LaunchConfig.cfg"))
+            if (File.Exists("DDO_Launcher.ini"))
             {
-                string[] lines = File.ReadAllLines("LaunchConfig.cfg");
-
-                if (lines.Length > 0)
-                    textGameServerIp.Text = lines[0];
-                if (lines.Length > 1)
-                    textGameServerPort.Text = lines[1];
-                if (lines.Length > 2)
-                    textDownloadServerIP.Text = lines[2];
-                if (lines.Length > 3)
-                    textDownloadServerPort.Text = lines[3];
+                IniData data = this.parser.ReadFile("DDO_Launcher.ini");
+                if(data.Sections.ContainsSection("General"))
+                {
+                    textGameServerIp.Text = data["General"]["LobbyIP"];
+                    textGameServerPort.Text = data["General"]["LPort"];
+                    textDownloadServerIP.Text = data["General"]["DLIP"];
+                    textDownloadServerPort.Text = data["General"]["DLPort"];
+                }
             }
         }
 
