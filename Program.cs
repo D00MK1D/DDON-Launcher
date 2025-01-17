@@ -2,6 +2,8 @@ namespace DDO_Launcher
 {
     internal static class Program
     {
+        private static readonly string SERVERS_FILE = "DDO_Launcher.ini";
+
         /// <summary>
         ///  The main entry point for the application.
         /// </summary>
@@ -10,8 +12,10 @@ namespace DDO_Launcher
         {
             // To customize application configuration such as set high DPI settings or default font,
             // see https://aka.ms/applicationconfiguration.
+            ServerManager serverManager = new ServerManager(SERVERS_FILE);
+
             ApplicationConfiguration.Initialize();
-            Application.Run(new launcherPrincipal());
+            Application.Run(new launcherPrincipal(new ServerManager(SERVERS_FILE)));
         }
     }
 }

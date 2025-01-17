@@ -40,6 +40,7 @@
             textPassword = new TextBox();
             rememberCheckBox = new CheckBox();
             buttonRegister = new Button();
+            serverComboBox = new ComboBox();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             SuspendLayout();
             // 
@@ -197,6 +198,17 @@
             buttonRegister.UseVisualStyleBackColor = false;
             buttonRegister.Click += buttonRegister_Click;
             // 
+            // serverComboBox
+            // 
+            serverComboBox.DropDownStyle = ComboBoxStyle.DropDownList;
+            serverComboBox.FormattingEnabled = true;
+            serverComboBox.Location = new Point(46, 391);
+            serverComboBox.Name = "serverComboBox";
+            serverComboBox.Size = new Size(121, 23);
+            serverComboBox.TabIndex = 7;
+            serverComboBox.DropDown += serverComboBox_DropDown;
+            serverComboBox.SelectedIndexChanged += serverComboBox_SelectedIndexChanged;
+            // 
             // launcherPrincipal
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -204,6 +216,7 @@
             BackgroundImage = Properties.Resources.Background;
             ClientSize = new Size(874, 427);
             ControlBox = false;
+            Controls.Add(serverComboBox);
             Controls.Add(buttonRegister);
             Controls.Add(rememberCheckBox);
             Controls.Add(textPassword);
@@ -241,5 +254,6 @@
         private TextBox textPassword;
         private CheckBox rememberCheckBox;
         private Button buttonRegister;
+        private ComboBox serverComboBox;
     }
 }

@@ -3,15 +3,52 @@ using System.Text.Json;
 using System.Runtime.InteropServices;
 using System.Net.Sockets;
 using System.Diagnostics;
+using IniParser.Model;
+using IniParser;
 
 namespace DDO_Launcher
 {
     public partial class launcherPrincipal : Form
     {
-        public launcherPrincipal()
+        private readonly ServerManager ServerManager;
+
+        public launcherPrincipal(ServerManager serverManager)
         {
             InitializeComponent();
             this.StartPosition = FormStartPosition.CenterScreen;
+
+            ServerManager = serverManager;
+
+            UpdateServerList();
+        }
+
+        private void OpenSettings()
+        {
+            FormServerSettings f2 = new FormServerSettings(ServerManager);
+            f2.ShowDialog();
+        }
+
+        private void UpdateServerList()
+        {
+            int oldSelectionIndex = serverComboBox.SelectedIndex;
+
+            serverComboBox.BeginUpdate();
+            serverComboBox.Items.Clear();
+            foreach (var server in ServerManager.Servers)
+            {
+                int addedItemIndex = serverComboBox.Items.Add(server.Key);
+                if (serverComboBox.SelectedIndex == -1 && server.Key == ServerManager.SelectedServer)
+                {
+                    serverComboBox.Select(addedItemIndex, 1);
+                }
+            }
+            serverComboBox.EndUpdate();
+
+            serverComboBox.SelectedIndex = oldSelectionIndex;
+            if (serverComboBox.SelectedIndex == -1 && serverComboBox.Items.Count > 0)
+            {
+                serverComboBox.SelectedIndex = 0;
+            }
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -25,6 +62,11 @@ namespace DDO_Launcher
             else
             {
                 rememberCheckBox.Checked = false;
+            }
+
+            if (ServerManager.SelectedServer == null)
+            {
+                OpenSettings();
             }
         }
 
@@ -79,8 +121,7 @@ namespace DDO_Launcher
 
         private void buttonConfig_Click(object sender, EventArgs e)
         {
-            FormServerSettings f2 = new FormServerSettings();
-            f2.ShowDialog();
+            OpenSettings();
         }
 
         private void buttonMinimize_Click(object sender, EventArgs e)
@@ -95,13 +136,15 @@ namespace DDO_Launcher
 
         private async void Operation(string Action)
         {
-
-            string[] lines = File.ReadAllLines("LaunchConfig.cfg");
-
-            var url = lines[2];
-            var port = lines[3];
-            var path = "/api/account";
-
+            if (ServerManager.SelectedServer == null)
+            {
+                MessageBox.Show(
+                    "Please select a server",
+                    "Dragon's Dogma Online",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Exclamation);
+                return;
+            }
 
             var requestData = new
             {
@@ -110,124 +153,98 @@ namespace DDO_Launcher
                 Password = textPassword.Text,
                 Email = ""
             };
-            try
+
+            var path = "/api/account";
+
+            if (Action == "create" || Action == "login" && (textAccount.Text != null && textPassword.Text != null))
             {
+                string jsonData = JsonSerializer.Serialize(requestData);
 
+                string request = $"POST {path} HTTP/1.1\r\n";
+                request += $"Host: {ServerManager.Servers[ServerManager.SelectedServer].DLIP}:{ServerManager.Servers[ServerManager.SelectedServer].DLPort}\r\n";
+                request += "Content-Type: application/json\r\n";
+                request += $"Content-Length: {jsonData.Length}\r\n";
+                request += "Connection: close\r\n";
+                request += "\r\n";
+                request += jsonData;
 
-                if (Action == "create" || Action == "login" && (textAccount.Text != null && textPassword.Text != null) && (lines[2] != null && lines[3] != null))
+                var utf8Encoding = new UTF8Encoding(false);
+
+                using (TcpClient client = new TcpClient())
                 {
+                    client.ReceiveTimeout = 5000;
+                    client.SendTimeout = 5000;
+                    client.Connect(ServerManager.Servers[ServerManager.SelectedServer].DLIP, ServerManager.Servers[ServerManager.SelectedServer].DLPort);
 
-                    string jsonData = JsonSerializer.Serialize(requestData);
+                    using (NetworkStream stream = client.GetStream())
 
-                    string request = $"POST {path} HTTP/1.1\r\n";
-                    request += $"Host: {url}:{port}\r\n";
-                    request += "Content-Type: application/json\r\n";
-                    request += $"Content-Length: {jsonData.Length}\r\n";
-                    request += "Connection: close\r\n";
-                    request += "\r\n";
-                    request += jsonData;
+                    using (StreamWriter writer = new StreamWriter(stream, utf8Encoding))
 
-                    var utf8Encoding = new UTF8Encoding(false);
+                    using (StreamReader reader = new StreamReader(stream, utf8Encoding))
 
-                    using (TcpClient client = new TcpClient())
                     {
-                        client.ReceiveTimeout = 5000;
-                        client.SendTimeout = 5000;
-                        client.Connect(url, int.Parse(port));
+                        writer.Write(request);
+                        writer.Flush();
 
-                        using (NetworkStream stream = client.GetStream())
+                        StringBuilder sb = new StringBuilder();
+                        string line;
 
-                        using (StreamWriter writer = new StreamWriter(stream, utf8Encoding))
+                        stream.ReadTimeout = 5000;
 
-                        using (StreamReader reader = new StreamReader(stream, utf8Encoding))
-
+                        while ((line = reader.ReadLine()) != null)
                         {
-                            writer.Write(request);
-                            writer.Flush();
+                            sb.AppendLine(line);
+                        }
 
-                            StringBuilder sb = new StringBuilder();
-                            string line;
+                        string response = sb.ToString();
 
-                            stream.ReadTimeout = 5000;
+                        var bodyStartIndex = response.IndexOf("\r\n\r\n") + 4;
+                        var responseBody = response.Substring(bodyStartIndex);
 
-                            while ((line = reader.ReadLine()) != null)
+                        ServerResponse serverResponse = JsonSerializer.Deserialize<ServerResponse>(responseBody);
+
+                        if (serverResponse.Error == null)
+                        {
+                            if (serverResponse.Message == "Login Success")
                             {
-                                sb.AppendLine(line);
+                                Process.Start("ddo.exe",
+                                    " addr=" +
+                                    ServerManager.Servers[ServerManager.SelectedServer].LobbyIP +
+                                    " port=" +
+                                    ServerManager.Servers[ServerManager.SelectedServer].LPort +
+                                    " token=" +
+                                    serverResponse.Token +
+                                    " DL=http://" +
+                                    ServerManager.Servers[ServerManager.SelectedServer].DLIP +
+                                    ":" +
+                                    ServerManager.Servers[ServerManager.SelectedServer].DLPort +
+                                    "/win/ LVer=03.04.003.20181115.0 RVer=3040008");
+
+                                this.Close();
                             }
-
-                            string response = sb.ToString();
-
-                            var bodyStartIndex = response.IndexOf("\r\n\r\n") + 4;
-                            var responseBody = response.Substring(bodyStartIndex);
-
-                            ServerResponse serverResponse = JsonSerializer.Deserialize<ServerResponse>(responseBody);
-
-                            if (serverResponse.Error == null)
-                            {
-                                MessageBox.Show(
-                                    serverResponse.Message,
-                                    "Dragon's Dogma Online",
-                                    MessageBoxButtons.OK,
-                                    MessageBoxIcon.Information);
-                                if (serverResponse.Message == "Login Success")
-                                {
-                                    Process.Start("ddo.exe",
-                                        " addr=" +
-                                        lines[0] +
-                                        " port=" +
-                                        lines[1] +
-                                        " token=" +
-                                        serverResponse.Token +
-                                        " DL=http://" +
-                                        lines[2] +
-                                        ":" +
-                                        lines[3] +
-                                        "/win/ LVer=03.04.003.20181115.0 RVer=3040008");
-                                   
-                                    this.Close();
-                                }
-                            }
-                            else
-                            {
-                                MessageBox.Show(
-                                    serverResponse.Error,
-                                    "Dragon's Dogma Online",
-                                    MessageBoxButtons.OK,
-                                    MessageBoxIcon.Error);
-                            }
+                        }
+                        else
+                        {
+                            MessageBox.Show(
+                                serverResponse.Error,
+                                "Dragon's Dogma Online",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Error);
                         }
                     }
                 }
-                 
-                /* --------COMMENTED UNTIL E-MAIL USE TURN INTO A REAL THING------
-                else
-                {
-                    MessageBox.Show(
-                        "Register is lacking the e-mail information",
-                        "Dragon's Dogma Online",
-                        MessageBoxButtons.OK,
-                        MessageBoxIcon.Exclamation);
-                }
-                */
             }
-            catch (Exception ex)
+
+            /* --------COMMENTED UNTIL E-MAIL USE TURN INTO A REAL THING------
+            else
             {
-
-                if(ex.Message == "The input string '' was not in a correct format.")
-                {
-                    FormServerSettings f2 = new FormServerSettings();
-                    f2.ShowDialog();
-                }
-                else
-                {
-                    MessageBox.Show(
-                        ex.Message,    
-                        "Erro",    
-                        MessageBoxButtons.OK,    
-                        MessageBoxIcon.Error);
-                }
-
+                MessageBox.Show(
+                    "Register is lacking the e-mail information",
+                    "Dragon's Dogma Online",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Exclamation);
             }
+            */
         }
 
         private void rememberCheckBox_CheckedChanged(object sender, EventArgs e)
@@ -245,6 +262,16 @@ namespace DDO_Launcher
                 Properties.Settings.Default.passwordText = string.Empty;
             }
             Properties.Settings.Default.Save();
+        }
+
+        private void serverComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            ServerManager.SelectServer(serverComboBox.Text);
+        }
+
+        private void serverComboBox_DropDown(object sender, EventArgs e)
+        {
+            UpdateServerList();
         }
     }
 }
