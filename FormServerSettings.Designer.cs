@@ -104,7 +104,7 @@
             textDownloadServerPort.MaxLength = 5;
             textDownloadServerPort.Name = "textDownloadServerPort";
             textDownloadServerPort.Size = new Size(69, 20);
-            textDownloadServerPort.TabIndex = 4;
+            textDownloadServerPort.TabIndex = 8;
             textDownloadServerPort.TextChanged += textDownloadServerPort_TextChanged;
             // 
             // textGameServerPort
@@ -120,7 +120,7 @@
             textGameServerPort.MaxLength = 5;
             textGameServerPort.Name = "textGameServerPort";
             textGameServerPort.Size = new Size(69, 20);
-            textGameServerPort.TabIndex = 2;
+            textGameServerPort.TabIndex = 6;
             textGameServerPort.TextChanged += textGameServerPort_TextChanged;
             // 
             // textDownloadServerIP
@@ -136,7 +136,7 @@
             textDownloadServerIP.MaxLength = 200;
             textDownloadServerIP.Name = "textDownloadServerIP";
             textDownloadServerIP.Size = new Size(122, 20);
-            textDownloadServerIP.TabIndex = 3;
+            textDownloadServerIP.TabIndex = 7;
             textDownloadServerIP.TextChanged += textDownloadServerIP_TextChanged;
             // 
             // textGameServerIp
@@ -152,7 +152,7 @@
             textGameServerIp.MaxLength = 200;
             textGameServerIp.Name = "textGameServerIp";
             textGameServerIp.Size = new Size(122, 20);
-            textGameServerIp.TabIndex = 1;
+            textGameServerIp.TabIndex = 5;
             textGameServerIp.TextChanged += textGameServerIp_TextChanged;
             // 
             // buttonSave
@@ -161,7 +161,7 @@
             buttonSave.Location = new Point(110, 159);
             buttonSave.Name = "buttonSave";
             buttonSave.Size = new Size(63, 25);
-            buttonSave.TabIndex = 5;
+            buttonSave.TabIndex = 9;
             buttonSave.Text = "Save";
             buttonSave.UseVisualStyleBackColor = true;
             buttonSave.Click += buttonSave_Click;
@@ -172,7 +172,7 @@
             buttonCancel.Location = new Point(195, 159);
             buttonCancel.Name = "buttonCancel";
             buttonCancel.Size = new Size(63, 25);
-            buttonCancel.TabIndex = 6;
+            buttonCancel.TabIndex = 10;
             buttonCancel.Text = "Cancel";
             buttonCancel.UseVisualStyleBackColor = true;
             buttonCancel.Click += buttonCancel_Click;
@@ -202,7 +202,7 @@
             nameTextBox.MaxLength = 200;
             nameTextBox.Name = "nameTextBox";
             nameTextBox.Size = new Size(247, 20);
-            nameTextBox.TabIndex = 12;
+            nameTextBox.TabIndex = 4;
             nameTextBox.TextChanged += nameTextBox_TextChanged;
             // 
             // serverComboBox
@@ -212,7 +212,7 @@
             serverComboBox.Location = new Point(89, 21);
             serverComboBox.Name = "serverComboBox";
             serverComboBox.Size = new Size(190, 23);
-            serverComboBox.TabIndex = 14;
+            serverComboBox.TabIndex = 1;
             serverComboBox.SelectedIndexChanged += serverComboBox_SelectedIndexChanged;
             // 
             // label2
@@ -232,7 +232,7 @@
             buttonAddServer.Location = new Point(314, 21);
             buttonAddServer.Name = "buttonAddServer";
             buttonAddServer.Size = new Size(23, 23);
-            buttonAddServer.TabIndex = 16;
+            buttonAddServer.TabIndex = 3;
             buttonAddServer.Text = "+";
             buttonAddServer.UseVisualStyleBackColor = true;
             buttonAddServer.Click += buttonAddServer_Click;
@@ -243,7 +243,7 @@
             buttonRemoveServer.Location = new Point(285, 21);
             buttonRemoveServer.Name = "buttonRemoveServer";
             buttonRemoveServer.Size = new Size(23, 23);
-            buttonRemoveServer.TabIndex = 16;
+            buttonRemoveServer.TabIndex = 2;
             buttonRemoveServer.Text = "X";
             buttonRemoveServer.UseVisualStyleBackColor = true;
             buttonRemoveServer.Click += buttonRemoveServer_Click;
