@@ -5,6 +5,7 @@ using System.Net.Sockets;
 using System.Diagnostics;
 using IniParser.Model;
 using IniParser;
+using static DDO_Launcher.launcherPrincipal;
 
 namespace DDO_Launcher
 {
@@ -156,7 +157,7 @@ namespace DDO_Launcher
 
             var path = "/api/account";
 
-            if (Action == "create" || Action == "login" && (textAccount.Text != null && textPassword.Text != null))
+            if ((Action == "create" || Action == "login") && (textAccount.Text != "" && textPassword.Text != ""))
             {
                 string jsonData = JsonSerializer.Serialize(requestData);
 
@@ -174,6 +175,7 @@ namespace DDO_Launcher
                 {
                     client.ReceiveTimeout = 5000;
                     client.SendTimeout = 5000;
+
                     client.Connect(ServerManager.Servers[ServerManager.SelectedServer].DLIP, ServerManager.Servers[ServerManager.SelectedServer].DLPort);
 
                     using (NetworkStream stream = client.GetStream())
@@ -203,25 +205,23 @@ namespace DDO_Launcher
 
                         ServerResponse serverResponse = JsonSerializer.Deserialize<ServerResponse>(responseBody);
 
-                        if (serverResponse.Error == null)
-                        {
-                            if (serverResponse.Message == "Login Success")
-                            {
-                                Process.Start("ddo.exe",
-                                    " addr=" +
-                                    ServerManager.Servers[ServerManager.SelectedServer].LobbyIP +
-                                    " port=" +
-                                    ServerManager.Servers[ServerManager.SelectedServer].LPort +
-                                    " token=" +
-                                    serverResponse.Token +
-                                    " DL=http://" +
-                                    ServerManager.Servers[ServerManager.SelectedServer].DLIP +
-                                    ":" +
-                                    ServerManager.Servers[ServerManager.SelectedServer].DLPort +
-                                    "/win/ LVer=03.04.003.20181115.0 RVer=3040008");
 
-                                this.Close();
-                            }
+                        if (serverResponse.Message == "Login Success")
+                        {
+                            Process.Start("ddo.exe",
+                                " addr=" +
+                                ServerManager.Servers[ServerManager.SelectedServer].LobbyIP +
+                                " port=" +
+                                ServerManager.Servers[ServerManager.SelectedServer].LPort +
+                                " token=" +
+                                serverResponse.Token +
+                                " DL=http://" +
+                                ServerManager.Servers[ServerManager.SelectedServer].DLIP +
+                                ":" +
+                                ServerManager.Servers[ServerManager.SelectedServer].DLPort +
+                                "/win/ LVer=03.04.003.20181115.0 RVer=3040008");
+
+                            this.Close();
                         }
                         else
                         {
@@ -232,7 +232,41 @@ namespace DDO_Launcher
                                 MessageBoxIcon.Error);
                         }
                     }
+
+                    //-------For a future implementation of "Select DDOn folder"--------
+                    /*try
+                    {
+                    }
+                    catch //(Exception ex)
+                    {
+                        if (ex is System.ComponentModel.Win32Exception winEx) 
+                        {
+                            MessageBox.Show(
+                                "DDO.exe not found!",
+                                "Dragon's Dogma Online",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Error);
+                        }
+                        else
+                        {
+                            MessageBox.Show(
+                                "Invalid response from server",
+                                "Dragon's Dogma Online",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Error);
+                        
+                    }*/
+
+
                 }
+            }
+            else
+            {
+                MessageBox.Show(
+                "Account or Password must not be empty!",
+                "Dragon's Dogma Online",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Error);
             }
 
             /* --------COMMENTED UNTIL E-MAIL USE TURN INTO A REAL THING------
