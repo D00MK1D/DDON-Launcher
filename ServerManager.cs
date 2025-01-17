@@ -70,9 +70,19 @@ namespace DDO_Launcher
 
         public void LoadServers()
         {
-            if (File.Exists(ServersFile))
+            if (!File.Exists(ServersFile))
             {
-                IniData data = Parser.ReadFile(ServersFile);
+                IniData defaultData = new IniData();
+
+                defaultData["General"]["DLIP"]="localhost";
+                defaultData["General"]["DLPort"]="52099";
+                defaultData["General"]["LobbyIP"]="localhost";
+                defaultData["General"]["LPort"]="52100";
+
+                Parser.WriteFile(ServersFile, defaultData);
+            }
+
+            IniData data = Parser.ReadFile(ServersFile);
 
                 Servers = data.Sections
                     .Where(section => section.SectionName != SELECTED_SERVER_SECTION)
@@ -105,7 +115,7 @@ namespace DDO_Launcher
                     Servers.Add(BACKWARDS_COMPAT_DEFAULT_SERVER_NAME, server);
                     SelectedServer = BACKWARDS_COMPAT_DEFAULT_SERVER_NAME;
                 }
-            }
+            
         }
 
         public void SaveServers()
