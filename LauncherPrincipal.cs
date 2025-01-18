@@ -208,18 +208,28 @@ namespace DDO_Launcher
 
                         if (serverResponse.Message == "Login Success")
                         {
-                            Process.Start("ddo.exe",
-                                " addr=" +
-                                ServerManager.Servers[ServerManager.SelectedServer].LobbyIP +
-                                " port=" +
-                                ServerManager.Servers[ServerManager.SelectedServer].LPort +
-                                " token=" +
-                                serverResponse.Token +
-                                " DL=http://" +
-                                ServerManager.Servers[ServerManager.SelectedServer].DLIP +
-                                ":" +
-                                ServerManager.Servers[ServerManager.SelectedServer].DLPort +
-                                "/win/ LVer=03.04.003.20181115.0 RVer=3040008");
+                            // Try to show the admin prompt to launch DDOn
+                            ProcessStartInfo pStartInfo = new ProcessStartInfo
+                            {
+                                FileName = "ddo.exe",
+
+                                Arguments = (" addr=" + 
+                                             ServerManager.Servers[ServerManager.SelectedServer].LobbyIP + 
+                                             " port=" + 
+                                             ServerManager.Servers[ServerManager.SelectedServer].LPort + 
+                                             " token=" + 
+                                             serverResponse.Token + 
+                                             " DL=http://" + 
+                                             ServerManager.Servers[ServerManager.SelectedServer].DLIP + 
+                                             ":" + 
+                                             ServerManager.Servers[ServerManager.SelectedServer].DLPort + 
+                                             "/win/ LVer=03.04.003.20181115.0 RVer=3040008"),
+
+                                Verb = "runas",
+                                UseShellExecute = true
+                            };
+
+                            Process.Start(pStartInfo);
 
                             this.Close();
                         }
