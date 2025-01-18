@@ -135,7 +135,7 @@ namespace DDO_Launcher
         {
             string oldName = serverComboBox.Text;
             string newName = nameTextBox.Text;
-            if(oldName != "" && newName != "")
+            if (oldName != "" && newName != "")
             {
                 serverComboBox.Text = newName;
                 ServerManager.RenameServer(oldName, newName);
@@ -145,36 +145,66 @@ namespace DDO_Launcher
 
         private void textGameServerIp_TextChanged(object sender, EventArgs e)
         {
-            Server server = ServerManager.Servers[serverComboBox.Text];
-            server.LobbyIP = textGameServerIp.Text;
-            UpdateServerFields();
+            try
+            {
+                Server server = ServerManager.Servers[serverComboBox.Text];
+                server.LobbyIP = textGameServerIp.Text;
+                UpdateServerFields();
+            }
+            catch
+            {
+                textGameServerIp.Text = "";
+
+            }
         }
 
         private void textGameServerPort_TextChanged(object sender, EventArgs e)
         {
-            Server server = ServerManager.Servers[serverComboBox.Text];
-            if(ushort.TryParse(textGameServerPort.Text, out ushort port))
+            try
             {
-                server.LPort = port;
+                Server server = ServerManager.Servers[serverComboBox.Text];
+                if (ushort.TryParse(textGameServerPort.Text, out ushort port))
+                {
+                    server.LPort = port;
+                }
+                UpdateServerFields();
             }
-            UpdateServerFields();
+            catch
+            {
+                textGameServerPort.Text = "";
+            }
+            
         }
 
         private void textDownloadServerIP_TextChanged(object sender, EventArgs e)
         {
-            Server server = ServerManager.Servers[serverComboBox.Text];
-            server.DLIP = textDownloadServerIP.Text;
-            UpdateServerFields();
+            try
+            {
+                Server server = ServerManager.Servers[serverComboBox.Text];
+                server.DLIP = textDownloadServerIP.Text;
+                UpdateServerFields();
+            }
+            catch
+            {
+                textDownloadServerIP.Text = "";
+            }
         }
 
         private void textDownloadServerPort_TextChanged(object sender, EventArgs e)
         {
-            Server server = ServerManager.Servers[serverComboBox.Text];
-            if(ushort.TryParse(textDownloadServerPort.Text, out ushort port))
+            try
             {
-                server.DLPort = port;
+                Server server = ServerManager.Servers[serverComboBox.Text];
+                if (ushort.TryParse(textDownloadServerPort.Text, out ushort port))
+                {
+                    server.DLPort = port;
+                }
+                UpdateServerFields();
             }
-            UpdateServerFields();
+            catch
+            {
+                textDownloadServerPort.Text = "";
+            }
         }
 
         private void buttonRemoveServer_Click(object sender, EventArgs e)

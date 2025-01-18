@@ -48,10 +48,10 @@
             // 
             pictureBox1.BackColor = Color.Transparent;
             pictureBox1.BackgroundImage = Properties.Resources.Background;
-            pictureBox1.BackgroundImageLayout = ImageLayout.None;
-            pictureBox1.Location = new Point(2, 0);
+            pictureBox1.BackgroundImageLayout = ImageLayout.Stretch;
+            pictureBox1.Location = new Point(0, 0);
             pictureBox1.Name = "pictureBox1";
-            pictureBox1.Size = new Size(872, 427);
+            pictureBox1.Size = new Size(874, 427);
             pictureBox1.TabIndex = 0;
             pictureBox1.TabStop = false;
             pictureBox1.MouseDown += pictureBox1_MouseDown;
@@ -62,7 +62,7 @@
             // 
             buttonLogin.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             buttonLogin.BackColor = Color.Transparent;
-            buttonLogin.Font = new Font("Calibri", 12F, FontStyle.Bold);
+            buttonLogin.Font = new Font("Calibri", 16F, FontStyle.Bold, GraphicsUnit.Pixel);
             buttonLogin.Location = new Point(53, 314);
             buttonLogin.Name = "buttonLogin";
             buttonLogin.Size = new Size(81, 29);
@@ -124,7 +124,7 @@
             // 
             labelAccountID.AutoSize = true;
             labelAccountID.BackColor = Color.Transparent;
-            labelAccountID.Font = new Font("Calibri", 11.25F, FontStyle.Bold);
+            labelAccountID.Font = new Font("Calibri", 15F, FontStyle.Bold, GraphicsUnit.Pixel);
             labelAccountID.Location = new Point(50, 168);
             labelAccountID.Name = "labelAccountID";
             labelAccountID.Size = new Size(62, 18);
@@ -135,7 +135,7 @@
             // 
             labelPassword.AutoSize = true;
             labelPassword.BackColor = Color.Transparent;
-            labelPassword.Font = new Font("Calibri", 11.25F, FontStyle.Bold);
+            labelPassword.Font = new Font("Calibri", 15F, FontStyle.Bold, GraphicsUnit.Pixel);
             labelPassword.Location = new Point(50, 222);
             labelPassword.Name = "labelPassword";
             labelPassword.Size = new Size(71, 18);
@@ -147,7 +147,7 @@
             textAccount.BackColor = SystemColors.InactiveBorder;
             textAccount.BorderStyle = BorderStyle.FixedSingle;
             textAccount.Cursor = Cursors.IBeam;
-            textAccount.Font = new Font("Microsoft Sans Serif", 8.25F, FontStyle.Bold);
+            textAccount.Font = new Font("Microsoft Sans Serif", 11F, FontStyle.Bold, GraphicsUnit.Pixel);
             textAccount.ForeColor = SystemColors.ActiveCaptionText;
             textAccount.ImeMode = ImeMode.NoControl;
             textAccount.Location = new Point(53, 187);
@@ -161,7 +161,7 @@
             textPassword.BackColor = SystemColors.InactiveBorder;
             textPassword.BorderStyle = BorderStyle.FixedSingle;
             textPassword.Cursor = Cursors.IBeam;
-            textPassword.Font = new Font("Microsoft Sans Serif", 8.25F, FontStyle.Bold);
+            textPassword.Font = new Font("Microsoft Sans Serif", 11F, FontStyle.Bold, GraphicsUnit.Pixel);
             textPassword.ForeColor = SystemColors.ActiveCaptionText;
             textPassword.ImeMode = ImeMode.NoControl;
             textPassword.Location = new Point(53, 242);
@@ -176,7 +176,7 @@
             rememberCheckBox.AutoSize = true;
             rememberCheckBox.FlatAppearance.BorderSize = 0;
             rememberCheckBox.FlatStyle = FlatStyle.System;
-            rememberCheckBox.Font = new Font("Calibri", 11.25F, FontStyle.Bold);
+            rememberCheckBox.Font = new Font("Calibri", 15F, FontStyle.Bold, GraphicsUnit.Pixel);
             rememberCheckBox.Location = new Point(89, 275);
             rememberCheckBox.Name = "rememberCheckBox";
             rememberCheckBox.Size = new Size(126, 23);
@@ -189,7 +189,7 @@
             // 
             buttonRegister.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             buttonRegister.BackColor = Color.Transparent;
-            buttonRegister.Font = new Font("Calibri", 12F, FontStyle.Bold);
+            buttonRegister.Font = new Font("Calibri", 16F, FontStyle.Bold, GraphicsUnit.Pixel);
             buttonRegister.Location = new Point(158, 314);
             buttonRegister.Name = "buttonRegister";
             buttonRegister.Size = new Size(81, 29);
@@ -201,10 +201,11 @@
             // serverComboBox
             // 
             serverComboBox.DropDownStyle = ComboBoxStyle.DropDownList;
+            serverComboBox.Font = new Font("Calibri", 15F, FontStyle.Bold, GraphicsUnit.Pixel);
             serverComboBox.FormattingEnabled = true;
-            serverComboBox.Location = new Point(46, 391);
+            serverComboBox.Location = new Point(46, 389);
             serverComboBox.Name = "serverComboBox";
-            serverComboBox.Size = new Size(121, 23);
+            serverComboBox.Size = new Size(121, 26);
             serverComboBox.TabIndex = 7;
             serverComboBox.DropDown += serverComboBox_DropDown;
             serverComboBox.SelectedIndexChanged += serverComboBox_SelectedIndexChanged;
@@ -214,6 +215,7 @@
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackgroundImage = Properties.Resources.Background;
+            BackgroundImageLayout = ImageLayout.Stretch;
             ClientSize = new Size(874, 427);
             ControlBox = false;
             Controls.Add(serverComboBox);
@@ -228,6 +230,7 @@
             Controls.Add(buttonConfig);
             Controls.Add(buttonLogin);
             Controls.Add(pictureBox1);
+            DoubleBuffered = true;
             FormBorderStyle = FormBorderStyle.None;
             Icon = (Icon)resources.GetObject("$this.Icon");
             MaximizeBox = false;

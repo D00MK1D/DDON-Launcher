@@ -51,8 +51,8 @@
             // 
             label4.AutoSize = true;
             label4.BackColor = Color.Transparent;
-            label4.Font = new Font("Calibri", 11.25F, FontStyle.Bold);
-            label4.Location = new Point(229, 118);
+            label4.Font = new Font("Calibri", 15F, FontStyle.Bold, GraphicsUnit.Pixel);
+            label4.Location = new Point(387, 236);
             label4.Name = "label4";
             label4.Size = new Size(38, 18);
             label4.TabIndex = 8;
@@ -62,8 +62,8 @@
             // 
             label3.AutoSize = true;
             label3.BackColor = Color.Transparent;
-            label3.Font = new Font("Calibri", 11.25F, FontStyle.Bold);
-            label3.Location = new Point(229, 89);
+            label3.Font = new Font("Calibri", 15F, FontStyle.Bold, GraphicsUnit.Pixel);
+            label3.Location = new Point(387, 178);
             label3.Name = "label3";
             label3.Size = new Size(38, 18);
             label3.TabIndex = 9;
@@ -73,8 +73,8 @@
             // 
             labelDownLoadServerIP.AutoSize = true;
             labelDownLoadServerIP.BackColor = Color.Transparent;
-            labelDownLoadServerIP.Font = new Font("Calibri", 11.25F, FontStyle.Bold);
-            labelDownLoadServerIP.Location = new Point(44, 118);
+            labelDownLoadServerIP.Font = new Font("Calibri", 15F, FontStyle.Bold, GraphicsUnit.Pixel);
+            labelDownLoadServerIP.Location = new Point(75, 236);
             labelDownLoadServerIP.Name = "labelDownLoadServerIP";
             labelDownLoadServerIP.Size = new Size(42, 18);
             labelDownLoadServerIP.TabIndex = 10;
@@ -84,8 +84,8 @@
             // 
             labelGameServerIP.AutoSize = true;
             labelGameServerIP.BackColor = Color.Transparent;
-            labelGameServerIP.Font = new Font("Calibri", 11.25F, FontStyle.Bold);
-            labelGameServerIP.Location = new Point(23, 89);
+            labelGameServerIP.Font = new Font("Calibri", 15F, FontStyle.Bold, GraphicsUnit.Pixel);
+            labelGameServerIP.Location = new Point(38, 178);
             labelGameServerIP.Name = "labelGameServerIP";
             labelGameServerIP.Size = new Size(64, 18);
             labelGameServerIP.TabIndex = 11;
@@ -97,13 +97,14 @@
             textDownloadServerPort.BorderStyle = BorderStyle.FixedSingle;
             textDownloadServerPort.Cursor = Cursors.IBeam;
             textDownloadServerPort.Enabled = false;
-            textDownloadServerPort.Font = new Font("Microsoft Sans Serif", 8.25F, FontStyle.Bold);
+            textDownloadServerPort.Font = new Font("Microsoft Sans Serif", 11F, FontStyle.Bold, GraphicsUnit.Pixel);
             textDownloadServerPort.ForeColor = SystemColors.ActiveCaptionText;
             textDownloadServerPort.ImeMode = ImeMode.NoControl;
-            textDownloadServerPort.Location = new Point(267, 118);
+            textDownloadServerPort.Location = new Point(459, 236);
+            textDownloadServerPort.Margin = new Padding(3, 6, 3, 6);
             textDownloadServerPort.MaxLength = 5;
             textDownloadServerPort.Name = "textDownloadServerPort";
-            textDownloadServerPort.Size = new Size(69, 20);
+            textDownloadServerPort.Size = new Size(119, 20);
             textDownloadServerPort.TabIndex = 8;
             textDownloadServerPort.TextChanged += textDownloadServerPort_TextChanged;
             // 
@@ -113,13 +114,14 @@
             textGameServerPort.BorderStyle = BorderStyle.FixedSingle;
             textGameServerPort.Cursor = Cursors.IBeam;
             textGameServerPort.Enabled = false;
-            textGameServerPort.Font = new Font("Microsoft Sans Serif", 8.25F, FontStyle.Bold);
+            textGameServerPort.Font = new Font("Microsoft Sans Serif", 11F, FontStyle.Bold, GraphicsUnit.Pixel);
             textGameServerPort.ForeColor = SystemColors.ActiveCaptionText;
             textGameServerPort.ImeMode = ImeMode.NoControl;
-            textGameServerPort.Location = new Point(267, 89);
+            textGameServerPort.Location = new Point(459, 178);
+            textGameServerPort.Margin = new Padding(3, 6, 3, 6);
             textGameServerPort.MaxLength = 5;
             textGameServerPort.Name = "textGameServerPort";
-            textGameServerPort.Size = new Size(69, 20);
+            textGameServerPort.Size = new Size(119, 20);
             textGameServerPort.TabIndex = 6;
             textGameServerPort.TextChanged += textGameServerPort_TextChanged;
             // 
@@ -129,13 +131,14 @@
             textDownloadServerIP.BorderStyle = BorderStyle.FixedSingle;
             textDownloadServerIP.Cursor = Cursors.IBeam;
             textDownloadServerIP.Enabled = false;
-            textDownloadServerIP.Font = new Font("Microsoft Sans Serif", 8.25F, FontStyle.Bold);
+            textDownloadServerIP.Font = new Font("Microsoft Sans Serif", 11F, FontStyle.Bold, GraphicsUnit.Pixel);
             textDownloadServerIP.ForeColor = SystemColors.ActiveCaptionText;
             textDownloadServerIP.ImeMode = ImeMode.NoControl;
-            textDownloadServerIP.Location = new Point(89, 118);
+            textDownloadServerIP.Location = new Point(154, 236);
+            textDownloadServerIP.Margin = new Padding(3, 6, 3, 6);
             textDownloadServerIP.MaxLength = 200;
             textDownloadServerIP.Name = "textDownloadServerIP";
-            textDownloadServerIP.Size = new Size(122, 20);
+            textDownloadServerIP.Size = new Size(208, 20);
             textDownloadServerIP.TabIndex = 7;
             textDownloadServerIP.TextChanged += textDownloadServerIP_TextChanged;
             // 
@@ -145,22 +148,24 @@
             textGameServerIp.BorderStyle = BorderStyle.FixedSingle;
             textGameServerIp.Cursor = Cursors.IBeam;
             textGameServerIp.Enabled = false;
-            textGameServerIp.Font = new Font("Microsoft Sans Serif", 8.25F, FontStyle.Bold);
+            textGameServerIp.Font = new Font("Microsoft Sans Serif", 11F, FontStyle.Bold, GraphicsUnit.Pixel);
             textGameServerIp.ForeColor = SystemColors.ActiveCaptionText;
             textGameServerIp.ImeMode = ImeMode.NoControl;
-            textGameServerIp.Location = new Point(89, 89);
+            textGameServerIp.Location = new Point(154, 178);
+            textGameServerIp.Margin = new Padding(3, 6, 3, 6);
             textGameServerIp.MaxLength = 200;
             textGameServerIp.Name = "textGameServerIp";
-            textGameServerIp.Size = new Size(122, 20);
+            textGameServerIp.Size = new Size(208, 20);
             textGameServerIp.TabIndex = 5;
             textGameServerIp.TextChanged += textGameServerIp_TextChanged;
             // 
             // buttonSave
             // 
-            buttonSave.Font = new Font("Calibri", 10F, FontStyle.Bold);
-            buttonSave.Location = new Point(110, 159);
+            buttonSave.Font = new Font("Calibri", 16F, FontStyle.Bold, GraphicsUnit.Pixel);
+            buttonSave.Location = new Point(190, 318);
+            buttonSave.Margin = new Padding(3, 6, 3, 6);
             buttonSave.Name = "buttonSave";
-            buttonSave.Size = new Size(63, 25);
+            buttonSave.Size = new Size(108, 50);
             buttonSave.TabIndex = 9;
             buttonSave.Text = "Save";
             buttonSave.UseVisualStyleBackColor = true;
@@ -168,10 +173,11 @@
             // 
             // buttonCancel
             // 
-            buttonCancel.Font = new Font("Calibri", 10F, FontStyle.Bold);
-            buttonCancel.Location = new Point(195, 159);
+            buttonCancel.Font = new Font("Calibri", 16F, FontStyle.Bold, GraphicsUnit.Pixel);
+            buttonCancel.Location = new Point(334, 318);
+            buttonCancel.Margin = new Padding(3, 6, 3, 6);
             buttonCancel.Name = "buttonCancel";
-            buttonCancel.Size = new Size(63, 25);
+            buttonCancel.Size = new Size(108, 50);
             buttonCancel.TabIndex = 10;
             buttonCancel.Text = "Cancel";
             buttonCancel.UseVisualStyleBackColor = true;
@@ -181,8 +187,8 @@
             // 
             label1.AutoSize = true;
             label1.BackColor = Color.Transparent;
-            label1.Font = new Font("Calibri", 11.25F, FontStyle.Bold);
-            label1.Location = new Point(38, 62);
+            label1.Font = new Font("Calibri", 15F, FontStyle.Bold, GraphicsUnit.Pixel);
+            label1.Location = new Point(63, 124);
             label1.Name = "label1";
             label1.Size = new Size(49, 18);
             label1.TabIndex = 13;
@@ -195,23 +201,26 @@
             nameTextBox.BorderStyle = BorderStyle.FixedSingle;
             nameTextBox.Cursor = Cursors.IBeam;
             nameTextBox.Enabled = false;
-            nameTextBox.Font = new Font("Microsoft Sans Serif", 8.25F, FontStyle.Bold);
+            nameTextBox.Font = new Font("Microsoft Sans Serif", 11F, FontStyle.Bold, GraphicsUnit.Pixel);
             nameTextBox.ForeColor = SystemColors.ActiveCaptionText;
             nameTextBox.ImeMode = ImeMode.NoControl;
-            nameTextBox.Location = new Point(89, 63);
+            nameTextBox.Location = new Point(154, 126);
+            nameTextBox.Margin = new Padding(3, 6, 3, 6);
             nameTextBox.MaxLength = 200;
             nameTextBox.Name = "nameTextBox";
-            nameTextBox.Size = new Size(247, 20);
+            nameTextBox.Size = new Size(424, 20);
             nameTextBox.TabIndex = 4;
             nameTextBox.TextChanged += nameTextBox_TextChanged;
             // 
             // serverComboBox
             // 
             serverComboBox.DropDownStyle = ComboBoxStyle.DropDownList;
+            serverComboBox.Font = new Font("Calibri", 15F, FontStyle.Bold, GraphicsUnit.Pixel);
             serverComboBox.FormattingEnabled = true;
-            serverComboBox.Location = new Point(89, 21);
+            serverComboBox.Location = new Point(154, 42);
+            serverComboBox.Margin = new Padding(3, 6, 3, 6);
             serverComboBox.Name = "serverComboBox";
-            serverComboBox.Size = new Size(190, 23);
+            serverComboBox.Size = new Size(325, 26);
             serverComboBox.TabIndex = 1;
             serverComboBox.SelectedIndexChanged += serverComboBox_SelectedIndexChanged;
             // 
@@ -219,8 +228,8 @@
             // 
             label2.AutoSize = true;
             label2.BackColor = Color.Transparent;
-            label2.Font = new Font("Calibri", 11.25F, FontStyle.Bold);
-            label2.Location = new Point(35, 23);
+            label2.Font = new Font("Calibri", 15F, FontStyle.Bold, GraphicsUnit.Pixel);
+            label2.Location = new Point(58, 48);
             label2.Name = "label2";
             label2.Size = new Size(52, 18);
             label2.TabIndex = 15;
@@ -229,9 +238,12 @@
             // 
             // buttonAddServer
             // 
-            buttonAddServer.Location = new Point(314, 21);
+            buttonAddServer.Font = new Font("Calibri", 15F, FontStyle.Bold, GraphicsUnit.Pixel);
+            buttonAddServer.ImageAlign = ContentAlignment.MiddleLeft;
+            buttonAddServer.Location = new Point(538, 42);
+            buttonAddServer.Margin = new Padding(3, 6, 3, 6);
             buttonAddServer.Name = "buttonAddServer";
-            buttonAddServer.Size = new Size(23, 23);
+            buttonAddServer.Size = new Size(41, 52);
             buttonAddServer.TabIndex = 3;
             buttonAddServer.Text = "+";
             buttonAddServer.UseVisualStyleBackColor = true;
@@ -240,9 +252,11 @@
             // buttonRemoveServer
             // 
             buttonRemoveServer.Enabled = false;
-            buttonRemoveServer.Location = new Point(285, 21);
+            buttonRemoveServer.Font = new Font("Calibri", 15F, FontStyle.Bold, GraphicsUnit.Pixel);
+            buttonRemoveServer.Location = new Point(490, 42);
+            buttonRemoveServer.Margin = new Padding(3, 6, 3, 6);
             buttonRemoveServer.Name = "buttonRemoveServer";
-            buttonRemoveServer.Size = new Size(23, 23);
+            buttonRemoveServer.Size = new Size(41, 52);
             buttonRemoveServer.TabIndex = 2;
             buttonRemoveServer.Text = "X";
             buttonRemoveServer.UseVisualStyleBackColor = true;
@@ -250,9 +264,9 @@
             // 
             // FormServerSettings
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleDimensions = new SizeF(12F, 30F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(367, 196);
+            ClientSize = new Size(627, 392);
             Controls.Add(buttonRemoveServer);
             Controls.Add(buttonAddServer);
             Controls.Add(label2);
@@ -271,6 +285,7 @@
             Controls.Add(textGameServerIp);
             FormBorderStyle = FormBorderStyle.FixedSingle;
             Icon = (Icon)resources.GetObject("$this.Icon");
+            Margin = new Padding(3, 6, 3, 6);
             Name = "FormServerSettings";
             Text = "Server Connection Settings";
             ResumeLayout(false);
