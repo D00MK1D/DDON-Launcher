@@ -213,16 +213,16 @@ namespace DDO_Launcher
                             {
                                 FileName = "ddo.exe",
 
-                                Arguments = (" addr=" + 
-                                             ServerManager.Servers[ServerManager.SelectedServer].LobbyIP + 
-                                             " port=" + 
-                                             ServerManager.Servers[ServerManager.SelectedServer].LPort + 
-                                             " token=" + 
-                                             serverResponse.Token + 
-                                             " DL=http://" + 
-                                             ServerManager.Servers[ServerManager.SelectedServer].DLIP + 
-                                             ":" + 
-                                             ServerManager.Servers[ServerManager.SelectedServer].DLPort + 
+                                Arguments = (" addr=" +
+                                             ServerManager.Servers[ServerManager.SelectedServer].LobbyIP +
+                                             " port=" +
+                                             ServerManager.Servers[ServerManager.SelectedServer].LPort +
+                                             " token=" +
+                                             serverResponse.Token +
+                                             " DL=http://" +
+                                             ServerManager.Servers[ServerManager.SelectedServer].DLIP +
+                                             ":" +
+                                             ServerManager.Servers[ServerManager.SelectedServer].DLPort +
                                              "/win/ LVer=03.04.003.20181115.0 RVer=3040008"),
 
                                 Verb = "runas",
@@ -232,6 +232,14 @@ namespace DDO_Launcher
                             Process.Start(pStartInfo);
 
                             this.Close();
+                        }
+                        else if (serverResponse.Error == null)
+                        {
+                            MessageBox.Show(
+                                serverResponse.Message,
+                                "Dragon's Dogma Online",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Information);
                         }
                         else
                         {
