@@ -58,5 +58,17 @@ namespace DDO_Launcher.Properties {
                 this["rememberMe"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string installedTranslationPatchETag {
+            get {
+                return ((string)(this["installedTranslationPatchETag"]));
+            }
+            set {
+                this["installedTranslationPatchETag"] = value;
+            }
+        }
     }
 }

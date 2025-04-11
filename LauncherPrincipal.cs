@@ -6,6 +6,16 @@ using System.Diagnostics;
 using IniParser.Model;
 using IniParser;
 using static DDO_Launcher.launcherPrincipal;
+using Arrowgene.Ddon.Client;
+using System.ComponentModel;
+using static Arrowgene.Ddon.Client.GmdActions;
+using System.Security.Policy;
+using System.IO.Compression;
+using System.IO;
+using System.Reflection.Metadata;
+using System.Xml.Linq;
+using Arrowgene.Ddon.Shared.Csv;
+using Arrowgene.Ddon.Shared;
 
 namespace DDO_Launcher
 {
@@ -325,5 +335,104 @@ namespace DDO_Launcher
         {
             UpdateServerList();
         }
+
+        private async void buttonTranslationPatch_Click(object sender, EventArgs e)
+        {
+            HttpClient client = new HttpClient();
+            var waitForm = new ProgressWindow();
+            try
+            {
+                // Check if there's a newer version of the translation patch
+                waitForm.Show();
+                waitForm.MessageLabel.Text = "Checking for translation patch updates...";
+                string upToDateWarning = "";
+                var request = new HttpRequestMessage(HttpMethod.Head, "https://raw.githubusercontent.com/Sapphiratelaemara/DDON-translation/refs/heads/main/gmd.csv");
+                request.Headers.Add("If-None-Match", Properties.Settings.Default.installedTranslationPatchETag);
+                var response = await client.SendAsync(request);
+                if (response.StatusCode == System.Net.HttpStatusCode.NotModified)
+                {
+                    upToDateWarning = "You already have the latest translation patch installed.";
+                }
+                waitForm.Hide();
+
+                // Show confirmation before proceeding
+                var result = MessageBox.Show("Install latest translation patch?\n" + upToDateWarning, "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                if (result == DialogResult.No)
+                {
+                    return;
+                }
+
+                // Download latest translation patch
+                waitForm.Show();
+                waitForm.MessageLabel.Text = "Downloading translation patch...";
+                string gmdCsvFilePath = Path.GetTempFileName();
+                using (var gmdCsvFile = new StreamWriter(gmdCsvFilePath))
+                {
+                    var patchDownload = await client.GetAsync("https://raw.githubusercontent.com/Sapphiratelaemara/DDON-translation/refs/heads/main/gmd.csv");
+                    Properties.Settings.Default.installedTranslationPatchETag = patchDownload.Headers.ETag.ToString();
+                    await (await patchDownload.Content.ReadAsStreamAsync()).CopyToAsync(gmdCsvFile.BaseStream);
+                }
+
+                // Patch the client
+                waitForm.MessageLabel.Text = "Patching client...";
+                waitForm.ProgressBar.Style = ProgressBarStyle.Continuous;
+                waitForm.ProgressBar.Minimum = 1;
+                waitForm.ProgressBar.Step = 1;
+                var progress = new Progress<PackProgressReport>(progressReport =>
+                {
+                    waitForm.ProgressBar.Maximum = progressReport.Total;
+                    waitForm.ProgressBar.Value = progressReport.Current;
+                    waitForm.ProgressBar.PerformStep();
+                });
+                await Task.Run(() => GmdActions.Pack(gmdCsvFilePath, "nativePC/rom", "English", progress));
+
+                waitForm.Close();
+                Properties.Settings.Default.Save();
+                MessageBox.Show("Translation patch applied successfully", "Translation applied", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch (Exception ex)
+            {
+                waitForm.Close();
+                MessageBox.Show("Error: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+    }
+}
+
+public class ProgressWindow : Form
+{
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+    public Label MessageLabel { get; private set; }
+
+
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+    public ProgressBar ProgressBar { get; private set; }
+
+    public ProgressWindow()
+    {
+        this.FormBorderStyle = FormBorderStyle.FixedDialog;
+        this.StartPosition = FormStartPosition.CenterScreen;
+        this.ControlBox = false;
+        this.Width = 300;
+        this.Height = 150;
+
+        MessageLabel = new Label
+        {
+            Text = "Please wait...",
+            Dock = DockStyle.Fill,
+            TextAlign = System.Drawing.ContentAlignment.MiddleCenter,
+            Font = new System.Drawing.Font("Arial", 12, System.Drawing.FontStyle.Bold)
+        };
+        this.Controls.Add(MessageLabel);
+
+        ProgressBar = new ProgressBar
+        {
+            Dock = DockStyle.Bottom,
+            Style = ProgressBarStyle.Marquee,
+            Height = 20
+        };
+        this.Controls.Add(ProgressBar);
+
+        this.BackColor = System.Drawing.Color.White;
     }
 }
