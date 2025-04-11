@@ -137,6 +137,18 @@ namespace DDO_Launcher
 
         private async void Operation(string Action)
         {
+            if (rememberCheckBox.Checked)
+            {
+                Properties.Settings.Default.accountText = textAccount.Text;
+                Properties.Settings.Default.passwordText = textPassword.Text;
+            }
+            else
+            {
+                Properties.Settings.Default.accountText = string.Empty;
+                Properties.Settings.Default.passwordText = string.Empty;
+            }
+            Properties.Settings.Default.Save();
+
             if (ServerManager.SelectedServer == null)
             {
                 MessageBox.Show(
@@ -302,18 +314,6 @@ namespace DDO_Launcher
         private void rememberCheckBox_CheckedChanged(object sender, EventArgs e)
         {
             Properties.Settings.Default.rememberMe = rememberCheckBox.Checked;
-
-            if (rememberCheckBox.Checked)
-            {
-                Properties.Settings.Default.accountText = textAccount.Text;
-                Properties.Settings.Default.passwordText = textPassword.Text;
-            }
-            else
-            {
-                Properties.Settings.Default.accountText = string.Empty;
-                Properties.Settings.Default.passwordText = string.Empty;
-            }
-            Properties.Settings.Default.Save();
         }
 
         private void serverComboBox_SelectedIndexChanged(object sender, EventArgs e)
