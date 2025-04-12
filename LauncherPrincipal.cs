@@ -146,7 +146,7 @@ namespace DDO_Launcher
             this.Close();
         }
 
-        private async void Operation(string Action)
+        private void Operation(string Action)
         {
             if (rememberCheckBox.Checked)
             {
@@ -170,43 +170,48 @@ namespace DDO_Launcher
                 return;
             }
 
-            var requestData = new
+            if ((Action != "create" && Action != "login") || textAccount.Text == "" || textPassword.Text == "")
             {
-                Action = Action,
-                Account = textAccount.Text,
-                Password = textPassword.Text,
-                Email = ""
-            };
+                MessageBox.Show(
+                    "Account or Password must not be empty!",
+                    "Dragon's Dogma Online",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+                return;
+            }
 
-            var path = "/api/account";
-
-            if ((Action == "create" || Action == "login") && (textAccount.Text != "" && textPassword.Text != ""))
+            string responseBody = string.Empty;
+            try
             {
-                string jsonData = JsonSerializer.Serialize(requestData);
-
-                string request = $"POST {path} HTTP/1.1\r\n";
-                request += $"Host: {ServerManager.Servers[ServerManager.SelectedServer].DLIP}:{ServerManager.Servers[ServerManager.SelectedServer].DLPort}\r\n";
-                request += "Content-Type: application/json\r\n";
-                request += $"Content-Length: {jsonData.Length}\r\n";
-                request += "Connection: close\r\n";
-                request += "\r\n";
-                request += jsonData;
-
-                var utf8Encoding = new UTF8Encoding(false);
-
                 using (TcpClient client = new TcpClient())
                 {
+                    var path = "/api/account";
+                    var requestData = new
+                    {
+                        Action = Action,
+                        Account = textAccount.Text,
+                        Password = textPassword.Text,
+                        Email = ""
+                    };
+
+                    string jsonData = JsonSerializer.Serialize(requestData);
+                    string request = $"POST {path} HTTP/1.1\r\n";
+                    request += $"Host: {ServerManager.Servers[ServerManager.SelectedServer].DLIP}:{ServerManager.Servers[ServerManager.SelectedServer].DLPort}\r\n";
+                    request += "Content-Type: application/json\r\n";
+                    request += $"Content-Length: {jsonData.Length}\r\n";
+                    request += "Connection: close\r\n";
+                    request += "\r\n";
+                    request += jsonData;
+
                     client.ReceiveTimeout = 5000;
                     client.SendTimeout = 5000;
-
                     client.Connect(ServerManager.Servers[ServerManager.SelectedServer].DLIP, ServerManager.Servers[ServerManager.SelectedServer].DLPort);
 
+                    var utf8Encoding = new UTF8Encoding(false);
+
                     using (NetworkStream stream = client.GetStream())
-
                     using (StreamWriter writer = new StreamWriter(stream, utf8Encoding))
-
                     using (StreamReader reader = new StreamReader(stream, utf8Encoding))
-
                     {
                         writer.Write(request);
                         writer.Flush();
@@ -224,102 +229,92 @@ namespace DDO_Launcher
                         string response = sb.ToString();
 
                         var bodyStartIndex = response.IndexOf("\r\n\r\n") + 4;
-                        var responseBody = response.Substring(bodyStartIndex);
-
-                        ServerResponse serverResponse = JsonSerializer.Deserialize<ServerResponse>(responseBody);
-
-
-                        if (serverResponse.Message == "Login Success")
-                        {
-                            // Try to show the admin prompt to launch DDOn
-                            ProcessStartInfo pStartInfo = new ProcessStartInfo
-                            {
-                                FileName = "ddo.exe",
-
-                                Arguments = (" addr=" +
-                                             ServerManager.Servers[ServerManager.SelectedServer].LobbyIP +
-                                             " port=" +
-                                             ServerManager.Servers[ServerManager.SelectedServer].LPort +
-                                             " token=" +
-                                             serverResponse.Token +
-                                             " DL=http://" +
-                                             ServerManager.Servers[ServerManager.SelectedServer].DLIP +
-                                             ":" +
-                                             ServerManager.Servers[ServerManager.SelectedServer].DLPort +
-                                             "/win/ LVer=03.04.003.20181115.0 RVer=3040008"),
-
-                                Verb = "runas",
-                                UseShellExecute = true
-                            };
-
-                            Process.Start(pStartInfo);
-
-                            this.Close();
-                        }
-                        else if (serverResponse.Error == null)
-                        {
-                            MessageBox.Show(
-                                serverResponse.Message,
-                                "Dragon's Dogma Online",
-                                MessageBoxButtons.OK,
-                                MessageBoxIcon.Information);
-                        }
-                        else
-                        {
-                            MessageBox.Show(
-                                serverResponse.Error,
-                                "Dragon's Dogma Online",
-                                MessageBoxButtons.OK,
-                                MessageBoxIcon.Error);
-                        }
+                        responseBody = response.Substring(bodyStartIndex);
                     }
-
-                    //-------For a future implementation of "Select DDOn folder"--------
-                    /*try
-                    {
-                    }
-                    catch //(Exception ex)
-                    {
-                        if (ex is System.ComponentModel.Win32Exception winEx) 
-                        {
-                            MessageBox.Show(
-                                "DDO.exe not found!",
-                                "Dragon's Dogma Online",
-                                MessageBoxButtons.OK,
-                                MessageBoxIcon.Error);
-                        }
-                        else
-                        {
-                            MessageBox.Show(
-                                "Invalid response from server",
-                                "Dragon's Dogma Online",
-                                MessageBoxButtons.OK,
-                                MessageBoxIcon.Error);
-                        
-                    }*/
-
-
                 }
             }
-            else
+            catch (SocketException ex)
             {
                 MessageBox.Show(
-                "Account or Password must not be empty!",
-                "Dragon's Dogma Online",
-                MessageBoxButtons.OK,
-                MessageBoxIcon.Error);
-            }
-
-            /* --------COMMENTED UNTIL E-MAIL USE TURN INTO A REAL THING------
-            else
-            {
-                MessageBox.Show(
-                    "Register is lacking the e-mail information",
+                    "Failed to connect to the server. Please verify the launcher's connection settings.",
                     "Dragon's Dogma Online",
                     MessageBoxButtons.OK,
-                    MessageBoxIcon.Exclamation);
+                    MessageBoxIcon.Error);
+                return;
             }
-            */
+
+            var token = string.Empty;
+            try
+            {
+                ServerResponse serverResponse = JsonSerializer.Deserialize<ServerResponse>(responseBody);
+                if (serverResponse.Message == "Login Success")
+                {
+                    // Login
+                    token = serverResponse.Token;
+                }
+                else if (serverResponse.Error == null)
+                {
+                    // Register
+                    MessageBox.Show(
+                        serverResponse.Message,
+                        "Dragon's Dogma Online",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Information);
+                    return;
+                }
+                else
+                {
+                    MessageBox.Show(
+                        serverResponse.Error,
+                        "Dragon's Dogma Online",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Error);
+                    return;
+                }
+            }
+            catch (JsonException e)
+            {
+                MessageBox.Show(
+                    "Invalid response from server",
+                    "Dragon's Dogma Online",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+                return;
+            }
+
+            try
+            {
+                // Try to show the admin prompt to launch DDOn
+                ProcessStartInfo pStartInfo = new ProcessStartInfo
+                {
+                    FileName = "ddo.exe",
+                    Arguments = (" addr=" +
+                                    ServerManager.Servers[ServerManager.SelectedServer].LobbyIP +
+                                    " port=" +
+                                    ServerManager.Servers[ServerManager.SelectedServer].LPort +
+                                    " token=" +
+                                    token +
+                                    " DL=http://" +
+                                    ServerManager.Servers[ServerManager.SelectedServer].DLIP +
+                                    ":" +
+                                    ServerManager.Servers[ServerManager.SelectedServer].DLPort +
+                                    "/win/ LVer=03.04.003.20181115.0 RVer=3040008"),
+
+                    Verb = "runas",
+                    UseShellExecute = true
+                };
+                Process.Start(pStartInfo);
+                this.Close();
+            }
+            catch (Win32Exception ex)
+            {
+                MessageBox.Show(
+                    "DDO.exe not found! Make sure the launcher is located in the game folder",
+                    "Dragon's Dogma Online",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+                return;
+            }
         }
 
         private void rememberCheckBox_CheckedChanged(object sender, EventArgs e)
