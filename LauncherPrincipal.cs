@@ -36,6 +36,7 @@ namespace DDO_Launcher
         private void OpenSettings()
         {
             FormServerSettings f2 = new FormServerSettings(ServerManager);
+            f2.FormClosed += (s, args) => UpdateServerList();
             f2.ShowDialog();
         }
 
