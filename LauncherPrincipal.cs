@@ -327,58 +327,58 @@ namespace DDO_Launcher
             UpdateServerList();
         }
 
-        private void buttonInstallMod_Click(object sender, EventArgs e)
+        private async void buttonInstallMod_Click(object sender, EventArgs e)
         {
-            //Task.Run(() =>
+            var waitForm = new ProgressWindow();
+            try
             {
-                var waitForm = new ProgressWindow();
-                try
+                OpenFileDialog selectModFileDialog = new OpenFileDialog();
+                selectModFileDialog.InitialDirectory = ".";
+                selectModFileDialog.Filter = "DDOn Mod Zip Files (*.zip)|*.zip";
+                selectModFileDialog.FilterIndex = 0;
+                selectModFileDialog.RestoreDirectory = true;
+                if (selectModFileDialog.ShowDialog() != DialogResult.OK)
                 {
-                    OpenFileDialog selectModFileDialog = new OpenFileDialog();
-                    selectModFileDialog.InitialDirectory = ".";
-                    selectModFileDialog.Filter = "DDOn Mod Zip Files (*.zip)|*.zip";
-                    selectModFileDialog.FilterIndex = 0;
-                    selectModFileDialog.RestoreDirectory = true;
-                    if (selectModFileDialog.ShowDialog() != DialogResult.OK)
+                    return;
+                }
+
+                string name, author;
+
+                using (var selectedModFilePath = File.OpenRead(selectModFileDialog.FileName))
+                using (var zip = new ZipArchive(selectedModFilePath, ZipArchiveMode.Read))
+                {
+                    int arcsCount;
+                    JsonElement.ArrayEnumerator arcsEnumerator;
+                    try
                     {
-                        return;
+                        JsonDocument manifest;
+                        var manifestFile = zip.Entries.Where(e => e.FullName == "manifest.json").Single();
+                        using (var stream = manifestFile.Open())
+                        {
+                            manifest = JsonDocument.Parse(stream);
+                        }
+
+                        name = manifest.RootElement.GetProperty("name").GetString() ?? throw new Exception("\"name\" property is null");
+                        author = manifest.RootElement.GetProperty("author").GetString() ?? throw new Exception("\"author\" property is null");
+                        var arcs = manifest.RootElement.GetProperty("arcs");
+                        arcsCount = arcs.GetArrayLength();
+                        arcsEnumerator = arcs.EnumerateArray();
+                    }
+                    catch (Exception ex)
+                    {
+                        throw new Exception("Couldn\'t find manifest.json in the mod archive.\n\n" +
+                                            "Make sure the mod archive is a zip file that contains a valid manifest.json file with the \"name\", \"author\", and \"arcs\" list.\n\n" +
+                                            "Error: " + ex.Message);
                     }
 
-                    string name, author;
-
-                    using (var selectedModFilePath = File.OpenRead(selectModFileDialog.FileName))
-                    using (var zip = new ZipArchive(selectedModFilePath, ZipArchiveMode.Read))
+                    waitForm.Show();
+                    waitForm.MessageLabel.Text = "Installing \"" + name + "\"\nAuthor:" + author;
+                    waitForm.ProgressBar.Style = ProgressBarStyle.Continuous;
+                    waitForm.ProgressBar.Minimum = 1;
+                    waitForm.ProgressBar.Step = 1;
+                    waitForm.ProgressBar.Maximum = arcsCount;
+                    await Task.Run(() =>
                     {
-                        int arcsCount;
-                        JsonElement.ArrayEnumerator arcsEnumerator;
-                        try
-                        {
-                            JsonDocument manifest;
-                            var manifestFile = zip.Entries.Where(e => e.FullName == "manifest.json").Single();
-                            using (var stream = manifestFile.Open())
-                            {
-                                manifest = JsonDocument.Parse(stream);
-                            }
-
-                            name = manifest.RootElement.GetProperty("name").GetString() ?? throw new Exception("\"name\" property is null");
-                            author = manifest.RootElement.GetProperty("author").GetString() ?? throw new Exception("\"author\" property is null");
-                            var arcs = manifest.RootElement.GetProperty("arcs");
-                            arcsCount = arcs.GetArrayLength();
-                            arcsEnumerator = arcs.EnumerateArray();
-                        }
-                        catch (Exception ex)
-                        {
-                            throw new Exception("Couldn\'t find manifest.json in the mod archive.\n\n" +
-                                                "Make sure the mod archive is a zip file that contains a valid manifest.json file with the \"name\", \"author\", and \"arcs\" list.\n\n" +
-                                                "Error: " + ex.Message);
-                        }
-
-                        waitForm.Show();
-                        waitForm.MessageLabel.Text = "Installing \"" + name + "\"\nAuthor:" + author;
-                        waitForm.ProgressBar.Style = ProgressBarStyle.Continuous;
-                        waitForm.ProgressBar.Minimum = 1;
-                        waitForm.ProgressBar.Step = 1;
-                        waitForm.ProgressBar.Maximum = arcsCount;
                         foreach (var arc in arcsEnumerator)
                         {
                             string arcProperty = arc.GetProperty("arc").GetString() ?? throw new Exception("\"arc\" property is null");
@@ -465,20 +465,19 @@ namespace DDO_Launcher
                             byte[] savedArc = archive.Save();
                             File.WriteAllBytes(pathToArcFile, savedArc);
 
-                            waitForm.ProgressBar.PerformStep();
+                            waitForm.Invoke(() => waitForm.ProgressBar.PerformStep());
                         }
-                    }
-
-                    waitForm.Close();
-                    Properties.Settings.Default.Save();
-                    MessageBox.Show("Successfully installed " + name + " (Author " + author + ")", "Mod installed", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    });
                 }
-                catch (Exception ex)
-                {
-                    waitForm.Close();
-                    MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-            }//);
+                waitForm.Close();
+                Properties.Settings.Default.Save();
+                MessageBox.Show("Successfully installed " + name + " (Author " + author + ")", "Mod installed", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch (Exception ex)
+            {
+                waitForm.Close();
+                MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private async void buttonTranslationPatch_Click(object sender, EventArgs e)
