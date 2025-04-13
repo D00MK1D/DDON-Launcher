@@ -338,22 +338,31 @@ namespace DDO_Launcher
             var waitForm = new ProgressWindow();
             try
             {
+                // Show confirmation before proceeding
+                var result = ShowInputDialog("Install translation patch?", "Translation Patch", out string url, Properties.Settings.Default.translationPatchUrl);
+                Properties.Settings.Default.translationPatchUrl = url;
+                if (result != DialogResult.OK)
+                {
+                    return;
+                }
+
                 // Check if there's a newer version of the translation patch
                 waitForm.Show();
                 waitForm.MessageLabel.Text = "Checking for translation patch updates...";
                 string upToDateWarning = "";
-                var request = new HttpRequestMessage(HttpMethod.Head, "https://raw.githubusercontent.com/Sapphiratelaemara/DDON-translation/refs/heads/main/gmd.csv");
+                var request = new HttpRequestMessage(HttpMethod.Head, Properties.Settings.Default.translationPatchUrl);
                 request.Headers.Add("If-None-Match", Properties.Settings.Default.installedTranslationPatchETag);
                 var response = await client.SendAsync(request);
                 if (response.StatusCode == System.Net.HttpStatusCode.NotModified)
                 {
-                    upToDateWarning = "You already have the latest translation patch installed.";
+                    upToDateWarning = "\nYou already have installed the latest translation patch.";
                 }
                 waitForm.Hide();
 
-                // Show confirmation before proceeding
-                var result = MessageBox.Show("Install latest translation patch?\n" + upToDateWarning, "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-                if (result == DialogResult.No)
+                // Select language
+                string[] languages = { "English", "Japanese" };
+                string? selectedLanguage = ShowDropdownDialog("Select language"+upToDateWarning, "Translation Patch", languages);
+                if (selectedLanguage == null)
                 {
                     return;
                 }
@@ -364,7 +373,7 @@ namespace DDO_Launcher
                 string gmdCsvFilePath = Path.GetTempFileName();
                 using (var gmdCsvFile = new StreamWriter(gmdCsvFilePath))
                 {
-                    var patchDownload = await client.GetAsync("https://raw.githubusercontent.com/Sapphiratelaemara/DDON-translation/refs/heads/main/gmd.csv");
+                    var patchDownload = await client.GetAsync(Properties.Settings.Default.translationPatchUrl);
                     Properties.Settings.Default.installedTranslationPatchETag = patchDownload.Headers.ETag.ToString();
                     await (await patchDownload.Content.ReadAsStreamAsync()).CopyToAsync(gmdCsvFile.BaseStream);
                 }
@@ -380,7 +389,7 @@ namespace DDO_Launcher
                     waitForm.ProgressBar.Value = progressReport.Current;
                     waitForm.ProgressBar.PerformStep();
                 });
-                await Task.Run(() => GmdActions.Pack(gmdCsvFilePath, "nativePC/rom", "English", progress));
+                await Task.Run(() => GmdActions.Pack(gmdCsvFilePath, "nativePC/rom", selectedLanguage, progress));
 
                 waitForm.Close();
                 Properties.Settings.Default.Save();
@@ -391,6 +400,69 @@ namespace DDO_Launcher
                 waitForm.Close();
                 MessageBox.Show("Error: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+        public static DialogResult ShowInputDialog(string message, string title, out string input, string value = "")
+        {
+            Form inputForm = new Form()
+            {
+                Width = 400,
+                Height = 200,
+                FormBorderStyle = FormBorderStyle.FixedDialog,
+                Text = title,
+                StartPosition = FormStartPosition.CenterScreen
+            };
+
+            Label messageLabel = new Label() { Left = 20, Top = 20, Text = message, Width = 340 };
+            TextBox inputBox = new TextBox() { Left = 20, Top = 50, Width = 340 };
+            Button okButton = new Button() { Text = "OK", Left = 220, Width = 100, Top = 100, DialogResult = DialogResult.OK };
+            Button cancelButton = new Button() { Text = "Cancel", Left = 100, Width = 100, Top = 100, DialogResult = DialogResult.Cancel };
+
+            okButton.Click += (sender, e) => { inputForm.Close(); };
+            cancelButton.Click += (sender, e) => { inputForm.Close(); };
+
+            inputForm.Controls.Add(messageLabel);
+            inputForm.Controls.Add(inputBox);
+            inputForm.Controls.Add(okButton);
+            inputForm.Controls.Add(cancelButton);
+            inputForm.AcceptButton = okButton;
+            inputForm.CancelButton = cancelButton;
+
+            inputBox.Text = value;
+            DialogResult dialogResult = inputForm.ShowDialog();
+            input = inputBox.Text;
+            return dialogResult;
+        }
+        public static string ShowDropdownDialog(string message, string title, string[] options)
+        {
+            Form dropdownForm = new Form()
+            {
+                Width = 400,
+                Height = 200,
+                FormBorderStyle = FormBorderStyle.FixedDialog,
+                Text = title,
+                StartPosition = FormStartPosition.CenterScreen
+            };
+
+            Label messageLabel = new Label() { Left = 20, Top = 20, Text = message, Width = 340, AutoSize = false, Height = 40 };
+            ComboBox optionsBox = new ComboBox() { Left = 20, Top = 60, Width = 340 };
+            optionsBox.DropDownStyle = ComboBoxStyle.DropDownList;
+            optionsBox.Items.AddRange(options);
+            optionsBox.SelectedIndex = 0;
+            Button okButton = new Button() { Text = "OK", Left = 220, Width = 100, Top = 100, DialogResult = DialogResult.OK };
+            Button cancelButton = new Button() { Text = "Cancel", Left = 100, Width = 100, Top = 100, DialogResult = DialogResult.Cancel };
+
+            okButton.Click += (sender, e) => { dropdownForm.Close(); };
+            cancelButton.Click += (sender, e) => { dropdownForm.Close(); };
+
+            dropdownForm.Controls.Add(messageLabel);
+            dropdownForm.Controls.Add(optionsBox);
+            dropdownForm.Controls.Add(okButton);
+            dropdownForm.Controls.Add(cancelButton);
+            dropdownForm.AcceptButton = okButton;
+            dropdownForm.CancelButton = cancelButton;
+
+            DialogResult dialogResult = dropdownForm.ShowDialog();
+            return dialogResult == DialogResult.OK ? optionsBox.SelectedItem?.ToString() : null;
         }
     }
 }
