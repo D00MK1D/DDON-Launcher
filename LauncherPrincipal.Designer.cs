@@ -42,6 +42,7 @@
             buttonRegister = new Button();
             serverComboBox = new ComboBox();
             buttonTranslationPatch = new Button();
+            buttonInstallMod = new Button();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             SuspendLayout();
             // 
@@ -222,6 +223,17 @@
             buttonTranslationPatch.UseVisualStyleBackColor = true;
             buttonTranslationPatch.Click += buttonTranslationPatch_Click;
             // 
+            // buttonInstallMod
+            // 
+            buttonInstallMod.BackgroundImage = Properties.Resources.InstallMod;
+            buttonInstallMod.BackgroundImageLayout = ImageLayout.Zoom;
+            buttonInstallMod.Location = new Point(214, 388);
+            buttonInstallMod.Name = "buttonInstallMod";
+            buttonInstallMod.Size = new Size(28, 28);
+            buttonInstallMod.TabIndex = 9;
+            buttonInstallMod.UseVisualStyleBackColor = true;
+            buttonInstallMod.Click += buttonInstallMod_Click;
+            // 
             // launcherPrincipal
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -230,6 +242,7 @@
             BackgroundImageLayout = ImageLayout.Stretch;
             ClientSize = new Size(874, 427);
             ControlBox = false;
+            Controls.Add(buttonInstallMod);
             Controls.Add(buttonTranslationPatch);
             Controls.Add(serverComboBox);
             Controls.Add(buttonRegister);
@@ -272,5 +285,6 @@
         private Button buttonRegister;
         private ComboBox serverComboBox;
         private Button buttonTranslationPatch;
+        private Button buttonInstallMod;
     }
 }
