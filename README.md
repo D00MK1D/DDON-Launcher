@@ -23,7 +23,7 @@ https://www.steamgriddb.com/logo/109328
 ### Setting up the development environment
 
 1. Clone the repository
-2. Initialize git submodules ```git submodule init --update --recursive ```
+2. Initialize git submodules ``` git submodule update --init --recursive ```
 3. Compile the required submodules
 	- Run `dotnet build --configuration Release` on **./Arrowgene.DragonsDogmaOnline/Arrowgene.Ddon.Cli**
 	- Run `dotnet build --configuration Release` on **./Arrowgene.DragonsDogmaOnline/Arrowgene.Ddon.Client**
