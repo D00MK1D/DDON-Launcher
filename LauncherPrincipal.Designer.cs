@@ -219,7 +219,7 @@
             buttonTranslationPatch.Location = new Point(242, 388);
             buttonTranslationPatch.Name = "buttonTranslationPatch";
             buttonTranslationPatch.Size = new Size(28, 28);
-            buttonTranslationPatch.TabIndex = 8;
+            buttonTranslationPatch.TabIndex = 9;
             buttonTranslationPatch.UseVisualStyleBackColor = true;
             buttonTranslationPatch.Click += buttonTranslationPatch_Click;
             // 
@@ -230,7 +230,7 @@
             buttonInstallMod.Location = new Point(214, 388);
             buttonInstallMod.Name = "buttonInstallMod";
             buttonInstallMod.Size = new Size(28, 28);
-            buttonInstallMod.TabIndex = 9;
+            buttonInstallMod.TabIndex = 8;
             buttonInstallMod.UseVisualStyleBackColor = true;
             buttonInstallMod.Click += buttonInstallMod_Click;
             // 
