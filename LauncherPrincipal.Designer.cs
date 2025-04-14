@@ -41,6 +41,8 @@
             rememberCheckBox = new CheckBox();
             buttonRegister = new Button();
             serverComboBox = new ComboBox();
+            buttonTranslationPatch = new Button();
+            buttonInstallMod = new Button();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             SuspendLayout();
             // 
@@ -210,6 +212,28 @@
             serverComboBox.DropDown += serverComboBox_DropDown;
             serverComboBox.SelectedIndexChanged += serverComboBox_SelectedIndexChanged;
             // 
+            // buttonTranslationPatch
+            // 
+            buttonTranslationPatch.BackgroundImage = Properties.Resources.Translation;
+            buttonTranslationPatch.BackgroundImageLayout = ImageLayout.Zoom;
+            buttonTranslationPatch.Location = new Point(242, 388);
+            buttonTranslationPatch.Name = "buttonTranslationPatch";
+            buttonTranslationPatch.Size = new Size(28, 28);
+            buttonTranslationPatch.TabIndex = 8;
+            buttonTranslationPatch.UseVisualStyleBackColor = true;
+            buttonTranslationPatch.Click += buttonTranslationPatch_Click;
+            // 
+            // buttonInstallMod
+            // 
+            buttonInstallMod.BackgroundImage = Properties.Resources.InstallMod;
+            buttonInstallMod.BackgroundImageLayout = ImageLayout.Zoom;
+            buttonInstallMod.Location = new Point(214, 388);
+            buttonInstallMod.Name = "buttonInstallMod";
+            buttonInstallMod.Size = new Size(28, 28);
+            buttonInstallMod.TabIndex = 9;
+            buttonInstallMod.UseVisualStyleBackColor = true;
+            buttonInstallMod.Click += buttonInstallMod_Click;
+            // 
             // launcherPrincipal
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -218,6 +242,8 @@
             BackgroundImageLayout = ImageLayout.Stretch;
             ClientSize = new Size(874, 427);
             ControlBox = false;
+            Controls.Add(buttonInstallMod);
+            Controls.Add(buttonTranslationPatch);
             Controls.Add(serverComboBox);
             Controls.Add(buttonRegister);
             Controls.Add(rememberCheckBox);
@@ -258,5 +284,7 @@
         private CheckBox rememberCheckBox;
         private Button buttonRegister;
         private ComboBox serverComboBox;
+        private Button buttonTranslationPatch;
+        private Button buttonInstallMod;
     }
 }

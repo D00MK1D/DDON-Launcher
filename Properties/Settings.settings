@@ -11,5 +11,11 @@
     <Setting Name="rememberMe" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
+    <Setting Name="installedTranslationPatchETag" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="translationPatchUrl" Type="System.String" Scope="User">
+      <Value Profile="(Default)">https://raw.githubusercontent.com/Sapphiratelaemara/DDON-translation/refs/heads/main/gmd.csv</Value>
+    </Setting>
   </Settings>
 </SettingsFile>
