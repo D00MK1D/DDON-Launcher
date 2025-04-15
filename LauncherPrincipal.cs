@@ -77,8 +77,8 @@ namespace DDO_Launcher
             }
         }
 
-        [DllImport("user32.dll")]
-        static extern IntPtr Setparent(IntPtr hwc, IntPtr hwp);
+        //[DllImport("user32.dll")]
+        //static extern IntPtr Setparent(IntPtr hwc, IntPtr hwp);
 
 
         private bool dragging = false;
@@ -295,8 +295,8 @@ namespace DDO_Launcher
                                     ServerManager.Servers[ServerManager.SelectedServer].DLPort +
                                     "/win/ LVer=03.04.003.20181115.0 RVer=3040008"),
 
-                    Verb = "runas",
-                    UseShellExecute = true
+                    //Verb = "runas",
+                    //UseShellExecute = true
                 };
                 Process.Start(pStartInfo);
                 this.Close();
