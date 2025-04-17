@@ -29,7 +29,6 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(launcherPrincipal));
-            pictureBox1 = new PictureBox();
             buttonLogin = new Button();
             buttonConfig = new Button();
             buttonClose = new Button();
@@ -43,22 +42,9 @@
             serverComboBox = new ComboBox();
             buttonTranslationPatch = new Button();
             buttonInstallMod = new Button();
-            ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
+            dragPictureBox = new PictureBox();
+            ((System.ComponentModel.ISupportInitialize)dragPictureBox).BeginInit();
             SuspendLayout();
-            // 
-            // pictureBox1
-            // 
-            pictureBox1.BackColor = Color.Transparent;
-            pictureBox1.BackgroundImage = Properties.Resources.Background;
-            pictureBox1.BackgroundImageLayout = ImageLayout.Stretch;
-            pictureBox1.Location = new Point(0, 0);
-            pictureBox1.Name = "pictureBox1";
-            pictureBox1.Size = new Size(874, 427);
-            pictureBox1.TabIndex = 0;
-            pictureBox1.TabStop = false;
-            pictureBox1.MouseDown += pictureBox1_MouseDown;
-            pictureBox1.MouseMove += pictureBox1_MouseMove;
-            pictureBox1.MouseUp += pictureBox1_MouseUp;
             // 
             // buttonLogin
             // 
@@ -75,7 +61,7 @@
             // 
             // buttonConfig
             // 
-            buttonConfig.BackgroundImage = Properties.Resources.emojione__gear;
+            buttonConfig.BackgroundImage = Properties.Resources.BtnConfig;
             buttonConfig.BackgroundImageLayout = ImageLayout.Center;
             buttonConfig.Location = new Point(12, 388);
             buttonConfig.Name = "buttonConfig";
@@ -88,7 +74,7 @@
             // 
             buttonClose.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             buttonClose.BackColor = Color.White;
-            buttonClose.BackgroundImage = Properties.Resources.BtnClose2;
+            buttonClose.BackgroundImage = Properties.Resources.BtnClose;
             buttonClose.BackgroundImageLayout = ImageLayout.Center;
             buttonClose.FlatAppearance.BorderSize = 0;
             buttonClose.FlatAppearance.MouseDownBackColor = Color.DarkRed;
@@ -107,7 +93,7 @@
             // 
             buttonMinimize.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             buttonMinimize.BackColor = Color.White;
-            buttonMinimize.BackgroundImage = Properties.Resources.BtnMinimize2;
+            buttonMinimize.BackgroundImage = Properties.Resources.BtnMinimize;
             buttonMinimize.BackgroundImageLayout = ImageLayout.Center;
             buttonMinimize.FlatAppearance.BorderSize = 0;
             buttonMinimize.FlatAppearance.MouseDownBackColor = Color.Gray;
@@ -214,7 +200,7 @@
             // 
             // buttonTranslationPatch
             // 
-            buttonTranslationPatch.BackgroundImage = Properties.Resources.Translation;
+            buttonTranslationPatch.BackgroundImage = Properties.Resources.BtnTranslation;
             buttonTranslationPatch.BackgroundImageLayout = ImageLayout.Zoom;
             buttonTranslationPatch.Location = new Point(242, 388);
             buttonTranslationPatch.Name = "buttonTranslationPatch";
@@ -225,7 +211,7 @@
             // 
             // buttonInstallMod
             // 
-            buttonInstallMod.BackgroundImage = Properties.Resources.InstallMod;
+            buttonInstallMod.BackgroundImage = Properties.Resources.BtnInstallMod;
             buttonInstallMod.BackgroundImageLayout = ImageLayout.Zoom;
             buttonInstallMod.Location = new Point(214, 388);
             buttonInstallMod.Name = "buttonInstallMod";
@@ -233,6 +219,21 @@
             buttonInstallMod.TabIndex = 8;
             buttonInstallMod.UseVisualStyleBackColor = true;
             buttonInstallMod.Click += buttonInstallMod_Click;
+            // 
+            // dragPictureBox
+            // 
+            dragPictureBox.BackColor = Color.Transparent;
+            dragPictureBox.BackgroundImageLayout = ImageLayout.Stretch;
+            dragPictureBox.ErrorImage = null;
+            dragPictureBox.InitialImage = null;
+            dragPictureBox.Location = new Point(0, 0);
+            dragPictureBox.Name = "dragPictureBox";
+            dragPictureBox.Size = new Size(874, 427);
+            dragPictureBox.TabIndex = 10;
+            dragPictureBox.TabStop = false;
+            dragPictureBox.MouseDown += dragPictureBox_MouseDown;
+            dragPictureBox.MouseMove += dragPictureBox_MouseMove;
+            dragPictureBox.MouseUp += dragPictureBox_MouseUp;
             // 
             // launcherPrincipal
             // 
@@ -255,7 +256,7 @@
             Controls.Add(buttonClose);
             Controls.Add(buttonConfig);
             Controls.Add(buttonLogin);
-            Controls.Add(pictureBox1);
+            Controls.Add(dragPictureBox);
             DoubleBuffered = true;
             FormBorderStyle = FormBorderStyle.None;
             Icon = (Icon)resources.GetObject("$this.Icon");
@@ -265,14 +266,13 @@
             Name = "launcherPrincipal";
             Text = "Dragon's Dogma Online Launcher";
             Load += Form1_Load;
-            ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
+            ((System.ComponentModel.ISupportInitialize)dragPictureBox).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
 
         #endregion
 
-        private PictureBox pictureBox1;
         private Button buttonLogin;
         private Button buttonConfig;
         private Button buttonClose;
@@ -286,5 +286,6 @@
         private ComboBox serverComboBox;
         private Button buttonTranslationPatch;
         private Button buttonInstallMod;
+        private PictureBox dragPictureBox;
     }
 }

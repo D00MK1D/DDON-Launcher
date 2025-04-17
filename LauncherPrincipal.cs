@@ -17,6 +17,8 @@ namespace DDO_Launcher
     public partial class launcherPrincipal : Form
     {
         private readonly ServerManager ServerManager;
+        private bool dragging = false;
+        private Point startPoint;
 
         public launcherPrincipal(ServerManager serverManager)
         {
@@ -26,6 +28,7 @@ namespace DDO_Launcher
             ServerManager = serverManager;
 
             UpdateServerList();
+            CustomBackground();
         }
 
         private void OpenSettings()
@@ -77,15 +80,7 @@ namespace DDO_Launcher
             }
         }
 
-        //[DllImport("user32.dll")]
-        //static extern IntPtr Setparent(IntPtr hwc, IntPtr hwp);
-
-
-        private bool dragging = false;
-        private Point startPoint;
-
-
-        private void pictureBox1_MouseDown(object sender, MouseEventArgs e)
+        private void dragPictureBox_MouseDown(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left)
             {
@@ -94,7 +89,7 @@ namespace DDO_Launcher
             }
         }
 
-        private void pictureBox1_MouseMove(object sender, MouseEventArgs e)
+        private void dragPictureBox_MouseMove(object sender, MouseEventArgs e)
         {
             if (dragging)
             {
@@ -104,11 +99,24 @@ namespace DDO_Launcher
             }
         }
 
-        private void pictureBox1_MouseUp(object sender, MouseEventArgs e)
+        private void dragPictureBox_MouseUp(object sender, MouseEventArgs e)
         {
             dragging = false;
         }
 
+        private async void CustomBackground()
+        {
+            try
+            {
+                //Will search for "/launcher/bg.png" to apply on launcher
+                string bg = "http://" + ServerManager.Servers[ServerManager.SelectedServer].DLIP + ":" + ServerManager.Servers[ServerManager.SelectedServer].DLPort + "/launcher/bg.png";
+                this.BackgroundImage = System.Drawing.Image.FromStream(new System.IO.MemoryStream(new System.Net.WebClient().DownloadData(bg)));
+            }
+            catch
+            {
+                this.BackgroundImage = Properties.Resources.Background;
+            }
+        }
 
         public class ServerResponse
         {
@@ -116,6 +124,7 @@ namespace DDO_Launcher
             public string Message { get; set; }
             public string Token { get; set; }
         }
+
         private void buttonLogin_Click(object sender, EventArgs e)
         {
             Operation("login");
@@ -279,7 +288,7 @@ namespace DDO_Launcher
 
             try
             {
-                // Try to show the admin prompt to launch DDOn
+                /* Try to show the admin prompt to launch DDOn
                 ProcessStartInfo pStartInfo = new ProcessStartInfo
                 {
                     FileName = "ddo.exe",
@@ -298,7 +307,21 @@ namespace DDO_Launcher
                     //Verb = "runas",
                     //UseShellExecute = true
                 };
-                Process.Start(pStartInfo);
+                Process.Start(pStartInfo);*/
+
+                Process.Start("ddo.exe",
+                              " addr=" +
+                              ServerManager.Servers[ServerManager.SelectedServer].LobbyIP +
+                              " port=" +
+                              ServerManager.Servers[ServerManager.SelectedServer].LPort +
+                              " token=" +
+                              token +
+                              " DL=http://" +
+                              ServerManager.Servers[ServerManager.SelectedServer].DLIP +
+                              ":" +
+                              ServerManager.Servers[ServerManager.SelectedServer].DLPort +
+                              "/win/ LVer=03.04.003.20181115.0 RVer=3040008");
+
                 this.Close();
             }
             catch (Win32Exception ex)
@@ -320,6 +343,7 @@ namespace DDO_Launcher
         private void serverComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             ServerManager.SelectServer(serverComboBox.Text);
+            CustomBackground();
         }
 
         private void serverComboBox_DropDown(object sender, EventArgs e)
@@ -549,6 +573,7 @@ namespace DDO_Launcher
                 MessageBox.Show("Error: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
         public static DialogResult ShowInputDialog(string message, string title, out string input, string value = "")
         {
             Form inputForm = new Form()
@@ -580,6 +605,7 @@ namespace DDO_Launcher
             input = inputBox.Text;
             return dialogResult;
         }
+        
         public static string ShowDropdownDialog(string message, string title, string[] options)
         {
             Form dropdownForm = new Form()
@@ -619,7 +645,6 @@ public class ProgressWindow : Form
 {
     [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
     public Label MessageLabel { get; private set; }
-
 
     [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
     public ProgressBar ProgressBar { get; private set; }
