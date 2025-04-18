@@ -102,18 +102,25 @@ namespace DDO_Launcher
                     .Select(server => server.Key)
                     .SingleOrDefault();
 
-                if (SelectedServer == null && data.Sections.ContainsSection(SELECTED_SERVER_SECTION))
+                if (SelectedServer == null)
                 {
-                    // Backwards compatibility with the old launcher
-                    Server server = new Server
+                    try
                     {
-                        LobbyIP = data[SELECTED_SERVER_SECTION][LOBBY_IP_KEY],
-                        LPort = ushort.Parse(data[SELECTED_SERVER_SECTION][LOBBY_PORT_KEY]),
-                        DLIP = data[SELECTED_SERVER_SECTION][DOWNLOAD_IP_KEY],
-                        DLPort = ushort.Parse(data[SELECTED_SERVER_SECTION][DOWNLOAD_PORT_KEY])
-                    };
-                    Servers.Add(BACKWARDS_COMPAT_DEFAULT_SERVER_NAME, server);
-                    SelectedServer = BACKWARDS_COMPAT_DEFAULT_SERVER_NAME;
+                        // Backwards compatibility with the old launcher
+                        Server server = new Server
+                        {
+                            LobbyIP = data[SELECTED_SERVER_SECTION][LOBBY_IP_KEY],
+                            LPort = ushort.Parse(data[SELECTED_SERVER_SECTION][LOBBY_PORT_KEY]),
+                            DLIP = data[SELECTED_SERVER_SECTION][DOWNLOAD_IP_KEY],
+                            DLPort = ushort.Parse(data[SELECTED_SERVER_SECTION][DOWNLOAD_PORT_KEY])
+                        };
+                        Servers.Add(BACKWARDS_COMPAT_DEFAULT_SERVER_NAME, server);
+                        SelectedServer = BACKWARDS_COMPAT_DEFAULT_SERVER_NAME;
+                    }
+                    catch (ArgumentNullException)
+                    {
+                        // Ignore
+                    }
                 }
             
         }

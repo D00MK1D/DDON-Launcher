@@ -73,9 +73,9 @@ namespace DDO_Launcher.Properties {
         /// <summary>
         ///   Consulta um recurso localizado do tipo System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap BtnClose2 {
+        internal static System.Drawing.Bitmap BtnClose {
             get {
-                object obj = ResourceManager.GetObject("BtnClose2", resourceCulture);
+                object obj = ResourceManager.GetObject("BtnClose", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -83,9 +83,9 @@ namespace DDO_Launcher.Properties {
         /// <summary>
         ///   Consulta um recurso localizado do tipo System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap BtnMinimize2 {
+        internal static System.Drawing.Bitmap BtnConfig {
             get {
-                object obj = ResourceManager.GetObject("BtnMinimize2", resourceCulture);
+                object obj = ResourceManager.GetObject("BtnConfig", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -93,9 +93,9 @@ namespace DDO_Launcher.Properties {
         /// <summary>
         ///   Consulta um recurso localizado do tipo System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap emojione__gear {
+        internal static System.Drawing.Bitmap BtnInstallMod {
             get {
-                object obj = ResourceManager.GetObject("emojione--gear", resourceCulture);
+                object obj = ResourceManager.GetObject("BtnInstallMod", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -103,9 +103,19 @@ namespace DDO_Launcher.Properties {
         /// <summary>
         ///   Consulta um recurso localizado do tipo System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap image1_4 {
+        internal static System.Drawing.Bitmap BtnMinimize {
             get {
-                object obj = ResourceManager.GetObject("image1-4", resourceCulture);
+                object obj = ResourceManager.GetObject("BtnMinimize", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta um recurso localizado do tipo System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap BtnTranslation {
+            get {
+                object obj = ResourceManager.GetObject("BtnTranslation", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
