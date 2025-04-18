@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(launcherPrincipal));
-            pictureBox1 = new PictureBox();
+            //pictureBox1 = new PictureBox();
             buttonLogin = new Button();
             buttonConfig = new Button();
             buttonClose = new Button();
@@ -39,32 +39,29 @@
             rememberCheckBox = new CheckBox();
             buttonRegister = new Button();
             serverComboBox = new ComboBox();
-<<<<<<< Updated upstream
-            ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
-=======
             buttonTranslationPatch = new Button();
             buttonInstallMod = new Button();
             dragPictureBox = new PictureBox();
             labelPassword = new Label();
             labelAccountID = new Label();
             ((System.ComponentModel.ISupportInitialize)dragPictureBox).BeginInit();
->>>>>>> Stashed changes
+
             SuspendLayout();
             this.AutoScaleMode = AutoScaleMode.None;
             // 
             // pictureBox1
             // 
-            pictureBox1.BackColor = Color.Transparent;
-            pictureBox1.BackgroundImage = Properties.Resources.Background;
-            pictureBox1.BackgroundImageLayout = ImageLayout.Stretch;
-            pictureBox1.Location = new Point(0, 0);
-            pictureBox1.Name = "pictureBox1";
-            pictureBox1.Size = new Size(874, 427);
-            pictureBox1.TabIndex = 0;
-            pictureBox1.TabStop = false;
-            pictureBox1.MouseDown += pictureBox1_MouseDown;
-            pictureBox1.MouseMove += pictureBox1_MouseMove;
-            pictureBox1.MouseUp += pictureBox1_MouseUp;
+            dragPictureBox.BackColor = Color.Transparent;
+            dragPictureBox.BackgroundImage = Properties.Resources.Background;
+            dragPictureBox.BackgroundImageLayout = ImageLayout.Stretch;
+            dragPictureBox.Location = new Point(0, 0);
+            dragPictureBox.Name = "pictureBox1";
+            dragPictureBox.Size = new Size(874, 427);
+            dragPictureBox.TabIndex = 0;
+            dragPictureBox.TabStop = false;
+            dragPictureBox.MouseDown += pictureBox1_MouseDown;
+            dragPictureBox.MouseMove += pictureBox1_MouseMove;
+            dragPictureBox.MouseUp += pictureBox1_MouseUp;
             // 
             // buttonLogin
             // 
@@ -81,12 +78,9 @@
             // 
             // buttonConfig
             // 
-<<<<<<< Updated upstream
-            buttonConfig.BackgroundImage = Properties.Resources.emojione__gear;
-=======
+            buttonConfig.BackgroundImage = Properties.Resources.BtnConfig;
             buttonConfig.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             buttonConfig.BackgroundImage = Properties.Resources.BtnConfig;
->>>>>>> Stashed changes
             buttonConfig.BackgroundImageLayout = ImageLayout.Center;
             buttonConfig.Location = new Point(12, 388);
             buttonConfig.Name = "buttonConfig";
@@ -99,7 +93,7 @@
             // 
             buttonClose.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             buttonClose.BackColor = Color.White;
-            buttonClose.BackgroundImage = Properties.Resources.BtnClose2;
+            buttonClose.BackgroundImage = Properties.Resources.BtnClose;
             buttonClose.BackgroundImageLayout = ImageLayout.Center;
             buttonClose.FlatAppearance.BorderSize = 0;
             buttonClose.FlatAppearance.MouseDownBackColor = Color.DarkRed;
@@ -118,7 +112,7 @@
             // 
             buttonMinimize.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             buttonMinimize.BackColor = Color.White;
-            buttonMinimize.BackgroundImage = Properties.Resources.BtnMinimize2;
+            buttonMinimize.BackgroundImage = Properties.Resources.BtnMinimize;
             buttonMinimize.BackgroundImageLayout = ImageLayout.Center;
             buttonMinimize.FlatAppearance.BorderSize = 0;
             buttonMinimize.FlatAppearance.MouseDownBackColor = Color.Gray;
@@ -133,31 +127,6 @@
             buttonMinimize.UseVisualStyleBackColor = false;
             buttonMinimize.Click += buttonMinimize_Click;
             // 
-<<<<<<< Updated upstream
-            // labelAccountID
-            // 
-            labelAccountID.AutoSize = true;
-            labelAccountID.BackColor = Color.Transparent;
-            labelAccountID.Font = new Font("Calibri", 15F, FontStyle.Bold, GraphicsUnit.Pixel);
-            labelAccountID.Location = new Point(50, 168);
-            labelAccountID.Name = "labelAccountID";
-            labelAccountID.Size = new Size(62, 18);
-            labelAccountID.TabIndex = 0;
-            labelAccountID.Text = "Account:";
-            // 
-            // labelPassword
-            // 
-            labelPassword.AutoSize = true;
-            labelPassword.BackColor = Color.Transparent;
-            labelPassword.Font = new Font("Calibri", 15F, FontStyle.Bold, GraphicsUnit.Pixel);
-            labelPassword.Location = new Point(50, 222);
-            labelPassword.Name = "labelPassword";
-            labelPassword.Size = new Size(71, 18);
-            labelPassword.TabIndex = 0;
-            labelPassword.Text = "Password:";
-            // 
-=======
->>>>>>> Stashed changes
             // textAccount
             // 
             textAccount.BackColor = SystemColors.InactiveBorder;
@@ -166,11 +135,7 @@
             textAccount.Font = new Font("Microsoft Sans Serif", 11F, FontStyle.Bold, GraphicsUnit.Pixel);
             textAccount.ForeColor = SystemColors.ActiveCaptionText;
             textAccount.ImeMode = ImeMode.NoControl;
-<<<<<<< Updated upstream
             textAccount.Location = new Point(53, 187);
-=======
-            textAccount.Location = new Point(53, 154);
->>>>>>> Stashed changes
             textAccount.MaxLength = 200;
             textAccount.Name = "textAccount";
             textAccount.Size = new Size(186, 20);
@@ -184,11 +149,7 @@
             textPassword.Font = new Font("Microsoft Sans Serif", 11F, FontStyle.Bold, GraphicsUnit.Pixel);
             textPassword.ForeColor = SystemColors.ActiveCaptionText;
             textPassword.ImeMode = ImeMode.NoControl;
-<<<<<<< Updated upstream
-            textPassword.Location = new Point(53, 242);
-=======
             textPassword.Location = new Point(53, 228);
->>>>>>> Stashed changes
             textPassword.MaxLength = 200;
             textPassword.Name = "textPassword";
             textPassword.PasswordChar = '•';
@@ -234,8 +195,6 @@
             serverComboBox.DropDown += serverComboBox_DropDown;
             serverComboBox.SelectedIndexChanged += serverComboBox_SelectedIndexChanged;
             // 
-<<<<<<< Updated upstream
-=======
             // buttonTranslationPatch
             // 
             buttonTranslationPatch.AutoSizeMode = AutoSizeMode.GrowAndShrink;
@@ -299,7 +258,6 @@
             labelAccountID.Text = "Account:";
             labelAccountID.Visible = false;
             // 
->>>>>>> Stashed changes
             // launcherPrincipal
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -320,7 +278,7 @@
             Controls.Add(buttonClose);
             Controls.Add(buttonConfig);
             Controls.Add(buttonLogin);
-            Controls.Add(pictureBox1);
+            Controls.Add(dragPictureBox);
             DoubleBuffered = true;
             FormBorderStyle = FormBorderStyle.None;
             Icon = (Icon)resources.GetObject("$this.Icon");
@@ -330,14 +288,14 @@
             Name = "launcherPrincipal";
             Text = "Dragon's Dogma Online Launcher";
             Load += Form1_Load;
-            ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
+            ((System.ComponentModel.ISupportInitialize)dragPictureBox).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
 
         #endregion
 
-        private PictureBox pictureBox1;
+        //private PictureBox pictureBox1;
         private Button buttonLogin;
         private Button buttonConfig;
         private Button buttonClose;
@@ -347,13 +305,10 @@
         private CheckBox rememberCheckBox;
         private Button buttonRegister;
         private ComboBox serverComboBox;
-<<<<<<< Updated upstream
-=======
         private Button buttonTranslationPatch;
         private Button buttonInstallMod;
         private PictureBox dragPictureBox;
         private Label labelPassword;
         private Label labelAccountID;
->>>>>>> Stashed changes
     }
 }

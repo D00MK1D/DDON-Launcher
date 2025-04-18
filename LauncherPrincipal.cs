@@ -21,10 +21,7 @@ namespace DDO_Launcher
             ServerManager = serverManager;
 
             UpdateServerList();
-<<<<<<< Updated upstream
-=======
             //CustomBackground();
->>>>>>> Stashed changes
         }
 
         private void OpenSettings()
@@ -323,10 +320,7 @@ namespace DDO_Launcher
         private void serverComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             ServerManager.SelectServer(serverComboBox.Text);
-<<<<<<< Updated upstream
-=======
             //CustomBackground();
->>>>>>> Stashed changes
         }
 
         private void serverComboBox_DropDown(object sender, EventArgs e)
