@@ -33,6 +33,8 @@
             buttonConfig = new Button();
             buttonClose = new Button();
             buttonMinimize = new Button();
+            labelAccountID = new Label();
+            labelPassword = new Label();
             textAccount = new TextBox();
             textPassword = new TextBox();
             rememberCheckBox = new CheckBox();
@@ -41,8 +43,6 @@
             buttonTranslationPatch = new Button();
             buttonInstallMod = new Button();
             dragPictureBox = new PictureBox();
-            labelPassword = new Label();
-            labelAccountID = new Label();
             ((System.ComponentModel.ISupportInitialize)dragPictureBox).BeginInit();
             SuspendLayout();
             this.AutoScaleMode = AutoScaleMode.None;
@@ -52,7 +52,7 @@
             buttonLogin.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             buttonLogin.BackColor = Color.Transparent;
             buttonLogin.Font = new Font("Calibri", 16F, FontStyle.Bold, GraphicsUnit.Pixel);
-            buttonLogin.Location = new Point(53, 314);
+            buttonLogin.Location = new Point(50, 314);
             buttonLogin.Name = "buttonLogin";
             buttonLogin.Size = new Size(81, 29);
             buttonLogin.TabIndex = 4;
@@ -62,10 +62,9 @@
             // 
             // buttonConfig
             // 
-            buttonConfig.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             buttonConfig.BackgroundImage = Properties.Resources.BtnConfig;
             buttonConfig.BackgroundImageLayout = ImageLayout.Center;
-            buttonConfig.Location = new Point(12, 388);
+            buttonConfig.Location = new Point(19, 388);
             buttonConfig.Name = "buttonConfig";
             buttonConfig.Size = new Size(28, 28);
             buttonConfig.TabIndex = 6;
@@ -110,6 +109,30 @@
             buttonMinimize.UseVisualStyleBackColor = false;
             buttonMinimize.Click += buttonMinimize_Click;
             // 
+            // labelAccountID
+            // 
+            labelAccountID.AutoSize = true;
+            labelAccountID.BackColor = Color.Transparent;
+            labelAccountID.Font = new Font("Calibri", 15F, FontStyle.Bold, GraphicsUnit.Pixel);
+            labelAccountID.Location = new Point(50, 156);
+            labelAccountID.Name = "labelAccountID";
+            labelAccountID.Size = new Size(62, 18);
+            labelAccountID.TabIndex = 0;
+            labelAccountID.Text = "Account:";
+            labelAccountID.Visible = false;
+            // 
+            // labelPassword
+            // 
+            labelPassword.AutoSize = true;
+            labelPassword.BackColor = Color.Transparent;
+            labelPassword.Font = new Font("Calibri", 15F, FontStyle.Bold, GraphicsUnit.Pixel);
+            labelPassword.Location = new Point(50, 213);
+            labelPassword.Name = "labelPassword";
+            labelPassword.Size = new Size(71, 18);
+            labelPassword.TabIndex = 0;
+            labelPassword.Text = "Password:";
+            labelPassword.Visible = false;
+            // 
             // textAccount
             // 
             textAccount.BackColor = SystemColors.InactiveBorder;
@@ -132,7 +155,7 @@
             textPassword.Font = new Font("Microsoft Sans Serif", 11F, FontStyle.Bold, GraphicsUnit.Pixel);
             textPassword.ForeColor = SystemColors.ActiveCaptionText;
             textPassword.ImeMode = ImeMode.NoControl;
-            textPassword.Location = new Point(53, 228);
+            textPassword.Location = new Point(53, 229);
             textPassword.MaxLength = 200;
             textPassword.Name = "textPassword";
             textPassword.PasswordChar = '•';
@@ -170,16 +193,15 @@
             serverComboBox.DropDownStyle = ComboBoxStyle.DropDownList;
             serverComboBox.Font = new Font("Calibri", 15F, FontStyle.Bold, GraphicsUnit.Pixel);
             serverComboBox.FormattingEnabled = true;
-            serverComboBox.Location = new Point(46, 389);
+            serverComboBox.Location = new Point(53, 389);
             serverComboBox.Name = "serverComboBox";
-            serverComboBox.Size = new Size(121, 26);
+            serverComboBox.Size = new Size(142, 26);
             serverComboBox.TabIndex = 7;
             serverComboBox.DropDown += serverComboBox_DropDown;
             serverComboBox.SelectedIndexChanged += serverComboBox_SelectedIndexChanged;
             // 
             // buttonTranslationPatch
             // 
-            buttonTranslationPatch.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             buttonTranslationPatch.BackgroundImage = Properties.Resources.BtnTranslation;
             buttonTranslationPatch.BackgroundImageLayout = ImageLayout.Zoom;
             buttonTranslationPatch.Location = new Point(242, 388);
@@ -187,10 +209,10 @@
             buttonTranslationPatch.Size = new Size(28, 28);
             buttonTranslationPatch.TabIndex = 9;
             buttonTranslationPatch.UseVisualStyleBackColor = true;
+            buttonTranslationPatch.Click += buttonTranslationPatch_Click;
             // 
             // buttonInstallMod
             // 
-            buttonInstallMod.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             buttonInstallMod.BackgroundImage = Properties.Resources.BtnInstallMod;
             buttonInstallMod.BackgroundImageLayout = ImageLayout.Zoom;
             buttonInstallMod.Location = new Point(211, 388);
@@ -198,6 +220,7 @@
             buttonInstallMod.Size = new Size(28, 28);
             buttonInstallMod.TabIndex = 8;
             buttonInstallMod.UseVisualStyleBackColor = true;
+            buttonInstallMod.Click += buttonInstallMod_Click;
             // 
             // dragPictureBox
             // 
@@ -214,39 +237,16 @@
             dragPictureBox.MouseMove += dragPictureBox_MouseMove;
             dragPictureBox.MouseUp += dragPictureBox_MouseUp;
             // 
-            // labelPassword
-            // 
-            labelPassword.AutoSize = true;
-            labelPassword.BackColor = Color.Transparent;
-            labelPassword.Font = new Font("Calibri", 15F, FontStyle.Bold, GraphicsUnit.Pixel);
-            labelPassword.Location = new Point(50, 213);
-            labelPassword.Name = "labelPassword";
-            labelPassword.Size = new Size(71, 18);
-            labelPassword.TabIndex = 0;
-            labelPassword.Text = "Password:";
-            labelPassword.Visible = false;
-            // 
-            // labelAccountID
-            // 
-            labelAccountID.AutoSize = true;
-            labelAccountID.BackColor = Color.Transparent;
-            labelAccountID.Font = new Font("Calibri", 15F, FontStyle.Bold, GraphicsUnit.Pixel);
-            labelAccountID.Location = new Point(50, 156);
-            labelAccountID.Name = "labelAccountID";
-            labelAccountID.Size = new Size(62, 18);
-            labelAccountID.TabIndex = 0;
-            labelAccountID.Text = "Account:";
-            labelAccountID.Visible = false;
-            // 
             // launcherPrincipal
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            AutoSizeMode = AutoSizeMode.GrowAndShrink;
             BackgroundImage = (Image)resources.GetObject("$this.BackgroundImage");
             BackgroundImageLayout = ImageLayout.Stretch;
             ClientSize = new Size(874, 427);
             ControlBox = false;
+            Controls.Add(buttonInstallMod);
+            Controls.Add(buttonTranslationPatch);
             Controls.Add(serverComboBox);
             Controls.Add(buttonRegister);
             Controls.Add(rememberCheckBox);
@@ -275,11 +275,12 @@
 
         #endregion
 
-        //private PictureBox pictureBox1;
         private Button buttonLogin;
         private Button buttonConfig;
         private Button buttonClose;
         private Button buttonMinimize;
+        private Label labelAccountID;
+        private Label labelPassword;
         private TextBox textAccount;
         private TextBox textPassword;
         private CheckBox rememberCheckBox;
@@ -288,7 +289,5 @@
         private Button buttonTranslationPatch;
         private Button buttonInstallMod;
         private PictureBox dragPictureBox;
-        private Label labelPassword;
-        private Label labelAccountID;
     }
 }
