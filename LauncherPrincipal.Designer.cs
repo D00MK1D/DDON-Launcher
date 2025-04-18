@@ -29,7 +29,6 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(launcherPrincipal));
-            //pictureBox1 = new PictureBox();
             buttonLogin = new Button();
             buttonConfig = new Button();
             buttonClose = new Button();
@@ -45,23 +44,8 @@
             labelPassword = new Label();
             labelAccountID = new Label();
             ((System.ComponentModel.ISupportInitialize)dragPictureBox).BeginInit();
-
             SuspendLayout();
             this.AutoScaleMode = AutoScaleMode.None;
-            // 
-            // pictureBox1
-            // 
-            dragPictureBox.BackColor = Color.Transparent;
-            dragPictureBox.BackgroundImage = Properties.Resources.Background;
-            dragPictureBox.BackgroundImageLayout = ImageLayout.Stretch;
-            dragPictureBox.Location = new Point(0, 0);
-            dragPictureBox.Name = "pictureBox1";
-            dragPictureBox.Size = new Size(874, 427);
-            dragPictureBox.TabIndex = 0;
-            dragPictureBox.TabStop = false;
-            dragPictureBox.MouseDown += pictureBox1_MouseDown;
-            dragPictureBox.MouseMove += pictureBox1_MouseMove;
-            dragPictureBox.MouseUp += pictureBox1_MouseUp;
             // 
             // buttonLogin
             // 
@@ -78,7 +62,6 @@
             // 
             // buttonConfig
             // 
-            buttonConfig.BackgroundImage = Properties.Resources.BtnConfig;
             buttonConfig.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             buttonConfig.BackgroundImage = Properties.Resources.BtnConfig;
             buttonConfig.BackgroundImageLayout = ImageLayout.Center;
@@ -135,7 +118,7 @@
             textAccount.Font = new Font("Microsoft Sans Serif", 11F, FontStyle.Bold, GraphicsUnit.Pixel);
             textAccount.ForeColor = SystemColors.ActiveCaptionText;
             textAccount.ImeMode = ImeMode.NoControl;
-            textAccount.Location = new Point(53, 187);
+            textAccount.Location = new Point(53, 154);
             textAccount.MaxLength = 200;
             textAccount.Name = "textAccount";
             textAccount.Size = new Size(186, 20);
@@ -181,7 +164,6 @@
             buttonRegister.Text = "REGISTER";
             buttonRegister.UseVisualStyleBackColor = false;
             buttonRegister.Click += buttonRegister_Click;
-
             // 
             // serverComboBox
             // 
@@ -205,7 +187,6 @@
             buttonTranslationPatch.Size = new Size(28, 28);
             buttonTranslationPatch.TabIndex = 9;
             buttonTranslationPatch.UseVisualStyleBackColor = true;
-            buttonTranslationPatch.Click += buttonTranslationPatch_Click;
             // 
             // buttonInstallMod
             // 
@@ -217,7 +198,6 @@
             buttonInstallMod.Size = new Size(28, 28);
             buttonInstallMod.TabIndex = 8;
             buttonInstallMod.UseVisualStyleBackColor = true;
-            buttonInstallMod.Click += buttonInstallMod_Click;
             // 
             // dragPictureBox
             // 

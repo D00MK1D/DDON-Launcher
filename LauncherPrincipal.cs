@@ -80,7 +80,7 @@ namespace DDO_Launcher
         private Point startPoint;
 
 
-        private void pictureBox1_MouseDown(object sender, MouseEventArgs e)
+        private void dragPictureBox_MouseDown(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left)
             {
@@ -89,7 +89,7 @@ namespace DDO_Launcher
             }
         }
 
-        private void pictureBox1_MouseMove(object sender, MouseEventArgs e)
+        private void dragPictureBox_MouseMove(object sender, MouseEventArgs e)
         {
             if (dragging)
             {
@@ -99,7 +99,7 @@ namespace DDO_Launcher
             }
         }
 
-        private void pictureBox1_MouseUp(object sender, MouseEventArgs e)
+        private void dragPictureBox_MouseUp(object sender, MouseEventArgs e)
         {
             dragging = false;
         }
