@@ -45,6 +45,7 @@
             dragPictureBox = new PictureBox();
             ((System.ComponentModel.ISupportInitialize)dragPictureBox).BeginInit();
             SuspendLayout();
+            this.AutoScaleMode = AutoScaleMode.None;
             // 
             // buttonLogin
             // 
