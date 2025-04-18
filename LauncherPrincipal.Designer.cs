@@ -45,7 +45,6 @@
             dragPictureBox = new PictureBox();
             ((System.ComponentModel.ISupportInitialize)dragPictureBox).BeginInit();
             SuspendLayout();
-            this.AutoScaleMode = AutoScaleMode.None;
             // 
             // buttonLogin
             // 
@@ -126,7 +125,7 @@
             labelPassword.AutoSize = true;
             labelPassword.BackColor = Color.Transparent;
             labelPassword.Font = new Font("Calibri", 15F, FontStyle.Bold, GraphicsUnit.Pixel);
-            labelPassword.Location = new Point(50, 213);
+            labelPassword.Location = new Point(50, 228);
             labelPassword.Name = "labelPassword";
             labelPassword.Size = new Size(71, 18);
             labelPassword.TabIndex = 0;
@@ -155,7 +154,7 @@
             textPassword.Font = new Font("Microsoft Sans Serif", 11F, FontStyle.Bold, GraphicsUnit.Pixel);
             textPassword.ForeColor = SystemColors.ActiveCaptionText;
             textPassword.ImeMode = ImeMode.NoControl;
-            textPassword.Location = new Point(53, 229);
+            textPassword.Location = new Point(53, 228);
             textPassword.MaxLength = 200;
             textPassword.Name = "textPassword";
             textPassword.PasswordChar = '•';
