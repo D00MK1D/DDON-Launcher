@@ -51,7 +51,7 @@
             buttonLogin.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             buttonLogin.BackColor = Color.Transparent;
             buttonLogin.Font = new Font("Calibri", 16F, FontStyle.Bold, GraphicsUnit.Pixel);
-            buttonLogin.Location = new Point(53, 314);
+            buttonLogin.Location = new Point(50, 314);
             buttonLogin.Name = "buttonLogin";
             buttonLogin.Size = new Size(81, 29);
             buttonLogin.TabIndex = 4;
@@ -63,7 +63,7 @@
             // 
             buttonConfig.BackgroundImage = Properties.Resources.BtnConfig;
             buttonConfig.BackgroundImageLayout = ImageLayout.Center;
-            buttonConfig.Location = new Point(12, 388);
+            buttonConfig.Location = new Point(19, 388);
             buttonConfig.Name = "buttonConfig";
             buttonConfig.Size = new Size(28, 28);
             buttonConfig.TabIndex = 6;
@@ -113,7 +113,7 @@
             labelAccountID.AutoSize = true;
             labelAccountID.BackColor = Color.Transparent;
             labelAccountID.Font = new Font("Calibri", 15F, FontStyle.Bold, GraphicsUnit.Pixel);
-            labelAccountID.Location = new Point(50, 168);
+            labelAccountID.Location = new Point(50, 156);
             labelAccountID.Name = "labelAccountID";
             labelAccountID.Size = new Size(62, 18);
             labelAccountID.TabIndex = 0;
@@ -124,7 +124,7 @@
             labelPassword.AutoSize = true;
             labelPassword.BackColor = Color.Transparent;
             labelPassword.Font = new Font("Calibri", 15F, FontStyle.Bold, GraphicsUnit.Pixel);
-            labelPassword.Location = new Point(50, 222);
+            labelPassword.Location = new Point(50, 213);
             labelPassword.Name = "labelPassword";
             labelPassword.Size = new Size(71, 18);
             labelPassword.TabIndex = 0;
@@ -138,7 +138,7 @@
             textAccount.Font = new Font("Microsoft Sans Serif", 11F, FontStyle.Bold, GraphicsUnit.Pixel);
             textAccount.ForeColor = SystemColors.ActiveCaptionText;
             textAccount.ImeMode = ImeMode.NoControl;
-            textAccount.Location = new Point(53, 187);
+            textAccount.Location = new Point(53, 175);
             textAccount.MaxLength = 200;
             textAccount.Name = "textAccount";
             textAccount.Size = new Size(186, 20);
@@ -152,7 +152,7 @@
             textPassword.Font = new Font("Microsoft Sans Serif", 11F, FontStyle.Bold, GraphicsUnit.Pixel);
             textPassword.ForeColor = SystemColors.ActiveCaptionText;
             textPassword.ImeMode = ImeMode.NoControl;
-            textPassword.Location = new Point(53, 242);
+            textPassword.Location = new Point(53, 233);
             textPassword.MaxLength = 200;
             textPassword.Name = "textPassword";
             textPassword.PasswordChar = '•';
@@ -191,9 +191,9 @@
             serverComboBox.DropDownStyle = ComboBoxStyle.DropDownList;
             serverComboBox.Font = new Font("Calibri", 15F, FontStyle.Bold, GraphicsUnit.Pixel);
             serverComboBox.FormattingEnabled = true;
-            serverComboBox.Location = new Point(46, 389);
+            serverComboBox.Location = new Point(53, 389);
             serverComboBox.Name = "serverComboBox";
-            serverComboBox.Size = new Size(121, 26);
+            serverComboBox.Size = new Size(142, 26);
             serverComboBox.TabIndex = 7;
             serverComboBox.DropDown += serverComboBox_DropDown;
             serverComboBox.SelectedIndexChanged += serverComboBox_SelectedIndexChanged;
@@ -213,7 +213,7 @@
             // 
             buttonInstallMod.BackgroundImage = Properties.Resources.BtnInstallMod;
             buttonInstallMod.BackgroundImageLayout = ImageLayout.Zoom;
-            buttonInstallMod.Location = new Point(214, 388);
+            buttonInstallMod.Location = new Point(211, 388);
             buttonInstallMod.Name = "buttonInstallMod";
             buttonInstallMod.Size = new Size(28, 28);
             buttonInstallMod.TabIndex = 8;
