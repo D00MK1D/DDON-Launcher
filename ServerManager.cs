@@ -60,8 +60,19 @@ namespace DDO_Launcher
         {
             Server server = Servers[oldName];
             Servers.Remove(oldName);
-            Servers.Add(newName, server);
-            
+            try
+            {
+                Servers.Add(newName, server);
+            }
+            catch 
+            {
+                // Do nothing to avoid exception
+
+                // Typing something in nameTextBox results in a "search" of registered servers if the name is the same
+                // But allow users to register servers with the same name that will break initialization of launcher...
+
+            }
+
             if (oldName == SelectedServer)
             {
                 SelectServer(newName);
