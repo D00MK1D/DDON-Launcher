@@ -45,12 +45,13 @@
             dragPictureBox = new PictureBox();
             ((System.ComponentModel.ISupportInitialize)dragPictureBox).BeginInit();
             SuspendLayout();
-            this.AutoScaleMode = AutoScaleMode.None;
             // 
             // buttonLogin
             // 
             buttonLogin.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             buttonLogin.BackColor = Color.Transparent;
+            buttonLogin.FlatAppearance.MouseDownBackColor = Color.Transparent;
+            buttonLogin.FlatAppearance.MouseOverBackColor = Color.Transparent;
             buttonLogin.Font = new Font("Calibri", 16F, FontStyle.Bold, GraphicsUnit.Pixel);
             buttonLogin.Location = new Point(50, 314);
             buttonLogin.Name = "buttonLogin";
@@ -62,13 +63,14 @@
             // 
             // buttonConfig
             // 
+            buttonConfig.BackColor = Color.Transparent;
             buttonConfig.BackgroundImage = Properties.Resources.BtnConfig;
             buttonConfig.BackgroundImageLayout = ImageLayout.Center;
             buttonConfig.Location = new Point(19, 388);
             buttonConfig.Name = "buttonConfig";
             buttonConfig.Size = new Size(28, 28);
             buttonConfig.TabIndex = 6;
-            buttonConfig.UseVisualStyleBackColor = true;
+            buttonConfig.UseVisualStyleBackColor = false;
             buttonConfig.Click += buttonConfig_Click;
             // 
             // buttonClose
@@ -141,7 +143,7 @@
             textAccount.Font = new Font("Microsoft Sans Serif", 11F, FontStyle.Bold, GraphicsUnit.Pixel);
             textAccount.ForeColor = SystemColors.ActiveCaptionText;
             textAccount.ImeMode = ImeMode.NoControl;
-            textAccount.Location = new Point(53, 154);
+            textAccount.Location = new Point(53, 155);
             textAccount.MaxLength = 200;
             textAccount.Name = "textAccount";
             textAccount.Size = new Size(186, 20);
@@ -165,6 +167,7 @@
             // rememberCheckBox
             // 
             rememberCheckBox.AutoSize = true;
+            rememberCheckBox.BackColor = Color.Transparent;
             rememberCheckBox.FlatAppearance.BorderSize = 0;
             rememberCheckBox.FlatStyle = FlatStyle.System;
             rememberCheckBox.Font = new Font("Calibri", 15F, FontStyle.Bold, GraphicsUnit.Pixel);
@@ -172,7 +175,7 @@
             rememberCheckBox.Name = "rememberCheckBox";
             rememberCheckBox.Size = new Size(25, 13);
             rememberCheckBox.TabIndex = 3;
-            rememberCheckBox.UseVisualStyleBackColor = true;
+            rememberCheckBox.UseVisualStyleBackColor = false;
             rememberCheckBox.CheckedChanged += rememberCheckBox_CheckedChanged;
             // 
             // buttonRegister
@@ -202,24 +205,26 @@
             // 
             // buttonTranslationPatch
             // 
+            buttonTranslationPatch.BackColor = Color.Transparent;
             buttonTranslationPatch.BackgroundImage = Properties.Resources.BtnTranslation;
             buttonTranslationPatch.BackgroundImageLayout = ImageLayout.Zoom;
             buttonTranslationPatch.Location = new Point(242, 388);
             buttonTranslationPatch.Name = "buttonTranslationPatch";
             buttonTranslationPatch.Size = new Size(28, 28);
             buttonTranslationPatch.TabIndex = 9;
-            buttonTranslationPatch.UseVisualStyleBackColor = true;
+            buttonTranslationPatch.UseVisualStyleBackColor = false;
             buttonTranslationPatch.Click += buttonTranslationPatch_Click;
             // 
             // buttonInstallMod
             // 
+            buttonInstallMod.BackColor = Color.Transparent;
             buttonInstallMod.BackgroundImage = Properties.Resources.BtnInstallMod;
             buttonInstallMod.BackgroundImageLayout = ImageLayout.Zoom;
             buttonInstallMod.Location = new Point(211, 388);
             buttonInstallMod.Name = "buttonInstallMod";
             buttonInstallMod.Size = new Size(28, 28);
             buttonInstallMod.TabIndex = 8;
-            buttonInstallMod.UseVisualStyleBackColor = true;
+            buttonInstallMod.UseVisualStyleBackColor = false;
             buttonInstallMod.Click += buttonInstallMod_Click;
             // 
             // dragPictureBox
@@ -241,7 +246,7 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            BackgroundImage = (Image)resources.GetObject("$this.BackgroundImage");
+            BackgroundImage = Properties.Resources.Background;
             BackgroundImageLayout = ImageLayout.Stretch;
             ClientSize = new Size(874, 427);
             ControlBox = false;
@@ -268,6 +273,7 @@
             Name = "launcherPrincipal";
             Text = "Dragon's Dogma Online Launcher";
             Load += Form1_Load;
+            Paint += DragPictureBox_Paint;
             ((System.ComponentModel.ISupportInitialize)dragPictureBox).EndInit();
             ResumeLayout(false);
             PerformLayout();

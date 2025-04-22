@@ -1,6 +1,5 @@
 using System.Text;
 using System.Text.Json;
-using System.Runtime.InteropServices;
 using System.Net.Sockets;
 using System.Diagnostics;
 using Arrowgene.Ddon.Client;
@@ -11,6 +10,8 @@ using Arrowgene.Ddon.Client.Resource.Texture.Dds;
 using Arrowgene.Ddon.Client.Resource.Texture.Tex;
 using Arrowgene.Ddon.Client.Resource.Texture;
 using Arrowgene.Buffers;
+using System.Drawing.Imaging;
+
 
 namespace DDO_Launcher
 {
@@ -20,6 +21,12 @@ namespace DDO_Launcher
         private bool dragging = false;
         private Point startPoint;
 
+        private System.Windows.Forms.Timer fadeTimer = new System.Windows.Forms.Timer();
+        private float opacity = 0f;
+        private System.Drawing.Image currentImage;
+        private bool fadingIn = true;
+
+
         public launcherPrincipal(ServerManager serverManager)
         {
             InitializeComponent();
@@ -28,7 +35,7 @@ namespace DDO_Launcher
             ServerManager = serverManager;
 
             UpdateServerList();
-            //CustomBackground();
+            CustomBackground();
         }
 
         private void OpenSettings()
@@ -47,6 +54,7 @@ namespace DDO_Launcher
             foreach (var server in ServerManager.Servers)
             {
                 int addedItemIndex = serverComboBox.Items.Add(server.Key);
+
                 if (serverComboBox.SelectedIndex == -1 && server.Key == ServerManager.SelectedServer)
                 {
                     serverComboBox.Select(addedItemIndex, 1);
@@ -54,10 +62,19 @@ namespace DDO_Launcher
             }
             serverComboBox.EndUpdate();
 
-            serverComboBox.SelectedIndex = oldSelectionIndex;
-            if (serverComboBox.SelectedIndex == -1 && serverComboBox.Items.Count > 0)
+            try
             {
-                serverComboBox.SelectedIndex = 0;
+                serverComboBox.SelectedIndex = oldSelectionIndex;
+
+                if (serverComboBox.SelectedIndex == -1 && serverComboBox.Items.Count > 0)
+                {
+                    serverComboBox.SelectedIndex = 0;
+                }
+            }
+
+            catch
+            { 
+                
             }
         }
 
@@ -109,12 +126,24 @@ namespace DDO_Launcher
             try
             {
                 //Will search for "/launcher/bg.png" to apply on launcher
-                string bg = "http://" + ServerManager.Servers[ServerManager.SelectedServer].DLIP + ":" + ServerManager.Servers[ServerManager.SelectedServer].DLPort + "/launcher/bg.png";
-                this.BackgroundImage = System.Drawing.Image.FromStream(new System.IO.MemoryStream(new System.Net.WebClient().DownloadData(bg)));
+
+                // -- Sync code -- (Pauses main thread when loading image)
+                //string bg = "http://" + ServerManager.Servers[ServerManager.SelectedServer].DLIP + ":" + ServerManager.Servers[ServerManager.SelectedServer].DLPort + "/launcher/bg.png";
+                //this.BackgroundImage = System.Drawing.Image.FromStream(new System.IO.MemoryStream(new System.Net.WebClient().DownloadData(bg)));
+
+
+                // -- Async code -- (Do not main thread when loading image)
+                byte[] bg = await new HttpClient().GetByteArrayAsync("http://" + ServerManager.Servers[ServerManager.SelectedServer].DLIP + ":" + ServerManager.Servers[ServerManager.SelectedServer].DLPort + "/launcher/bg.png");
+                System.Drawing.Image img = System.Drawing.Image.FromStream(new MemoryStream(bg));
+                //this.BackgroundImage = System.Drawing.Image.FromStream(new MemoryStream(bg));
+
+                FadeInBackground(img);
+
             }
             catch
             {
                 this.BackgroundImage = Properties.Resources.Background;
+                FadeOutBackground();
             }
         }
 
@@ -343,7 +372,7 @@ namespace DDO_Launcher
         private void serverComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             ServerManager.SelectServer(serverComboBox.Text);
-            //CustomBackground();
+            CustomBackground();
         }
 
         private void serverComboBox_DropDown(object sender, EventArgs e)
@@ -638,6 +667,82 @@ namespace DDO_Launcher
             DialogResult dialogResult = dropdownForm.ShowDialog();
             return dialogResult == DialogResult.OK ? optionsBox.SelectedItem?.ToString() : null;
         }
+
+
+        //---- Background fade (this shit is strange af)
+        public void FadeInBackground(System.Drawing.Image img)
+        {
+            if (img == null) return;
+
+            fadeTimer.Stop();
+            currentImage = img;
+            opacity = 0f;
+            fadingIn = true;
+
+            fadeTimer.Interval = 30;
+            fadeTimer.Tick += FadeProgress;
+            fadeTimer.Start();
+        }
+
+        public void FadeOutBackground()
+        {
+            if (currentImage == null) return;
+
+            fadeTimer.Stop();
+            opacity = 1f;
+            fadingIn = false;
+
+            fadeTimer.Interval = 30;
+            fadeTimer.Tick += FadeProgress;
+            fadeTimer.Start();
+        }
+
+        private void FadeProgress(object sender, EventArgs e)
+        {
+            if (fadingIn)
+            {
+                if (opacity < 1f)
+                {
+                    opacity += 0.05f;
+                    this.Invalidate();
+                }
+                else
+                {
+                    fadeTimer.Tick -= FadeProgress;
+                    fadeTimer.Stop();
+                    opacity = 1f;
+                    this.Invalidate();
+                }
+            }
+            else
+            {
+                if (opacity > 0f)
+                {
+                    opacity -= 0.05f;
+                    this.Invalidate();
+                }
+                else
+                {
+                    fadeTimer.Tick -= FadeProgress;
+                    fadeTimer.Stop();
+                    opacity = 0f;
+                    currentImage = null;
+                    this.Invalidate();
+                }
+            }
+        }
+
+        private void DragPictureBox_Paint(object sender, PaintEventArgs e)
+        {
+            if (currentImage != null)
+            {
+                ColorMatrix matrix = new ColorMatrix { Matrix33 = opacity };
+                ImageAttributes attributes = new();
+                attributes.SetColorMatrix(matrix, ColorMatrixFlag.Default, ColorAdjustType.Bitmap);
+                e.Graphics.DrawImage(currentImage, this.ClientRectangle, 0, 0, currentImage.Width, currentImage.Height, GraphicsUnit.Pixel, attributes);
+            }
+        }
+        //-- Background fade (this shit is strange af)
     }
 }
 
