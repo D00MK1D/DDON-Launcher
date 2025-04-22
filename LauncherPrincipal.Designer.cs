@@ -50,6 +50,8 @@
             // 
             buttonLogin.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             buttonLogin.BackColor = Color.Transparent;
+            buttonLogin.FlatAppearance.MouseDownBackColor = Color.Transparent;
+            buttonLogin.FlatAppearance.MouseOverBackColor = Color.Transparent;
             buttonLogin.Font = new Font("Calibri", 16F, FontStyle.Bold, GraphicsUnit.Pixel);
             buttonLogin.Location = new Point(50, 314);
             buttonLogin.Name = "buttonLogin";
@@ -61,13 +63,14 @@
             // 
             // buttonConfig
             // 
+            buttonConfig.BackColor = Color.Transparent;
             buttonConfig.BackgroundImage = Properties.Resources.BtnConfig;
             buttonConfig.BackgroundImageLayout = ImageLayout.Center;
             buttonConfig.Location = new Point(19, 388);
             buttonConfig.Name = "buttonConfig";
             buttonConfig.Size = new Size(28, 28);
             buttonConfig.TabIndex = 6;
-            buttonConfig.UseVisualStyleBackColor = true;
+            buttonConfig.UseVisualStyleBackColor = false;
             buttonConfig.Click += buttonConfig_Click;
             // 
             // buttonClose
@@ -118,17 +121,19 @@
             labelAccountID.Size = new Size(62, 18);
             labelAccountID.TabIndex = 0;
             labelAccountID.Text = "Account:";
+            labelAccountID.Visible = false;
             // 
             // labelPassword
             // 
             labelPassword.AutoSize = true;
             labelPassword.BackColor = Color.Transparent;
             labelPassword.Font = new Font("Calibri", 15F, FontStyle.Bold, GraphicsUnit.Pixel);
-            labelPassword.Location = new Point(50, 213);
+            labelPassword.Location = new Point(50, 228);
             labelPassword.Name = "labelPassword";
             labelPassword.Size = new Size(71, 18);
             labelPassword.TabIndex = 0;
             labelPassword.Text = "Password:";
+            labelPassword.Visible = false;
             // 
             // textAccount
             // 
@@ -138,7 +143,7 @@
             textAccount.Font = new Font("Microsoft Sans Serif", 11F, FontStyle.Bold, GraphicsUnit.Pixel);
             textAccount.ForeColor = SystemColors.ActiveCaptionText;
             textAccount.ImeMode = ImeMode.NoControl;
-            textAccount.Location = new Point(53, 175);
+            textAccount.Location = new Point(53, 155);
             textAccount.MaxLength = 200;
             textAccount.Name = "textAccount";
             textAccount.Size = new Size(186, 20);
@@ -152,7 +157,7 @@
             textPassword.Font = new Font("Microsoft Sans Serif", 11F, FontStyle.Bold, GraphicsUnit.Pixel);
             textPassword.ForeColor = SystemColors.ActiveCaptionText;
             textPassword.ImeMode = ImeMode.NoControl;
-            textPassword.Location = new Point(53, 233);
+            textPassword.Location = new Point(53, 228);
             textPassword.MaxLength = 200;
             textPassword.Name = "textPassword";
             textPassword.PasswordChar = '•';
@@ -162,15 +167,15 @@
             // rememberCheckBox
             // 
             rememberCheckBox.AutoSize = true;
+            rememberCheckBox.BackColor = Color.Transparent;
             rememberCheckBox.FlatAppearance.BorderSize = 0;
             rememberCheckBox.FlatStyle = FlatStyle.System;
             rememberCheckBox.Font = new Font("Calibri", 15F, FontStyle.Bold, GraphicsUnit.Pixel);
-            rememberCheckBox.Location = new Point(89, 275);
+            rememberCheckBox.Location = new Point(90, 273);
             rememberCheckBox.Name = "rememberCheckBox";
-            rememberCheckBox.Size = new Size(126, 23);
+            rememberCheckBox.Size = new Size(25, 13);
             rememberCheckBox.TabIndex = 3;
-            rememberCheckBox.Text = "Remember Me";
-            rememberCheckBox.UseVisualStyleBackColor = true;
+            rememberCheckBox.UseVisualStyleBackColor = false;
             rememberCheckBox.CheckedChanged += rememberCheckBox_CheckedChanged;
             // 
             // buttonRegister
@@ -200,24 +205,26 @@
             // 
             // buttonTranslationPatch
             // 
+            buttonTranslationPatch.BackColor = Color.Transparent;
             buttonTranslationPatch.BackgroundImage = Properties.Resources.BtnTranslation;
             buttonTranslationPatch.BackgroundImageLayout = ImageLayout.Zoom;
             buttonTranslationPatch.Location = new Point(242, 388);
             buttonTranslationPatch.Name = "buttonTranslationPatch";
             buttonTranslationPatch.Size = new Size(28, 28);
             buttonTranslationPatch.TabIndex = 9;
-            buttonTranslationPatch.UseVisualStyleBackColor = true;
+            buttonTranslationPatch.UseVisualStyleBackColor = false;
             buttonTranslationPatch.Click += buttonTranslationPatch_Click;
             // 
             // buttonInstallMod
             // 
+            buttonInstallMod.BackColor = Color.Transparent;
             buttonInstallMod.BackgroundImage = Properties.Resources.BtnInstallMod;
             buttonInstallMod.BackgroundImageLayout = ImageLayout.Zoom;
             buttonInstallMod.Location = new Point(211, 388);
             buttonInstallMod.Name = "buttonInstallMod";
             buttonInstallMod.Size = new Size(28, 28);
             buttonInstallMod.TabIndex = 8;
-            buttonInstallMod.UseVisualStyleBackColor = true;
+            buttonInstallMod.UseVisualStyleBackColor = false;
             buttonInstallMod.Click += buttonInstallMod_Click;
             // 
             // dragPictureBox
@@ -266,6 +273,7 @@
             Name = "launcherPrincipal";
             Text = "Dragon's Dogma Online Launcher";
             Load += Form1_Load;
+            Paint += DragPictureBox_Paint;
             ((System.ComponentModel.ISupportInitialize)dragPictureBox).EndInit();
             ResumeLayout(false);
             PerformLayout();
