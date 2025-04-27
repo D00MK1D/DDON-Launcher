@@ -11,6 +11,7 @@ using Arrowgene.Ddon.Client.Resource.Texture.Tex;
 using Arrowgene.Ddon.Client.Resource.Texture;
 using Arrowgene.Buffers;
 using System.Drawing.Imaging;
+using System.Net.NetworkInformation;
 
 
 namespace DDO_Launcher
@@ -73,8 +74,8 @@ namespace DDO_Launcher
             }
 
             catch
-            { 
-                
+            {
+
             }
         }
 
@@ -125,6 +126,7 @@ namespace DDO_Launcher
         {
             try
             {
+                FadeOutBackground();
                 //Will search for "/launcher/bg.png" to apply on launcher
 
                 // -- Sync code -- (Pauses main thread when loading image)
@@ -138,12 +140,12 @@ namespace DDO_Launcher
                 //this.BackgroundImage = System.Drawing.Image.FromStream(new MemoryStream(bg));
 
                 FadeInBackground(img);
-
             }
+
             catch
             {
-                this.BackgroundImage = Properties.Resources.Background;
                 FadeOutBackground();
+                FadeInBackground(Properties.Resources.Background);
             }
         }
 
@@ -373,6 +375,8 @@ namespace DDO_Launcher
         {
             ServerManager.SelectServer(serverComboBox.Text);
             CustomBackground();
+            PingIndicator(ServerManager.Servers[ServerManager.SelectedServer].DLIP);
+
         }
 
         private void serverComboBox_DropDown(object sender, EventArgs e)
@@ -562,7 +566,7 @@ namespace DDO_Launcher
 
                 // Select language
                 string[] languages = { "English", "Japanese" };
-                string? selectedLanguage = ShowDropdownDialog("Select language"+upToDateWarning, "Translation Patch", languages);
+                string? selectedLanguage = ShowDropdownDialog("Select language" + upToDateWarning, "Translation Patch", languages);
                 if (selectedLanguage == null)
                 {
                     return;
@@ -634,7 +638,7 @@ namespace DDO_Launcher
             input = inputBox.Text;
             return dialogResult;
         }
-        
+
         public static string ShowDropdownDialog(string message, string title, string[] options)
         {
             Form dropdownForm = new Form()
@@ -732,7 +736,7 @@ namespace DDO_Launcher
             }
         }
 
-        private void DragPictureBox_Paint(object sender, PaintEventArgs e)
+        private void Background_Paint(object sender, PaintEventArgs e)
         {
             if (currentImage != null)
             {
@@ -743,6 +747,52 @@ namespace DDO_Launcher
             }
         }
         //-- Background fade (this shit is strange af)
+
+        private async void PingIndicator(string server)
+        {
+            int sum = 0;
+            int avg = 0;
+            Ping ping = new Ping();
+            try
+            {
+                for (int i = 0; i < 3; i++)
+                {
+                    PingReply pong = await ping.SendPingAsync(server);
+                    //IPStatus p = pong.Status; //Maybe useful sometime?...
+                    
+                    sum = (int)pong.RoundtripTime + sum;
+
+                    await Task.Delay(500);
+                }
+
+                avg = sum / 4;
+
+                if (avg < 90 && avg > 0)
+                {
+                    pingPictureBox.BackgroundImage = Properties.Resources.Ping3;
+                }
+
+                else if(avg >= 90 && avg <= 180)
+                {
+                    pingPictureBox.BackgroundImage = Properties.Resources.Ping2;
+                }
+
+                else if(avg > 180 && avg <= 270)
+                {
+                    pingPictureBox.BackgroundImage = Properties.Resources.Ping1;
+                }
+
+                else
+                {
+                    pingPictureBox.BackgroundImage = Properties.Resources.Ping0;
+                }
+
+            }
+            catch
+            {
+                pingPictureBox.BackgroundImage = Properties.Resources.Ping0;
+            }
+        }
     }
 }
 

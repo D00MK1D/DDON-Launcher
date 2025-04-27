@@ -43,7 +43,9 @@
             buttonTranslationPatch = new Button();
             buttonInstallMod = new Button();
             dragPictureBox = new PictureBox();
+            pingPictureBox = new PictureBox();
             ((System.ComponentModel.ISupportInitialize)dragPictureBox).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)pingPictureBox).BeginInit();
             SuspendLayout();
             // 
             // buttonLogin
@@ -65,7 +67,7 @@
             // 
             buttonConfig.BackColor = Color.Transparent;
             buttonConfig.BackgroundImage = Properties.Resources.BtnConfig;
-            buttonConfig.BackgroundImageLayout = ImageLayout.Center;
+            buttonConfig.BackgroundImageLayout = ImageLayout.Stretch;
             buttonConfig.Location = new Point(19, 388);
             buttonConfig.Name = "buttonConfig";
             buttonConfig.Size = new Size(28, 28);
@@ -242,14 +244,29 @@
             dragPictureBox.MouseMove += dragPictureBox_MouseMove;
             dragPictureBox.MouseUp += dragPictureBox_MouseUp;
             // 
+            // pingPictureBox
+            // 
+            pingPictureBox.BackColor = Color.White;
+            pingPictureBox.BackgroundImage = Properties.Resources.Ping0;
+            pingPictureBox.BackgroundImageLayout = ImageLayout.Center;
+            pingPictureBox.Enabled = false;
+            pingPictureBox.ErrorImage = null;
+            pingPictureBox.InitialImage = null;
+            pingPictureBox.Location = new Point(842, 395);
+            pingPictureBox.Name = "pingPictureBox";
+            pingPictureBox.Size = new Size(32, 32);
+            pingPictureBox.TabIndex = 11;
+            pingPictureBox.TabStop = false;
+            // 
             // launcherPrincipal
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            BackgroundImage = Properties.Resources.Background;
+            BackColor = Color.Black;
             BackgroundImageLayout = ImageLayout.Stretch;
             ClientSize = new Size(874, 427);
             ControlBox = false;
+            Controls.Add(pingPictureBox);
             Controls.Add(buttonInstallMod);
             Controls.Add(buttonTranslationPatch);
             Controls.Add(serverComboBox);
@@ -265,6 +282,7 @@
             Controls.Add(buttonLogin);
             Controls.Add(dragPictureBox);
             DoubleBuffered = true;
+            ForeColor = SystemColors.ControlText;
             FormBorderStyle = FormBorderStyle.None;
             Icon = (Icon)resources.GetObject("$this.Icon");
             MaximizeBox = false;
@@ -273,8 +291,9 @@
             Name = "launcherPrincipal";
             Text = "Dragon's Dogma Online Launcher";
             Load += Form1_Load;
-            Paint += DragPictureBox_Paint;
+            Paint += Background_Paint;
             ((System.ComponentModel.ISupportInitialize)dragPictureBox).EndInit();
+            ((System.ComponentModel.ISupportInitialize)pingPictureBox).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -295,5 +314,6 @@
         private Button buttonTranslationPatch;
         private Button buttonInstallMod;
         private PictureBox dragPictureBox;
+        private PictureBox pingPictureBox;
     }
 }
