@@ -17,5 +17,8 @@
     <Setting Name="translationPatchUrl" Type="System.String" Scope="User">
       <Value Profile="(Default)">https://raw.githubusercontent.com/Sapphiratelaemara/DDON-translation/refs/heads/main/gmd.csv</Value>
     </Setting>
+    <Setting Name="firstInstalledTranslation" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
   </Settings>
 </SettingsFile>
