@@ -37,6 +37,16 @@ namespace DDO_Launcher
 
             UpdateServerList();
             CustomBackground();
+            if (Properties.Settings.Default.firstInstalledTranslation == false)
+            {
+                MessageBox.Show(
+                    "For your first run, please, install the latest translation patch.",
+                    "Dragon's Dogma Online",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information);
+
+                buttonTranslationPatch_Click(null, EventArgs.Empty);
+            }
         }
 
         private void OpenSettings()
@@ -358,7 +368,7 @@ namespace DDO_Launcher
             catch (Win32Exception ex)
             {
                 MessageBox.Show(
-                    "DDO.exe not found! Make sure the launcher is located in the game folder",
+                    "DDO.exe not found! Make sure the launcher is located in the game folder and you're running the launcher as Admin.",
                     "Dragon's Dogma Online",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Error);
@@ -597,8 +607,11 @@ namespace DDO_Launcher
                 await Task.Run(() => GmdActions.Pack(gmdCsvFilePath, "nativePC/rom", selectedLanguage, progress));
 
                 waitForm.Close();
+                Properties.Settings.Default.firstInstalledTranslation = true;
                 Properties.Settings.Default.Save();
                 MessageBox.Show("Translation patch applied successfully", "Translation applied", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                
             }
             catch (Exception ex)
             {
