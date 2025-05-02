@@ -47,6 +47,9 @@
             ((System.ComponentModel.ISupportInitialize)dragPictureBox).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pingPictureBox).BeginInit();
             SuspendLayout();
+
+            this.AutoScaleMode = AutoScaleMode.None;
+
             // 
             // buttonLogin
             // 
@@ -263,6 +266,7 @@
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.Black;
+            BackgroundImage = Properties.Resources.Background;
             BackgroundImageLayout = ImageLayout.Stretch;
             ClientSize = new Size(874, 427);
             ControlBox = false;
