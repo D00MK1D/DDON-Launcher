@@ -134,28 +134,29 @@ namespace DDO_Launcher
 
         private async void CustomBackground()
         {
+            System.Drawing.Image img;
             try
             {
                 FadeOutBackground();
+                
                 //Will search for "/launcher/bg.png" to apply on launcher
 
-                // -- Sync code -- (Pauses main thread when loading image)
-                //string bg = "http://" + ServerManager.Servers[ServerManager.SelectedServer].DLIP + ":" + ServerManager.Servers[ServerManager.SelectedServer].DLPort + "/launcher/bg.png";
-                //this.BackgroundImage = System.Drawing.Image.FromStream(new System.IO.MemoryStream(new System.Net.WebClient().DownloadData(bg)));
-
-
-                // -- Async code -- (Do not main thread when loading image)
                 byte[] bg = await new HttpClient().GetByteArrayAsync("http://" + ServerManager.Servers[ServerManager.SelectedServer].DLIP + ":" + ServerManager.Servers[ServerManager.SelectedServer].DLPort + "/launcher/bg.png");
-                System.Drawing.Image img = System.Drawing.Image.FromStream(new MemoryStream(bg));
-                //this.BackgroundImage = System.Drawing.Image.FromStream(new MemoryStream(bg));
+                img = System.Drawing.Image.FromStream(new MemoryStream(bg));
 
                 FadeInBackground(img);
+                await Task.Delay(600);
+                this.BackgroundImage = img;
+                FadeOutBackground();
             }
 
             catch
             {
-                FadeOutBackground();
+
                 FadeInBackground(Properties.Resources.Background);
+                await Task.Delay(600);
+                this.BackgroundImage = Properties.Resources.Background;
+                FadeOutBackground();
             }
         }
 
@@ -756,7 +757,7 @@ namespace DDO_Launcher
                 ColorMatrix matrix = new ColorMatrix { Matrix33 = opacity };
                 ImageAttributes attributes = new();
                 attributes.SetColorMatrix(matrix, ColorMatrixFlag.Default, ColorAdjustType.Bitmap);
-                e.Graphics.DrawImage(currentImage, this.ClientRectangle, 0, 0, currentImage.Width, currentImage.Height, GraphicsUnit.Pixel, attributes);
+                e.Graphics.DrawImage(currentImage, dragPictureBox.ClientRectangle, 0, 0, currentImage.Width, currentImage.Height, GraphicsUnit.Pixel, attributes);
             }
         }
         //-- Background fade (this shit is strange af)
