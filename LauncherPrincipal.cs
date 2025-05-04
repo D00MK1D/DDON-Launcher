@@ -37,6 +37,10 @@ namespace DDO_Launcher
 
             UpdateServerList();
             CustomBackground();
+
+            serverComboBox.SelectedIndex = Properties.Settings.Default.lastServerSelected;
+
+
             if (Properties.Settings.Default.firstInstalledTranslation == false)
             {
                 MessageBox.Show(
@@ -148,6 +152,7 @@ namespace DDO_Launcher
                 await Task.Delay(600);
                 this.BackgroundImage = img;
                 FadeOutBackground();
+
             }
 
             catch
@@ -198,12 +203,14 @@ namespace DDO_Launcher
             {
                 Properties.Settings.Default.accountText = textAccount.Text;
                 Properties.Settings.Default.passwordText = textPassword.Text;
+                Properties.Settings.Default.lastServerSelected = serverComboBox.SelectedIndex;
             }
             else
             {
                 Properties.Settings.Default.accountText = string.Empty;
                 Properties.Settings.Default.passwordText = string.Empty;
             }
+
             Properties.Settings.Default.Save();
 
             if (ServerManager.SelectedServer == null)
@@ -229,6 +236,7 @@ namespace DDO_Launcher
             string responseBody = string.Empty;
             try
             {
+
                 using (TcpClient client = new TcpClient())
                 {
                     var path = "/api/account";
