@@ -489,13 +489,26 @@ namespace DDO_Launcher
                                 ArcArchive.ArcFile dstArcFile;
                                 try
                                 {
-                                    dstArcFile = archive.GetFile(ArcArchive.Search().ByArcPath(dst));
+                                    // Split dst into full path without extension and extension if it has one
+                                    int lastDotIndex = dst.LastIndexOf('.');
+                                    string dstArcPath = dst;
+                                    string? dstExtension = null;
+                                    if (lastDotIndex != -1)
+                                    {
+                                        dstArcPath = dst.Substring(0, lastDotIndex);
+                                        dstExtension = dst.Substring(lastDotIndex + 1);
+                                    }
+                                    var search = ArcArchive.Search()
+                                        .ByArcPath(dstArcPath)
+                                        .ByExtension(dstExtension);
+                                    dstArcFile = archive.GetFile(search);
                                 }
                                 catch (Exception ex)
                                 {
-                                    throw new Exception("Couldn\'t find " + dst + " in the ARC " + arcProperty + ".\n" +
-                                                        "Make sure the path separator is an escaped backward slash (\\\\) and that the path doesn\'t include the file\'s extension\n" +
-                                                        "(e.g. \"ui\\\\00_font\\\\button_win_00_ID_HQ\" instead of \"ui/00_font/button_win_00_ID_HQ.tex\")\n\n" +
+                                    throw new Exception("Couldn\'t find or found more than one file with filename " + dst + " in the ARC " + arcProperty + ".\n\n" +
+                                                        "Make sure the path separator is an escaped backward slash (\\\\)\n" +
+                                                        "Include the destination file's extension to dissambiguate between files with the same name\n" +
+                                                        "(e.g. \"ui\\\\00_font\\\\button_win_00_ID_HQ.tex\" instead of \"ui/00_font/button_win_00_ID_HQ.tex\")\n\n" +
                                                         "Error: " + ex.Message);
                                 }
 

@@ -68,7 +68,7 @@ The possible actions are:
 {
 	"action": "replace",
 	"src": "files/button_win_00_ID_HQ.tex",
-    "dst": "ui\\00_font\\button_win_00_ID_HQ"
+    "dst": "ui\\00_font\\button_win_00_ID_HQ.tex"
 }
 ```
 
@@ -79,11 +79,11 @@ The possible actions are:
 	"action": "convert",
 	"src": "files/button_win_00_ID_HQ.dds",
 	"txt": "files/button_win_00_ID_HQ.txt",
-	"dst": "ui\\00_font\\button_win_00_ID_HQ"
+	"dst": "ui\\00_font\\button_win_00_ID_HQ.tex"
 }
 ```
 
-The paths inside the ARC file MUST use escaped backward slashes (`\\`) and no extension. (e.g. `ui\\00_font\\button_win_00_ID_HQ` instead of `ui/00_font/button_win_00_ID_HQ.tex`)
+The paths inside the ARC file MUST use escaped backward slashes (`\\`). Extension is optional but **recommended**, it might be required to disambiguate files that have the same basename. (e.g. `ui\\00_font\\button_win_00_ID_HQ.tex` instead of `ui/00_font/button_win_00_ID_HQ`)
 
 #### Example manifest
 
@@ -98,7 +98,7 @@ The paths inside the ARC file MUST use escaped backward slashes (`\\`) and no ex
 				{
 					"action": "replace",
 					"src": "files/button_win_00_ID_HQ.tex",
-					"dst": "ui\\00_font\\button_win_00_ID_HQ"
+					"dst": "ui\\00_font\\button_win_00_ID_HQ.tex"
 				}
 			]
 		},
@@ -106,9 +106,10 @@ The paths inside the ARC file MUST use escaped backward slashes (`\\`) and no ex
 			"arc": "ui/gui_cmn.arc",
 			"actions": [
 				{
-					"action": "replace",
-					"src": "files/button_hud_win_00_ID_HQ.tex",
-					"dst": "ui\\00_font\\button_hud_win_00_ID_HQ"
+					"action": "convert",
+					"src": "files/button_hud_win_00_ID_HQ.dds",
+					"txt": "files/button_hud_win_00_ID_HQ.txt",
+					"dst": "ui\\00_font\\button_hud_win_00_ID_HQ.241F5DEB"
 				}
 			]
 		}
