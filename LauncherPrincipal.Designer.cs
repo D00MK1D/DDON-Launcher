@@ -47,6 +47,9 @@
             ((System.ComponentModel.ISupportInitialize)dragPictureBox).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pingPictureBox).BeginInit();
             SuspendLayout();
+
+            this.AutoScaleMode = AutoScaleMode.None;
+
             // 
             // buttonLogin
             // 
@@ -168,16 +171,19 @@
             // 
             // rememberCheckBox
             // 
+            rememberCheckBox.AllowDrop = true;
             rememberCheckBox.AutoSize = true;
             rememberCheckBox.BackColor = Color.Transparent;
+            rememberCheckBox.BackgroundImageLayout = ImageLayout.None;
             rememberCheckBox.FlatAppearance.BorderSize = 0;
             rememberCheckBox.FlatStyle = FlatStyle.System;
             rememberCheckBox.Font = new Font("Calibri", 15F, FontStyle.Bold, GraphicsUnit.Pixel);
+            rememberCheckBox.ForeColor = SystemColors.ControlText;
             rememberCheckBox.Location = new Point(90, 273);
             rememberCheckBox.Name = "rememberCheckBox";
             rememberCheckBox.Size = new Size(25, 13);
             rememberCheckBox.TabIndex = 3;
-            rememberCheckBox.UseVisualStyleBackColor = false;
+            rememberCheckBox.UseVisualStyleBackColor = true;
             rememberCheckBox.CheckedChanged += rememberCheckBox_CheckedChanged;
             // 
             // buttonRegister
@@ -240,6 +246,7 @@
             dragPictureBox.Size = new Size(874, 427);
             dragPictureBox.TabIndex = 10;
             dragPictureBox.TabStop = false;
+            dragPictureBox.Paint += Background_Paint;
             dragPictureBox.MouseDown += dragPictureBox_MouseDown;
             dragPictureBox.MouseMove += dragPictureBox_MouseMove;
             dragPictureBox.MouseUp += dragPictureBox_MouseUp;
@@ -263,6 +270,7 @@
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.Black;
+            BackgroundImage = Properties.Resources.Background;
             BackgroundImageLayout = ImageLayout.Stretch;
             ClientSize = new Size(874, 427);
             ControlBox = false;
@@ -291,7 +299,6 @@
             Name = "launcherPrincipal";
             Text = "Dragon's Dogma Online Launcher";
             Load += Form1_Load;
-            Paint += Background_Paint;
             ((System.ComponentModel.ISupportInitialize)dragPictureBox).EndInit();
             ((System.ComponentModel.ISupportInitialize)pingPictureBox).EndInit();
             ResumeLayout(false);

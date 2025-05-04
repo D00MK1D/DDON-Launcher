@@ -95,5 +95,17 @@ namespace DDO_Launcher.Properties {
                 this["firstInstalledTranslation"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int lastServerSelected {
+            get {
+                return ((int)(this["lastServerSelected"]));
+            }
+            set {
+                this["lastServerSelected"] = value;
+            }
+        }
     }
 }
