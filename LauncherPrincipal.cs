@@ -27,6 +27,8 @@ namespace DDO_Launcher
         private System.Windows.Forms.Timer crossfadeTimer = new System.Windows.Forms.Timer();
         private TaskCompletionSource<bool> fadeCompletion;
 
+        int oldSelectionIndex = 0;
+
         public launcherPrincipal(ServerManager serverManager)
         {
             InitializeComponent();
@@ -65,7 +67,7 @@ namespace DDO_Launcher
 
         private void UpdateServerList()
         {
-            int oldSelectionIndex = serverComboBox.SelectedIndex;
+            oldSelectionIndex = serverComboBox.SelectedIndex;
 
             serverComboBox.BeginUpdate();
             serverComboBox.Items.Clear();
@@ -142,23 +144,29 @@ namespace DDO_Launcher
 
         private async void CustomBackground()
         {
-
+            if (oldSelectionIndex != serverComboBox.SelectedIndex)
+            {
+                this.serverComboBox.Enabled = false;
+            
 
             System.Drawing.Image img;
-            try
-            {
-                byte[] bg = await new HttpClient().GetByteArrayAsync(
-                    $"http://{ServerManager.Servers[ServerManager.SelectedServer].DLIP}:{ServerManager.Servers[ServerManager.SelectedServer].DLPort}/launcher/bg.png"
-                );
+                try
+                {
+                    byte[] bg = await new HttpClient().GetByteArrayAsync(
+                        $"http://{ServerManager.Servers[ServerManager.SelectedServer].DLIP}:{ServerManager.Servers[ServerManager.SelectedServer].DLPort}/launcher/bg.png"
+                    );
 
-                img = System.Drawing.Image.FromStream(new MemoryStream(bg));
-                await CrossfadeBackgroundAsync(img);
+                    img = System.Drawing.Image.FromStream(new MemoryStream(bg));
+                    await CrossfadeBackgroundAsync(img);
 
-            }
-            catch
-            {
-                await CrossfadeBackgroundAsync(Properties.Resources.Background);
+                    this.serverComboBox.Enabled = true;
+                }
+                catch
+                {
+                    await CrossfadeBackgroundAsync(Properties.Resources.Background);
+                    this.serverComboBox.Enabled = true;
 
+                }
             }
         }
 
