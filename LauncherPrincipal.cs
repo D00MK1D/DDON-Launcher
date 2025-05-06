@@ -22,16 +22,19 @@ namespace DDO_Launcher
         private bool dragging = false;
         private Point startPoint;
 
-        private System.Windows.Forms.Timer fadeTimer = new System.Windows.Forms.Timer();
-        private float opacity = 0f;
-        private System.Drawing.Image currentImage;
-        private bool fadingIn = true;
-
+        private System.Drawing.Image oldBg, newBg;
+        private float newOpacity = 0f;
+        private System.Windows.Forms.Timer crossfadeTimer = new System.Windows.Forms.Timer();
+        private TaskCompletionSource<bool> fadeCompletion;
 
         public launcherPrincipal(ServerManager serverManager)
         {
             InitializeComponent();
             this.StartPosition = FormStartPosition.CenterScreen;
+
+            this.DoubleBuffered = true;
+            crossfadeTimer.Interval = 10;
+            crossfadeTimer.Tick += CrossfadeStep;
 
             ServerManager = serverManager;
 
@@ -136,34 +139,78 @@ namespace DDO_Launcher
             dragging = false;
         }
 
+
         private async void CustomBackground()
         {
+
+
             System.Drawing.Image img;
             try
             {
-                FadeOutBackground();
-                
-                //Will search for "/launcher/bg.png" to apply on launcher
+                byte[] bg = await new HttpClient().GetByteArrayAsync(
+                    $"http://{ServerManager.Servers[ServerManager.SelectedServer].DLIP}:{ServerManager.Servers[ServerManager.SelectedServer].DLPort}/launcher/bg.png"
+                );
 
-                byte[] bg = await new HttpClient().GetByteArrayAsync("http://" + ServerManager.Servers[ServerManager.SelectedServer].DLIP + ":" + ServerManager.Servers[ServerManager.SelectedServer].DLPort + "/launcher/bg.png");
                 img = System.Drawing.Image.FromStream(new MemoryStream(bg));
-
-                FadeInBackground(img);
-                await Task.Delay(600);
-                this.BackgroundImage = img;
-                FadeOutBackground();
+                await CrossfadeBackgroundAsync(img);
 
             }
-
             catch
             {
+                await CrossfadeBackgroundAsync(Properties.Resources.Background);
 
-                FadeInBackground(Properties.Resources.Background);
-                await Task.Delay(600);
-                this.BackgroundImage = Properties.Resources.Background;
-                FadeOutBackground();
             }
         }
+
+        private async Task CrossfadeBackgroundAsync(System.Drawing.Image newImage)
+        {
+            newBg = newImage;
+            newOpacity = 0f;
+            fadeCompletion = new TaskCompletionSource<bool>();
+            crossfadeTimer.Start();
+            await fadeCompletion.Task;
+        }
+
+        private void CrossfadeStep(object sender, EventArgs e)
+        {
+            if (newOpacity < 1f)
+            {
+                newOpacity += 0.02f;
+                Invalidate();
+            }
+            else
+            {
+                crossfadeTimer.Stop();
+                oldBg?.Dispose();
+                oldBg = newBg;
+                newBg = null;
+                newOpacity = 0f;
+                Invalidate();
+                fadeCompletion?.TrySetResult(true);
+            }
+        }
+
+        protected override void OnPaintBackground(PaintEventArgs e)
+        {
+            if (oldBg != null)
+                e.Graphics.DrawImage(oldBg, ClientRectangle);
+            else
+                base.OnPaintBackground(e);
+        }
+
+        protected override void OnPaint(PaintEventArgs e)
+        {
+            if (newBg != null)
+            {
+                var cm = new ColorMatrix { Matrix33 = newOpacity };
+                var ia = new ImageAttributes();
+                ia.SetColorMatrix(cm, ColorMatrixFlag.Default, ColorAdjustType.Bitmap);
+                e.Graphics.DrawImage(newBg, ClientRectangle, 0, 0, newBg.Width, newBg.Height, GraphicsUnit.Pixel, ia);
+            }
+
+            base.OnPaint(e);
+        }
+
 
         public class ServerResponse
         {
@@ -694,93 +741,20 @@ namespace DDO_Launcher
             return dialogResult == DialogResult.OK ? optionsBox.SelectedItem?.ToString() : null;
         }
 
-
-        //---- Background fade (this shit is strange af)
-        public void FadeInBackground(System.Drawing.Image img)
-        {
-            if (img == null) return;
-
-            fadeTimer.Stop();
-            currentImage = img;
-            opacity = 0f;
-            fadingIn = true;
-
-            fadeTimer.Interval = 30;
-            fadeTimer.Tick += FadeProgress;
-            fadeTimer.Start();
-        }
-
-        public void FadeOutBackground()
-        {
-            if (currentImage == null) return;
-
-            fadeTimer.Stop();
-            opacity = 1f;
-            fadingIn = false;
-
-            fadeTimer.Interval = 30;
-            fadeTimer.Tick += FadeProgress;
-            fadeTimer.Start();
-        }
-
-        private void FadeProgress(object sender, EventArgs e)
-        {
-            if (fadingIn)
-            {
-                if (opacity < 1f)
-                {
-                    opacity += 0.05f;
-                    this.Invalidate();
-                }
-                else
-                {
-                    fadeTimer.Tick -= FadeProgress;
-                    fadeTimer.Stop();
-                    opacity = 1f;
-                    this.Invalidate();
-                }
-            }
-            else
-            {
-                if (opacity > 0f)
-                {
-                    opacity -= 0.05f;
-                    this.Invalidate();
-                }
-                else
-                {
-                    fadeTimer.Tick -= FadeProgress;
-                    fadeTimer.Stop();
-                    opacity = 0f;
-                    currentImage = null;
-                    this.Invalidate();
-                }
-            }
-        }
-
-        private void Background_Paint(object sender, PaintEventArgs e)
-        {
-            if (currentImage != null)
-            {
-                ColorMatrix matrix = new ColorMatrix { Matrix33 = opacity };
-                ImageAttributes attributes = new();
-                attributes.SetColorMatrix(matrix, ColorMatrixFlag.Default, ColorAdjustType.Bitmap);
-                e.Graphics.DrawImage(currentImage, dragPictureBox.ClientRectangle, 0, 0, currentImage.Width, currentImage.Height, GraphicsUnit.Pixel, attributes);
-            }
-        }
-        //-- Background fade (this shit is strange af)
-
         private async void PingIndicator(string server)
         {
             int sum = 0;
             int avg = 0;
             Ping ping = new Ping();
+            PingReply pong;
+            IPStatus p;
+
             try
             {
                 for (int i = 0; i < 3; i++)
                 {
-                    PingReply pong = await ping.SendPingAsync(server);
-                    //IPStatus p = pong.Status; //Maybe useful sometime?...
+                    pong = await ping.SendPingAsync(server);
+                    p = pong.Status; //Maybe useful sometime?...
                     
                     sum = (int)pong.RoundtripTime + sum;
 

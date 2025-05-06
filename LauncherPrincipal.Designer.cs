@@ -246,7 +246,6 @@
             dragPictureBox.Size = new Size(874, 427);
             dragPictureBox.TabIndex = 10;
             dragPictureBox.TabStop = false;
-            dragPictureBox.Paint += Background_Paint;
             dragPictureBox.MouseDown += dragPictureBox_MouseDown;
             dragPictureBox.MouseMove += dragPictureBox_MouseMove;
             dragPictureBox.MouseUp += dragPictureBox_MouseUp;
@@ -270,7 +269,6 @@
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.Black;
-            BackgroundImage = Properties.Resources.Background;
             BackgroundImageLayout = ImageLayout.Stretch;
             ClientSize = new Size(874, 427);
             ControlBox = false;
