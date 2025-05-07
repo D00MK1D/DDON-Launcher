@@ -754,27 +754,26 @@ namespace DDO_Launcher
 
         private async void PingIndicator(string server)
         {
-            int sum = 0;
-            int avg = 0;
+            int sum = 0, avg = 0;
             Ping ping = new Ping();
             PingReply pong;
-            IPStatus p;
+            IPStatus p = IPStatus.Unknown;
 
             try
             {
-                for (int i = 0; i < 3; i++)
+                for (int i = 0; i < 2; i++)
                 {
                     pong = await ping.SendPingAsync(server);
                     p = pong.Status; //Maybe useful sometime?...
                     
                     sum = (int)pong.RoundtripTime + sum;
 
-                    await Task.Delay(500);
+                    await Task.Delay(200);
                 }
 
-                avg = sum / 4;
+                avg = sum / 2;
 
-                if (avg < 90 && avg > 0)
+                if (avg < 90 && p == IPStatus.Success)
                 {
                     pingPictureBox.BackgroundImage = Properties.Resources.Ping3;
                 }
