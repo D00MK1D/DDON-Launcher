@@ -27,7 +27,7 @@ namespace DDO_Launcher
         private System.Windows.Forms.Timer crossfadeTimer = new System.Windows.Forms.Timer();
         private TaskCompletionSource<bool> fadeCompletion;
 
-        int oldSelectionIndex = 0;
+        string oldSelectedServer = "";
 
         public launcherPrincipal(ServerManager serverManager)
         {
@@ -67,7 +67,7 @@ namespace DDO_Launcher
 
         private void UpdateServerList()
         {
-            oldSelectionIndex = serverComboBox.SelectedIndex;
+            int oldSelectionIndex = serverComboBox.SelectedIndex;
 
             serverComboBox.BeginUpdate();
             serverComboBox.Items.Clear();
@@ -144,7 +144,7 @@ namespace DDO_Launcher
 
         private async void CustomBackground()
         {
-            if (oldSelectionIndex != serverComboBox.SelectedIndex)
+            if (oldSelectedServer != serverComboBox.Text)
             {
                 this.serverComboBox.Enabled = false;
             
@@ -448,8 +448,11 @@ namespace DDO_Launcher
         private void serverComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             ServerManager.SelectServer(serverComboBox.Text);
+
             CustomBackground();
             PingIndicator(ServerManager.Servers[ServerManager.SelectedServer].DLIP);
+
+            oldSelectedServer = serverComboBox.Text;
 
         }
 
