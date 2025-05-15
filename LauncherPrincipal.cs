@@ -60,9 +60,14 @@ namespace DDO_Launcher
 
         private void OpenSettings()
         {
-            FormServerSettings f2 = new FormServerSettings(ServerManager);
-            f2.FormClosed += (s, args) => UpdateServerList();
-            f2.ShowDialog();
+            FormServerSettings f = new FormServerSettings(ServerManager);
+            f.FormClosed += (s, args) => UpdateServerList();
+            f.ShowDialog();
+        }
+        private void OpenRegister()
+        {
+            FormRegister f = new FormRegister(ServerManager);
+            f.ShowDialog();
         }
 
         private void UpdateServerList()
@@ -234,7 +239,8 @@ namespace DDO_Launcher
 
         private void buttonRegister_Click(object sender, EventArgs e)
         {
-            Operation("create");
+            OpenRegister();
+            // Operation("create");
         }
 
         private void buttonConfig_Click(object sender, EventArgs e)
