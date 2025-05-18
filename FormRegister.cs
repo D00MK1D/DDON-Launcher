@@ -13,18 +13,15 @@ namespace DDO_Launcher
 {
     public partial class FormRegister : Form
     {
-        private readonly ServerManager serverManager;
+        private bool dragging = false;
+        private Point startPoint;
 
-        FormServerSettings f = new FormServerSettings(serverManager);
-
-        public FormRegister(ServerManager ServerManager)
+        public FormRegister(string user, string pwd)
         {
             InitializeComponent();
 
-            this.textRegisterAccount.Text = textAccount.Text;
-            this.textRegisterPassword.Text = "";
-            this.textRegisterEmail.Text = "";
-
+            this.textRegisterAccount.Text = user;
+            this.textRegisterPassword.Text = pwd;
         }
 
         private void buttonClose_Click(object sender, EventArgs e)
@@ -36,5 +33,34 @@ namespace DDO_Launcher
             this.Close();
         }
 
+
+        private void dragPictureBox_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                dragging = true;
+                startPoint = e.Location;
+            }
+        }
+
+        private void dragPictureBox_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (dragging)
+            {
+                Point currentPoint = e.Location;
+                this.Location = new Point(this.Location.X + (currentPoint.X - startPoint.X),
+                                          this.Location.Y + (currentPoint.Y - startPoint.Y));
+            }
+        }
+
+        private void dragPictureBox_MouseUp(object sender, MouseEventArgs e)
+        {
+            dragging = false;
+        }
+
+        private void buttonRegister_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

@@ -47,20 +47,19 @@
             ((System.ComponentModel.ISupportInitialize)dragPictureBox).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pingPictureBox).BeginInit();
             SuspendLayout();
-
-            this.AutoScaleMode = AutoScaleMode.None;
-
             // 
             // buttonLogin
             // 
             buttonLogin.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            buttonLogin.BackColor = Color.Transparent;
-            buttonLogin.FlatAppearance.MouseDownBackColor = Color.Transparent;
-            buttonLogin.FlatAppearance.MouseOverBackColor = Color.Transparent;
+            buttonLogin.BackColor = Color.White;
+            buttonLogin.FlatAppearance.BorderSize = 0;
+            buttonLogin.FlatAppearance.MouseDownBackColor = Color.Gray;
+            buttonLogin.FlatAppearance.MouseOverBackColor = Color.LightGray;
+            buttonLogin.FlatStyle = FlatStyle.Flat;
             buttonLogin.Font = new Font("Calibri", 16F, FontStyle.Bold, GraphicsUnit.Pixel);
             buttonLogin.Location = new Point(50, 314);
             buttonLogin.Name = "buttonLogin";
-            buttonLogin.Size = new Size(81, 29);
+            buttonLogin.Size = new Size(81, 32);
             buttonLogin.TabIndex = 4;
             buttonLogin.Text = "LOGIN";
             buttonLogin.UseVisualStyleBackColor = false;
@@ -68,10 +67,15 @@
             // 
             // buttonConfig
             // 
-            buttonConfig.BackColor = Color.Transparent;
+            buttonConfig.BackColor = Color.White;
             buttonConfig.BackgroundImage = Properties.Resources.BtnConfig;
             buttonConfig.BackgroundImageLayout = ImageLayout.Stretch;
-            buttonConfig.Location = new Point(19, 388);
+            buttonConfig.FlatAppearance.BorderColor = Color.Gray;
+            buttonConfig.FlatAppearance.BorderSize = 0;
+            buttonConfig.FlatAppearance.MouseDownBackColor = Color.Gray;
+            buttonConfig.FlatAppearance.MouseOverBackColor = Color.LightGray;
+            buttonConfig.FlatStyle = FlatStyle.Flat;
+            buttonConfig.Location = new Point(790, 0);
             buttonConfig.Name = "buttonConfig";
             buttonConfig.Size = new Size(28, 28);
             buttonConfig.TabIndex = 6;
@@ -89,7 +93,7 @@
             buttonClose.FlatAppearance.MouseOverBackColor = Color.FromArgb(222, 0, 0);
             buttonClose.FlatStyle = FlatStyle.Flat;
             buttonClose.ForeColor = Color.Transparent;
-            buttonClose.Location = new Point(846, 0);
+            buttonClose.Location = new Point(852, 0);
             buttonClose.Name = "buttonClose";
             buttonClose.Size = new Size(28, 28);
             buttonClose.TabIndex = 0;
@@ -108,7 +112,7 @@
             buttonMinimize.FlatAppearance.MouseOverBackColor = Color.LightGray;
             buttonMinimize.FlatStyle = FlatStyle.Flat;
             buttonMinimize.ForeColor = Color.Transparent;
-            buttonMinimize.Location = new Point(818, 0);
+            buttonMinimize.Location = new Point(824, 0);
             buttonMinimize.Name = "buttonMinimize";
             buttonMinimize.Size = new Size(28, 28);
             buttonMinimize.TabIndex = 0;
@@ -148,10 +152,10 @@
             textAccount.Font = new Font("Microsoft Sans Serif", 11F, FontStyle.Bold, GraphicsUnit.Pixel);
             textAccount.ForeColor = SystemColors.ActiveCaptionText;
             textAccount.ImeMode = ImeMode.NoControl;
-            textAccount.Location = new Point(53, 155);
+            textAccount.Location = new Point(50, 155);
             textAccount.MaxLength = 200;
             textAccount.Name = "textAccount";
-            textAccount.Size = new Size(186, 20);
+            textAccount.Size = new Size(189, 20);
             textAccount.TabIndex = 1;
             // 
             // textPassword
@@ -162,11 +166,11 @@
             textPassword.Font = new Font("Microsoft Sans Serif", 11F, FontStyle.Bold, GraphicsUnit.Pixel);
             textPassword.ForeColor = SystemColors.ActiveCaptionText;
             textPassword.ImeMode = ImeMode.NoControl;
-            textPassword.Location = new Point(53, 228);
+            textPassword.Location = new Point(50, 228);
             textPassword.MaxLength = 200;
             textPassword.Name = "textPassword";
             textPassword.PasswordChar = '•';
-            textPassword.Size = new Size(186, 20);
+            textPassword.Size = new Size(189, 20);
             textPassword.TabIndex = 2;
             // 
             // rememberCheckBox
@@ -176,12 +180,11 @@
             rememberCheckBox.BackColor = Color.Transparent;
             rememberCheckBox.BackgroundImageLayout = ImageLayout.None;
             rememberCheckBox.FlatAppearance.BorderSize = 0;
-            rememberCheckBox.FlatStyle = FlatStyle.System;
             rememberCheckBox.Font = new Font("Calibri", 15F, FontStyle.Bold, GraphicsUnit.Pixel);
             rememberCheckBox.ForeColor = SystemColors.ControlText;
-            rememberCheckBox.Location = new Point(90, 273);
+            rememberCheckBox.Location = new Point(84, 275);
             rememberCheckBox.Name = "rememberCheckBox";
-            rememberCheckBox.Size = new Size(25, 13);
+            rememberCheckBox.Size = new Size(15, 14);
             rememberCheckBox.TabIndex = 3;
             rememberCheckBox.UseVisualStyleBackColor = true;
             rememberCheckBox.CheckedChanged += rememberCheckBox_CheckedChanged;
@@ -189,11 +192,15 @@
             // buttonRegister
             // 
             buttonRegister.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            buttonRegister.BackColor = Color.Transparent;
+            buttonRegister.BackColor = Color.White;
+            buttonRegister.FlatAppearance.BorderSize = 0;
+            buttonRegister.FlatAppearance.MouseDownBackColor = Color.Gray;
+            buttonRegister.FlatAppearance.MouseOverBackColor = Color.LightGray;
+            buttonRegister.FlatStyle = FlatStyle.Flat;
             buttonRegister.Font = new Font("Calibri", 16F, FontStyle.Bold, GraphicsUnit.Pixel);
             buttonRegister.Location = new Point(158, 314);
             buttonRegister.Name = "buttonRegister";
-            buttonRegister.Size = new Size(81, 29);
+            buttonRegister.Size = new Size(81, 32);
             buttonRegister.TabIndex = 5;
             buttonRegister.Text = "REGISTER";
             buttonRegister.UseVisualStyleBackColor = false;
@@ -202,21 +209,27 @@
             // serverComboBox
             // 
             serverComboBox.DropDownStyle = ComboBoxStyle.DropDownList;
+            serverComboBox.FlatStyle = FlatStyle.Flat;
             serverComboBox.Font = new Font("Calibri", 15F, FontStyle.Bold, GraphicsUnit.Pixel);
             serverComboBox.FormattingEnabled = true;
-            serverComboBox.Location = new Point(53, 389);
+            serverComboBox.Location = new Point(50, 389);
             serverComboBox.Name = "serverComboBox";
-            serverComboBox.Size = new Size(142, 26);
+            serverComboBox.Size = new Size(151, 26);
             serverComboBox.TabIndex = 7;
             serverComboBox.DropDown += serverComboBox_DropDown;
             serverComboBox.SelectedIndexChanged += serverComboBox_SelectedIndexChanged;
             // 
             // buttonTranslationPatch
             // 
-            buttonTranslationPatch.BackColor = Color.Transparent;
+            buttonTranslationPatch.BackColor = Color.White;
             buttonTranslationPatch.BackgroundImage = Properties.Resources.BtnTranslation;
             buttonTranslationPatch.BackgroundImageLayout = ImageLayout.Zoom;
-            buttonTranslationPatch.Location = new Point(242, 388);
+            buttonTranslationPatch.FlatAppearance.BorderColor = Color.Gray;
+            buttonTranslationPatch.FlatAppearance.BorderSize = 0;
+            buttonTranslationPatch.FlatAppearance.MouseDownBackColor = Color.Gray;
+            buttonTranslationPatch.FlatAppearance.MouseOverBackColor = Color.LightGray;
+            buttonTranslationPatch.FlatStyle = FlatStyle.Flat;
+            buttonTranslationPatch.Location = new Point(722, 0);
             buttonTranslationPatch.Name = "buttonTranslationPatch";
             buttonTranslationPatch.Size = new Size(28, 28);
             buttonTranslationPatch.TabIndex = 9;
@@ -225,10 +238,15 @@
             // 
             // buttonInstallMod
             // 
-            buttonInstallMod.BackColor = Color.Transparent;
+            buttonInstallMod.BackColor = Color.White;
             buttonInstallMod.BackgroundImage = Properties.Resources.BtnInstallMod;
             buttonInstallMod.BackgroundImageLayout = ImageLayout.Zoom;
-            buttonInstallMod.Location = new Point(211, 388);
+            buttonInstallMod.FlatAppearance.BorderColor = Color.Gray;
+            buttonInstallMod.FlatAppearance.BorderSize = 0;
+            buttonInstallMod.FlatAppearance.MouseDownBackColor = Color.Gray;
+            buttonInstallMod.FlatAppearance.MouseOverBackColor = Color.LightGray;
+            buttonInstallMod.FlatStyle = FlatStyle.Flat;
+            buttonInstallMod.Location = new Point(756, 0);
             buttonInstallMod.Name = "buttonInstallMod";
             buttonInstallMod.Size = new Size(28, 28);
             buttonInstallMod.TabIndex = 8;
@@ -243,7 +261,7 @@
             dragPictureBox.InitialImage = null;
             dragPictureBox.Location = new Point(0, 0);
             dragPictureBox.Name = "dragPictureBox";
-            dragPictureBox.Size = new Size(874, 427);
+            dragPictureBox.Size = new Size(880, 430);
             dragPictureBox.TabIndex = 10;
             dragPictureBox.TabStop = false;
             dragPictureBox.MouseDown += dragPictureBox_MouseDown;
@@ -252,13 +270,13 @@
             // 
             // pingPictureBox
             // 
-            pingPictureBox.BackColor = Color.White;
+            pingPictureBox.BackColor = Color.Transparent;
             pingPictureBox.BackgroundImage = Properties.Resources.Ping0;
             pingPictureBox.BackgroundImageLayout = ImageLayout.Center;
             pingPictureBox.Enabled = false;
             pingPictureBox.ErrorImage = null;
             pingPictureBox.InitialImage = null;
-            pingPictureBox.Location = new Point(842, 395);
+            pingPictureBox.Location = new Point(207, 386);
             pingPictureBox.Name = "pingPictureBox";
             pingPictureBox.Size = new Size(32, 32);
             pingPictureBox.TabIndex = 11;
@@ -270,7 +288,7 @@
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.Black;
             BackgroundImageLayout = ImageLayout.Stretch;
-            ClientSize = new Size(874, 427);
+            ClientSize = new Size(880, 430);
             ControlBox = false;
             Controls.Add(pingPictureBox);
             Controls.Add(buttonInstallMod);
