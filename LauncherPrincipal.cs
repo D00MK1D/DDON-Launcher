@@ -37,20 +37,6 @@ namespace DDO_Launcher
 
             UpdateServerList();
             CustomBackground();
-
-            serverComboBox.SelectedIndex = Properties.Settings.Default.lastServerSelected;
-
-
-            if (Properties.Settings.Default.firstInstalledTranslation == false)
-            {
-                MessageBox.Show(
-                    "For your first run, please, install the latest translation patch.",
-                    "Dragon's Dogma Online",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Information);
-
-                buttonTranslationPatch_Click(null, EventArgs.Empty);
-            }
         }
 
         private void OpenSettings()
@@ -91,6 +77,11 @@ namespace DDO_Launcher
             else
             {
                 rememberCheckBox.Checked = false;
+            }
+
+            if (Properties.Settings.Default.firstInstalledTranslation == false)
+            {
+                buttonTranslationPatch_Click(null, EventArgs.Empty);
             }
 
             if (ServerManager.SelectedServer == null)
