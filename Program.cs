@@ -12,8 +12,6 @@ namespace DDO_Launcher
         {
             // To customize application configuration such as set high DPI settings or default font,
             // see https://aka.ms/applicationconfiguration.
-            ServerManager serverManager = new ServerManager(SERVERS_FILE);
-
             ApplicationConfiguration.Initialize();
             Application.Run(new launcherPrincipal(new ServerManager(SERVERS_FILE)));
         }

@@ -62,36 +62,23 @@ namespace DDO_Launcher
 
         private void UpdateServerList()
         {
-            int oldSelectionIndex = serverComboBox.SelectedIndex;
-
             serverComboBox.BeginUpdate();
             serverComboBox.Items.Clear();
             foreach (var server in ServerManager.Servers)
             {
                 int addedItemIndex = serverComboBox.Items.Add(server.Key);
-
                 if (serverComboBox.SelectedIndex == -1 && server.Key == ServerManager.SelectedServer)
                 {
-                    serverComboBox.Select(addedItemIndex, 1);
+                    serverComboBox.SelectedIndex = addedItemIndex;
                 }
             }
             serverComboBox.EndUpdate();
 
-            try
-            {
-                serverComboBox.SelectedIndex = oldSelectionIndex;
-
-                if (serverComboBox.SelectedIndex == -1 && serverComboBox.Items.Count > 0)
+            if (serverComboBox.SelectedIndex == -1)
                 {
                     serverComboBox.SelectedIndex = 0;
                 }
             }
-
-            catch
-            {
-
-            }
-        }
 
         private void Form1_Load(object sender, EventArgs e)
         {
@@ -393,9 +380,9 @@ namespace DDO_Launcher
         private void serverComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             ServerManager.SelectServer(serverComboBox.Text);
+            ServerManager.SaveServers();
             CustomBackground();
             PingIndicator(ServerManager.Servers[ServerManager.SelectedServer].DLIP);
-
         }
 
         private void serverComboBox_DropDown(object sender, EventArgs e)
