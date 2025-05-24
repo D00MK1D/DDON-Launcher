@@ -60,10 +60,11 @@ Edit the manifest.json file and specify in there the name of the mod, its author
 
 For each arc:
 - Specify the path to it, relative to the rom folder (e.g. `ui/gui_cmn.arc`, instead of `nativePC/rom/ui/gui_cmn.arc`)
+- or leave it null to indicate this block is about actions that affect files not contained in arc files.
 - Add an action list, indicating what will be done with each file.
 
 The possible actions are:
-- `replace`: Copies the contents of the modded file `src` into the game file `dst` that's inside the ARC as is.
+- `replace`: Copies the contents of the modded file `src` into the game file `dst` as is.
 ```json
 {
 	"action": "replace",
@@ -72,7 +73,7 @@ The possible actions are:
 }
 ```
 
-- `convert`: Copies the contents of the modded file `src` into the game file `dst` inside the ARC, but converts it to the adequate format. Currently the following conversions are supported:
+- `convert`: Copies the contents of the modded file `src` into the game file `dst`, but converts it to the adequate format. Currently the following conversions are supported:
 	- `.dds`/`.txt` pair to `.tex`: Converts a DDS texture to a TEX texture using the information of an acompanying TXT file
 ```json
 {
@@ -84,6 +85,7 @@ The possible actions are:
 ```
 
 The paths inside the ARC file MUST use escaped backward slashes (`\\`). Extension is optional but **recommended**, it might be required to disambiguate files that have the same basename. (e.g. `ui\\00_font\\button_win_00_ID_HQ.tex` instead of `ui/00_font/button_win_00_ID_HQ`)
+If arc is null, the paths can be either backward or forward slashes. The paths are relative to nativePC.
 
 #### Example manifest
 
@@ -92,6 +94,16 @@ The paths inside the ARC file MUST use escaped backward slashes (`\\`). Extensio
 	"name": "XBox Button Layout Mod",
 	"author": "Genolka",
 	"arcs": [
+		{
+			"arc": null,
+			"actions": [
+				{
+					"action": "replace",
+					"src": "bgm_s_001.sngw",
+					"dst": "sound/stream/bgm/bgm_system/wave/bgm_s_001.sngw"
+				},
+			]
+		},
 		{
 			"arc": "ui/gui_cmn_win.arc",
 			"actions": [
