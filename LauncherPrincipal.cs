@@ -5,13 +5,9 @@ using System.Diagnostics;
 using Arrowgene.Ddon.Client;
 using System.ComponentModel;
 using static Arrowgene.Ddon.Client.GmdActions;
-using System.IO.Compression;
-using Arrowgene.Ddon.Client.Resource.Texture.Dds;
-using Arrowgene.Ddon.Client.Resource.Texture.Tex;
-using Arrowgene.Ddon.Client.Resource.Texture;
-using Arrowgene.Buffers;
 using System.Drawing.Imaging;
 using System.Net.NetworkInformation;
+using DDO_Launcher.Mods;
 
 
 namespace DDO_Launcher
@@ -19,6 +15,8 @@ namespace DDO_Launcher
     public partial class launcherPrincipal : Form
     {
         private readonly ServerManager ServerManager;
+        private readonly ModManager ModManager;
+
         private bool dragging = false;
         private Point startPoint;
 
@@ -28,12 +26,13 @@ namespace DDO_Launcher
         private bool fadingIn = true;
 
 
-        public launcherPrincipal(ServerManager serverManager)
+        public launcherPrincipal(ServerManager serverManager, ModManager modManager)
         {
             InitializeComponent();
             this.StartPosition = FormStartPosition.CenterScreen;
 
             ServerManager = serverManager;
+            ModManager = modManager;
 
             UpdateServerList();
             CustomBackground();
@@ -61,10 +60,10 @@ namespace DDO_Launcher
             serverComboBox.EndUpdate();
 
             if (serverComboBox.SelectedIndex == -1)
-                {
-                    serverComboBox.SelectedIndex = 0;
-                }
+            {
+                serverComboBox.SelectedIndex = 0;
             }
+        }
 
         private void Form1_Load(object sender, EventArgs e)
         {
@@ -181,7 +180,6 @@ namespace DDO_Launcher
             {
                 Properties.Settings.Default.accountText = textAccount.Text;
                 Properties.Settings.Default.passwordText = textPassword.Text;
-                Properties.Settings.Default.lastServerSelected = serverComboBox.SelectedIndex;
             }
             else
             {
@@ -396,146 +394,21 @@ namespace DDO_Launcher
                     return;
                 }
 
-                string name, author;
+                waitForm.Show();
+                waitForm.ProgressBar.Style = ProgressBarStyle.Continuous;
+                waitForm.ProgressBar.Minimum = 1;
+                waitForm.ProgressBar.Step = 1;
 
-                using (var selectedModFilePath = File.OpenRead(selectModFileDialog.FileName))
-                using (var zip = new ZipArchive(selectedModFilePath, ZipArchiveMode.Read))
+                string name = "", author = "";
+                await ModManager.InstallMod(selectModFileDialog.FileName, new Progress<ModInstallProgress>((progressReport) =>
                 {
-                    int arcsCount;
-                    JsonElement.ArrayEnumerator arcsEnumerator;
-                    try
-                    {
-                        JsonDocument manifest;
-                        var manifestFile = zip.Entries.Where(e => e.FullName == "manifest.json").Single();
-                        using (var stream = manifestFile.Open())
-                        {
-                            manifest = JsonDocument.Parse(stream);
-                        }
-
-                        name = manifest.RootElement.GetProperty("name").GetString() ?? throw new Exception("\"name\" property is null");
-                        author = manifest.RootElement.GetProperty("author").GetString() ?? throw new Exception("\"author\" property is null");
-                        var arcs = manifest.RootElement.GetProperty("arcs");
-                        arcsCount = arcs.GetArrayLength();
-                        arcsEnumerator = arcs.EnumerateArray();
-                    }
-                    catch (Exception ex)
-                    {
-                        throw new Exception("Couldn\'t find manifest.json in the mod archive.\n\n" +
-                                            "Make sure the mod archive is a zip file that contains a valid manifest.json file with the \"name\", \"author\", and \"arcs\" list.\n\n" +
-                                            "Error: " + ex.Message);
-                    }
-
-                    waitForm.Show();
+                    name = progressReport.Name;
+                    author = progressReport.Author;
                     waitForm.MessageLabel.Text = "Installing \"" + name + "\"\nAuthor:" + author;
-                    waitForm.ProgressBar.Style = ProgressBarStyle.Continuous;
-                    waitForm.ProgressBar.Minimum = 1;
-                    waitForm.ProgressBar.Step = 1;
-                    waitForm.ProgressBar.Maximum = arcsCount;
-                    await Task.Run(() =>
-                    {
-                        foreach (var arc in arcsEnumerator)
-                        {
-                            string arcProperty = arc.GetProperty("arc").GetString() ?? throw new Exception("\"arc\" property is null");
-                            var pathToArcFile = Path.Combine("nativePC/rom/", arcProperty);
-                            ArcArchive archive = new ArcArchive();
-                            archive.Open(pathToArcFile);
-
-                            if (archive.MagicTag == null)
-                            {
-                                throw new Exception("Couldn\'t open " + arcProperty + "\n" +
-                                                    "Make sure the path is relative to the rom folder\n" +
-                                                    "(e.g. \"ui/gui_cmn.arc\" instead of \"nativePC/rom/ui/gui_cmn.arc\"))");
-                            }
-
-                            foreach (var action in arc.GetProperty("actions").EnumerateArray())
-                            {
-                                string actionProperty = action.GetProperty("action").GetString() ?? throw new Exception("\"action\" property is null");
-
-                                var src = action.GetProperty("src").GetString();
-                                ZipArchiveEntry srcZipEntry;
-                                try
-                                {
-                                    srcZipEntry = zip.Entries.Where(e => e.FullName == src).Single();
-                                }
-                                catch (Exception ex)
-                                {
-                                    throw new Exception("Couldn\'t find " + src + " in the mod archive.\n\n" +
-                                                        "Error: " + ex.Message);
-                                }
-
-                                var dst = action.GetProperty("dst").GetString();
-                                ArcArchive.ArcFile dstArcFile;
-                                try
-                                {
-                                    // Split dst into full path without extension and extension if it has one
-                                    int lastDotIndex = dst.LastIndexOf('.');
-                                    string dstArcPath = dst;
-                                    string? dstExtension = null;
-                                    if (lastDotIndex != -1)
-                                    {
-                                        dstArcPath = dst.Substring(0, lastDotIndex);
-                                        dstExtension = dst.Substring(lastDotIndex + 1);
-                                    }
-                                    var search = ArcArchive.Search()
-                                        .ByArcPath(dstArcPath)
-                                        .ByExtension(dstExtension);
-                                    dstArcFile = archive.GetFile(search);
-                                }
-                                catch (Exception ex)
-                                {
-                                    throw new Exception("Couldn\'t find or found more than one file with filename " + dst + " in the ARC " + arcProperty + ".\n\n" +
-                                                        "Make sure the path separator is an escaped backward slash (\\\\)\n" +
-                                                        "Include the destination file's extension to dissambiguate between files with the same name\n" +
-                                                        "(e.g. \"ui\\\\00_font\\\\button_win_00_ID_HQ.tex\" instead of \"ui/00_font/button_win_00_ID_HQ.tex\")\n\n" +
-                                                        "Error: " + ex.Message);
-                                }
-
-                                switch (actionProperty)
-                                {
-                                    case "replace":
-                                        dstArcFile.Data = new byte[srcZipEntry.Length];
-                                        srcZipEntry.Open().ReadExactly(dstArcFile.Data);
-                                        break;
-
-                                    case "convert":
-                                        var txt = action.GetProperty("txt").GetString();
-                                        TexHeader originalTexHeader;
-                                        try
-                                        {
-                                            var entry = zip.Entries.Where(e => e.FullName == txt).Single();
-                                            var sr = new StreamReader(entry.Open(), Encoding.UTF8);
-                                            string txtContents = sr.ReadToEnd();
-                                            originalTexHeader = TexConvert.ReadTexHeaderDump(txtContents);
-                                        }
-                                        catch (Exception ex)
-                                        {
-                                            throw new Exception("Couldn\'t read the original TEX headers from " + txt + " in the mod archive.\n\n" +
-                                                                "Error: " + ex.Message);
-                                        }
-
-                                        var data = new byte[srcZipEntry.Length];
-                                        srcZipEntry.Open().ReadExactly(data);
-                                        var ddsBuffer = new StreamBuffer(data);
-                                        DdsTexture ddsTexture = new DdsTexture();
-                                        ddsTexture.Open(ddsBuffer);
-                                        TexTexture texTexture = TexConvert.ToTexTexture(ddsTexture, originalTexHeader);
-                                        var texBuffer = new StreamBuffer();
-                                        texTexture.Write(texBuffer);
-                                        dstArcFile.Data = texBuffer.GetAllBytes();
-                                        break;
-
-                                    default:
-                                        throw new Exception("Unrecognized action: " + actionProperty);
-                                }
-                            }
-
-                            byte[] savedArc = archive.Save();
-                            File.WriteAllBytes(pathToArcFile, savedArc);
-
-                            waitForm.Invoke(() => waitForm.ProgressBar.PerformStep());
-                        }
-                    });
-                }
+                    waitForm.ProgressBar.Maximum = progressReport.TotalActionCount;
+                    waitForm.ProgressBar.Value = progressReport.ProcessedTotalActions;
+                    waitForm.ProgressBar.PerformStep();
+                }));
                 waitForm.Close();
                 Properties.Settings.Default.Save();
                 MessageBox.Show("Successfully installed " + name + " (Author " + author + ")", "Mod installed", MessageBoxButtons.OK, MessageBoxIcon.Information);

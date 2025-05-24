@@ -1,3 +1,5 @@
+using DDO_Launcher.Mods;
+
 namespace DDO_Launcher
 {
     internal static class Program
@@ -13,7 +15,7 @@ namespace DDO_Launcher
             // To customize application configuration such as set high DPI settings or default font,
             // see https://aka.ms/applicationconfiguration.
             ApplicationConfiguration.Initialize();
-            Application.Run(new launcherPrincipal(new ServerManager(SERVERS_FILE)));
+            Application.Run(new launcherPrincipal(new ServerManager(SERVERS_FILE), new ModManager()));
         }
     }
 }
