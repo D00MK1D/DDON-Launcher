@@ -458,18 +458,17 @@ namespace DDO_Launcher
                 // Download latest translation patch
                 waitForm.Show();
                 waitForm.MessageLabel.Text = "Downloading translation patch...";
-                string gmdCsvFilePath = Path.GetTempFileName();
-                using (var gmdCsvFile = new StreamWriter(gmdCsvFilePath))
-                {
                     var patchDownload = await client.GetAsync(Properties.Settings.Default.translationPatchUrl);
                     Properties.Settings.Default.installedTranslationPatchETag = patchDownload.Headers.ETag.ToString();
-                    await (await patchDownload.Content.ReadAsStreamAsync()).CopyToAsync(gmdCsvFile.BaseStream);
-                }
+                Stream stream = await patchDownload.Content.ReadAsStreamAsync();
+
+                GmdCsv gmdCsvReader = new GmdCsv();
+                List<GmdCsv.Entry> gmdCsvEntries = gmdCsvReader.Read(stream);
 
                 // Patch the client
                 waitForm.MessageLabel.Text = "Patching client...";
                 waitForm.ProgressBar.Style = ProgressBarStyle.Continuous;
-                waitForm.ProgressBar.Minimum = 1;
+                waitForm.ProgressBar.Minimum = 0;
                 waitForm.ProgressBar.Step = 1;
                 var progress = new Progress<PackProgressReport>(progressReport =>
                 {
@@ -477,7 +476,7 @@ namespace DDO_Launcher
                     waitForm.ProgressBar.Value = progressReport.Current;
                     waitForm.ProgressBar.PerformStep();
                 });
-                await Task.Run(() => GmdActions.Pack(gmdCsvFilePath, "nativePC/rom", selectedLanguage, progress));
+                await Task.Run(() => GmdActions.Pack(gmdCsvEntries, "nativePC/rom", languages[selectedLanguageIndex], progress));
 
                 waitForm.Close();
                 Properties.Settings.Default.firstInstalledTranslation = true;
