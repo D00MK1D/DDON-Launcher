@@ -69,7 +69,8 @@ The possible actions are:
 {
 	"action": "replace",
 	"src": "files/button_win_00_ID_HQ.tex",
-    "dst": "ui\\00_font\\button_win_00_ID_HQ.tex"
+    "dst": "ui\\00_font\\button_win_00_ID_HQ.tex",
+	"create": true // Optional. False by default. Creates the file if it doesn't exist
 }
 ```
 
@@ -80,7 +81,17 @@ The possible actions are:
 	"action": "convert",
 	"src": "files/button_win_00_ID_HQ.dds",
 	"txt": "files/button_win_00_ID_HQ.txt",
-	"dst": "ui\\00_font\\button_win_00_ID_HQ.tex"
+	"dst": "ui\\00_font\\button_win_00_ID_HQ.tex",
+	"create": true // Optional. False by default. Creates the file if it doesn't exist
+}
+```
+
+- `packGmd`: Patches GMD files with the texts in the provided file. This action can only be used in a block where `arc` is null, as the target arc files are specified inside the CSV file.
+```json
+{
+	"action": "packGmd",
+	"gmd": "gmd.csv",
+	"romLang": "English" // Optional. English by default. At the moment can only be English or Japanese, chooses which language column to use.
 }
 ```
 
@@ -102,6 +113,10 @@ If arc is null, the paths can be either backward or forward slashes. The paths a
 					"src": "bgm_s_001.sngw",
 					"dst": "sound/stream/bgm/bgm_system/wave/bgm_s_001.sngw"
 				},
+				{
+					"action": "packGmd",
+					"gmd": "gmd.csv"
+				}
 			]
 		},
 		{

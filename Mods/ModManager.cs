@@ -11,7 +11,8 @@ namespace DDO_Launcher.Mods
     {
         private static readonly ModAction[] modActions = [
             new ReplaceAction(),
-            new ConvertAction()
+            new ConvertAction(),
+            new PackGmdAction()
         ];
 
         public async Task InstallMod(string path, IProgress<ModInstallProgress> progress)
@@ -116,18 +117,6 @@ namespace DDO_Launcher.Mods
 
                                 processedCurrentArcActions++;
                                 processedTotalActions++;
-
-                                progress.Report(new ModInstallProgress
-                                {
-                                    Name = name,
-                                    Author = author,
-                                    ArcCount = arcsCount,
-                                    CurrentArcActionCount = currentArcActionCount,
-                                    TotalActionCount = actionsCount,
-                                    ProcessedArcs = processedArcs,
-                                    ProcessedCurrentArcActions = processedCurrentArcActions,
-                                    ProcessedTotalActions = processedTotalActions
-                                });
                             }
 
                             processedArcs++;
