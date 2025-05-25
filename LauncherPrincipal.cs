@@ -8,6 +8,7 @@ using static Arrowgene.Ddon.Client.GmdActions;
 using System.Drawing.Imaging;
 using System.Net.NetworkInformation;
 using DDO_Launcher.Mods;
+using Arrowgene.Ddon.Shared.Csv;
 
 
 namespace DDO_Launcher
@@ -396,7 +397,7 @@ namespace DDO_Launcher
 
                 waitForm.Show();
                 waitForm.ProgressBar.Style = ProgressBarStyle.Continuous;
-                waitForm.ProgressBar.Minimum = 1;
+                waitForm.ProgressBar.Minimum = 0;
                 waitForm.ProgressBar.Step = 1;
 
                 string name = "", author = "";
@@ -427,6 +428,15 @@ namespace DDO_Launcher
             try
             {
                 // Show confirmation before proceeding
+                string[] labels = { "Translated texts", "Original texts" };
+                string[] languages = { "English", "Japanese" };
+                int selectedLanguageIndex = ShowDropdownDialog("Select language", "Translation Patch", labels);
+                if (selectedLanguageIndex == -1)
+                {
+                    return;
+                }
+
+                // Choose patch source
                 var result = ShowInputDialog("Install translation patch?", "Translation Patch", out string url, Properties.Settings.Default.translationPatchUrl);
                 Properties.Settings.Default.translationPatchUrl = url;
                 if (result != DialogResult.OK)
@@ -437,29 +447,25 @@ namespace DDO_Launcher
                 // Check if there's a newer version of the translation patch
                 waitForm.Show();
                 waitForm.MessageLabel.Text = "Checking for translation patch updates...";
-                string upToDateWarning = "";
                 var request = new HttpRequestMessage(HttpMethod.Head, Properties.Settings.Default.translationPatchUrl);
                 request.Headers.Add("If-None-Match", Properties.Settings.Default.installedTranslationPatchETag);
                 var response = await client.SendAsync(request);
+                waitForm.Hide();                
+                
                 if (response.StatusCode == System.Net.HttpStatusCode.NotModified)
                 {
-                    upToDateWarning = "\nYou already have installed the latest translation patch.";
-                }
-                waitForm.Hide();
-
-                // Select language
-                string[] languages = { "English", "Japanese" };
-                string? selectedLanguage = ShowDropdownDialog("Select language" + upToDateWarning, "Translation Patch", languages);
-                if (selectedLanguage == null)
-                {
-                    return;
+                    var confirmation = MessageBox.Show("Translation patch is already up to date.\nDo you want to reinstall it?", "Translation Patch", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                    if (confirmation == DialogResult.No)
+                    {
+                        return;
+                    }
                 }
 
                 // Download latest translation patch
                 waitForm.Show();
                 waitForm.MessageLabel.Text = "Downloading translation patch...";
-                    var patchDownload = await client.GetAsync(Properties.Settings.Default.translationPatchUrl);
-                    Properties.Settings.Default.installedTranslationPatchETag = patchDownload.Headers.ETag.ToString();
+                var patchDownload = await client.GetAsync(Properties.Settings.Default.translationPatchUrl);
+                Properties.Settings.Default.installedTranslationPatchETag = patchDownload.Headers.ETag.ToString();
                 Stream stream = await patchDownload.Content.ReadAsStreamAsync();
 
                 GmdCsv gmdCsvReader = new GmdCsv();
@@ -492,7 +498,7 @@ namespace DDO_Launcher
             }
         }
 
-        public static DialogResult ShowInputDialog(string message, string title, out string input, string value = "")
+        public static DialogResult ShowInputDialog(string message, string title, out string chosenUrl, string defaultUrl = "")
         {
             Form inputForm = new Form()
             {
@@ -518,13 +524,13 @@ namespace DDO_Launcher
             inputForm.AcceptButton = okButton;
             inputForm.CancelButton = cancelButton;
 
-            inputBox.Text = value;
+            inputBox.Text = defaultUrl;
             DialogResult dialogResult = inputForm.ShowDialog();
-            input = inputBox.Text;
+            chosenUrl = inputBox.Text;
             return dialogResult;
         }
 
-        public static string ShowDropdownDialog(string message, string title, string[] options)
+        public static int ShowDropdownDialog(string message, string title, string[] options)
         {
             Form dropdownForm = new Form()
             {
@@ -554,7 +560,9 @@ namespace DDO_Launcher
             dropdownForm.CancelButton = cancelButton;
 
             DialogResult dialogResult = dropdownForm.ShowDialog();
-            return dialogResult == DialogResult.OK ? optionsBox.SelectedItem?.ToString() : null;
+            return dialogResult == DialogResult.OK
+                ? optionsBox.SelectedIndex
+                : -1;
         }
 
 
