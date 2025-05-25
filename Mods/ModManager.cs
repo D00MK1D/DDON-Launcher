@@ -84,6 +84,18 @@ namespace DDO_Launcher.Mods
                             int currentArcActionCount = actionsProperty.GetArrayLength();
                             foreach (var action in actionsProperty.EnumerateArray())
                             {
+                                progress.Report(new ModInstallProgress
+                                {
+                                    Name = name,
+                                    Author = author,
+                                    ArcCount = arcsCount,
+                                    CurrentArcActionCount = currentArcActionCount,
+                                    TotalActionCount = actionsCount,
+                                    ProcessedArcs = processedArcs,
+                                    ProcessedCurrentArcActions = processedCurrentArcActions,
+                                    ProcessedTotalActions = processedTotalActions
+                                });
+
                                 ModAction? modAction = null;
                                 string actionProperty = action.GetProperty("action").GetString() ?? throw new Exception("\"action\" property is null");
                                 foreach (var candidate in modActions)
