@@ -28,13 +28,13 @@ namespace DDO_Launcher.Mods.Actions
             string dst = action.GetProperty("dst").GetString() ?? throw new Exception("\"dst\" property is null");
 
             bool create;
-            try
+            if (action.TryGetProperty("create", out JsonElement createElement))
             {
-                create = action.GetProperty("create").GetBoolean();
+                create = createElement.GetBoolean();
             }
-            catch (KeyNotFoundException)
+            else
             {
-                create = false;
+                create = false; // Default to false if not specified
             }
 
             if (arc == null)
