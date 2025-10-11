@@ -482,8 +482,16 @@ namespace DDO_Launcher
                     waitForm.ProgressBar.Value = progressReport.Current;
                     waitForm.ProgressBar.PerformStep();
                 });
-                await Task.Run(() => GmdActions.Pack(gmdCsvEntries, "nativePC/rom", languages[selectedLanguageIndex], progress));
 
+                try
+                {
+                    await Task.Run(() => GmdActions.Pack(gmdCsvEntries, "nativePC/rom", languages[selectedLanguageIndex], progress));
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception("Failed to patch GMD files\n\n" + ex.Message);
+                }
+                
                 waitForm.Close();
                 Properties.Settings.Default.firstInstalledTranslation = true;
                 Properties.Settings.Default.Save();
