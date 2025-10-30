@@ -138,7 +138,7 @@ namespace DDO_Launcher.Mods
 
         public static string ValidateFileSystemPath(string path)
         {
-            if (Path.IsPathRooted(path) || Path.GetFullPath(path).StartsWith(Path.GetFullPath(AppContext.BaseDirectory)))
+            if (Path.IsPathRooted(path) || !Path.GetFullPath(path).StartsWith(Path.GetFullPath(AppContext.BaseDirectory)))
             {
                 throw new Exception("Invalid path: "+path+"\nThe path must be relative to the launcher directory.");
             }
