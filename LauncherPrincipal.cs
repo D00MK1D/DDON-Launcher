@@ -5,7 +5,7 @@ using System.Diagnostics;
 using Arrowgene.Ddon.Client;
 using System.ComponentModel;
 using static Arrowgene.Ddon.Client.GmdActions;
-using System.Drawing.Imaging;
+using Microsoft.Web.WebView2.WinForms;
 using System.Net.NetworkInformation;
 using DDO_Launcher.Mods;
 using Arrowgene.Ddon.Shared.Csv;
@@ -18,25 +18,29 @@ namespace DDO_Launcher
         private readonly ServerManager ServerManager;
         private readonly ModManager ModManager;
 
-        private bool dragging = false;
-        private Point startPoint;
-
-        private System.Windows.Forms.Timer fadeTimer = new System.Windows.Forms.Timer();
-        private float opacity = 0f;
-        private System.Drawing.Image currentImage;
-        private bool fadingIn = true;
-
+        private byte count = 0; //go to serverComboBox_SelectedIndexChanged()
 
         public launcherPrincipal(ServerManager serverManager, ModManager modManager)
         {
+            initWebView();
+
             InitializeComponent();
             this.StartPosition = FormStartPosition.CenterScreen;
 
             ServerManager = serverManager;
             ModManager = modManager;
 
+
             UpdateServerList();
-            CustomBackground();
+        }
+
+        private async void initWebView()
+        {
+            webView21 = new();
+            webView21.Dock = DockStyle.Fill;
+            webView21.SendToBack();
+            await webView21.EnsureCoreWebView2Async(null);
+            webView21.Source = new Uri("http://" + ServerManager.Servers[ServerManager.SelectedServer].DLIP + ":52099/launcher/index.html");
         }
 
         private void OpenSettings()
@@ -64,19 +68,20 @@ namespace DDO_Launcher
             {
                 serverComboBox.SelectedIndex = 0;
             }
+
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
             if (Properties.Settings.Default.rememberMe)
             {
-                textAccount.Text = Properties.Settings.Default.accountText;
-                textPassword.Text = Properties.Settings.Default.passwordText;
-                rememberCheckBox.Checked = true;
+                //textAccount.Text = Properties.Settings.Default.accountText;
+                //textPassword.Text = Properties.Settings.Default.passwordText;
+                //rememberCheckBox.Checked = true;
             }
             else
             {
-                rememberCheckBox.Checked = false;
+                //rememberCheckBox.Checked = false;
             }
 
             if (Properties.Settings.Default.firstInstalledTranslation == false)
@@ -87,59 +92,6 @@ namespace DDO_Launcher
             if (ServerManager.SelectedServer == null)
             {
                 OpenSettings();
-            }
-        }
-
-        private void dragPictureBox_MouseDown(object sender, MouseEventArgs e)
-        {
-            if (e.Button == MouseButtons.Left)
-            {
-                dragging = true;
-                startPoint = e.Location;
-            }
-        }
-
-        private void dragPictureBox_MouseMove(object sender, MouseEventArgs e)
-        {
-            if (dragging)
-            {
-                Point currentPoint = e.Location;
-                this.Location = new Point(this.Location.X + (currentPoint.X - startPoint.X),
-                                          this.Location.Y + (currentPoint.Y - startPoint.Y));
-            }
-        }
-
-        private void dragPictureBox_MouseUp(object sender, MouseEventArgs e)
-        {
-            dragging = false;
-        }
-
-        private async void CustomBackground()
-        {
-            System.Drawing.Image img;
-            try
-            {
-                FadeOutBackground();
-                
-                //Will search for "/launcher/bg.png" to apply on launcher
-
-                byte[] bg = await new HttpClient().GetByteArrayAsync("http://" + ServerManager.Servers[ServerManager.SelectedServer].DLIP + ":" + ServerManager.Servers[ServerManager.SelectedServer].DLPort + "/launcher/bg.png");
-                img = System.Drawing.Image.FromStream(new MemoryStream(bg));
-
-                FadeInBackground(img);
-                await Task.Delay(600);
-                this.BackgroundImage = img;
-                FadeOutBackground();
-
-            }
-
-            catch
-            {
-
-                FadeInBackground(Properties.Resources.Background);
-                await Task.Delay(600);
-                this.BackgroundImage = Properties.Resources.Background;
-                FadeOutBackground();
             }
         }
 
@@ -177,16 +129,16 @@ namespace DDO_Launcher
 
         private void Operation(string Action)
         {
-            if (rememberCheckBox.Checked)
-            {
-                Properties.Settings.Default.accountText = textAccount.Text;
-                Properties.Settings.Default.passwordText = textPassword.Text;
-            }
-            else
-            {
-                Properties.Settings.Default.accountText = string.Empty;
-                Properties.Settings.Default.passwordText = string.Empty;
-            }
+            //if (rememberCheckBox.Checked)
+            //{
+            //    //Properties.Settings.Default.accountText = textAccount.Text;
+            //    //Properties.Settings.Default.passwordText = textPassword.Text;
+            //}
+            //else
+            //{
+            //    Properties.Settings.Default.accountText = string.Empty;
+            //    Properties.Settings.Default.passwordText = string.Empty;
+            //}
 
             Properties.Settings.Default.Save();
 
@@ -200,7 +152,7 @@ namespace DDO_Launcher
                 return;
             }
 
-            if ((Action != "create" && Action != "login") || textAccount.Text == "" || textPassword.Text == "")
+            if ((Action != "create" && Action != "login") /*|| textAccount.Text == "" || textPassword.Text == ""*/)
             {
                 MessageBox.Show(
                     "Account or Password must not be empty!",
@@ -220,8 +172,8 @@ namespace DDO_Launcher
                     var requestData = new
                     {
                         Action = Action,
-                        Account = textAccount.Text,
-                        Password = textPassword.Text,
+                        Account = "", //textAccount.Text,
+                        Password = "", //textPassword.Text,
                         Email = ""
                     };
 
@@ -264,7 +216,7 @@ namespace DDO_Launcher
                     }
                 }
             }
-            catch (SocketException ex)
+            catch (SocketException)
             {
                 MessageBox.Show(
                     "Failed to connect to the server. Please verify the launcher's connection settings.",
@@ -303,7 +255,7 @@ namespace DDO_Launcher
                     return;
                 }
             }
-            catch (JsonException e)
+            catch (JsonException)
             {
                 MessageBox.Show(
                     "Invalid response from server",
@@ -351,7 +303,7 @@ namespace DDO_Launcher
 
                 this.Close();
             }
-            catch (Win32Exception ex)
+            catch (Win32Exception)
             {
                 MessageBox.Show(
                     "DDO.exe not found! Make sure the launcher is located in the game folder and you're running the launcher as Admin.",
@@ -364,15 +316,17 @@ namespace DDO_Launcher
 
         private void rememberCheckBox_CheckedChanged(object sender, EventArgs e)
         {
-            Properties.Settings.Default.rememberMe = rememberCheckBox.Checked;
+            //Properties.Settings.Default.rememberMe = rememberCheckBox.Checked;
         }
 
         private void serverComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             ServerManager.SelectServer(serverComboBox.Text);
             ServerManager.SaveServers();
-            CustomBackground();
             PingIndicator(ServerManager.Servers[ServerManager.SelectedServer].DLIP);
+
+            if (count == 0) { count++; } //avoid null reference by not navigating without initialize WebView
+            else { webView21.Source = new Uri("http://" + ServerManager.Servers[ServerManager.SelectedServer].DLIP + ":52099/launcher/index.html"); }
         }
 
         private void serverComboBox_DropDown(object sender, EventArgs e)
@@ -450,8 +404,8 @@ namespace DDO_Launcher
                 var request = new HttpRequestMessage(HttpMethod.Head, Properties.Settings.Default.translationPatchUrl);
                 request.Headers.Add("If-None-Match", Properties.Settings.Default.installedTranslationPatchETag);
                 var response = await client.SendAsync(request);
-                waitForm.Hide();                
-                
+                waitForm.Hide();
+
                 if (response.StatusCode == System.Net.HttpStatusCode.NotModified)
                 {
                     var confirmation = MessageBox.Show("Translation patch is already up to date.\nDo you want to reinstall it?", "Translation Patch", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
@@ -491,13 +445,13 @@ namespace DDO_Launcher
                 {
                     throw new Exception("Failed to patch GMD files\n\n" + ex.Message);
                 }
-                
+
                 waitForm.Close();
                 Properties.Settings.Default.firstInstalledTranslation = true;
                 Properties.Settings.Default.Save();
                 MessageBox.Show("Translation patch applied successfully", "Translation applied", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-                
+
             }
             catch (Exception ex)
             {
@@ -573,82 +527,6 @@ namespace DDO_Launcher
                 : -1;
         }
 
-
-        //---- Background fade (this shit is strange af)
-        public void FadeInBackground(System.Drawing.Image img)
-        {
-            if (img == null) return;
-
-            fadeTimer.Stop();
-            currentImage = img;
-            opacity = 0f;
-            fadingIn = true;
-
-            fadeTimer.Interval = 30;
-            fadeTimer.Tick += FadeProgress;
-            fadeTimer.Start();
-        }
-
-        public void FadeOutBackground()
-        {
-            if (currentImage == null) return;
-
-            fadeTimer.Stop();
-            opacity = 1f;
-            fadingIn = false;
-
-            fadeTimer.Interval = 30;
-            fadeTimer.Tick += FadeProgress;
-            fadeTimer.Start();
-        }
-
-        private void FadeProgress(object sender, EventArgs e)
-        {
-            if (fadingIn)
-            {
-                if (opacity < 1f)
-                {
-                    opacity += 0.05f;
-                    this.Invalidate();
-                }
-                else
-                {
-                    fadeTimer.Tick -= FadeProgress;
-                    fadeTimer.Stop();
-                    opacity = 1f;
-                    this.Invalidate();
-                }
-            }
-            else
-            {
-                if (opacity > 0f)
-                {
-                    opacity -= 0.05f;
-                    this.Invalidate();
-                }
-                else
-                {
-                    fadeTimer.Tick -= FadeProgress;
-                    fadeTimer.Stop();
-                    opacity = 0f;
-                    currentImage = null;
-                    this.Invalidate();
-                }
-            }
-        }
-
-        private void Background_Paint(object sender, PaintEventArgs e)
-        {
-            if (currentImage != null)
-            {
-                ColorMatrix matrix = new ColorMatrix { Matrix33 = opacity };
-                ImageAttributes attributes = new();
-                attributes.SetColorMatrix(matrix, ColorMatrixFlag.Default, ColorAdjustType.Bitmap);
-                e.Graphics.DrawImage(currentImage, dragPictureBox.ClientRectangle, 0, 0, currentImage.Width, currentImage.Height, GraphicsUnit.Pixel, attributes);
-            }
-        }
-        //-- Background fade (this shit is strange af)
-
         private async void PingIndicator(string server)
         {
             int sum = 0;
@@ -660,7 +538,7 @@ namespace DDO_Launcher
                 {
                     PingReply pong = await ping.SendPingAsync(server);
                     //IPStatus p = pong.Status; //Maybe useful sometime?...
-                    
+
                     sum = (int)pong.RoundtripTime + sum;
 
                     await Task.Delay(500);
@@ -673,12 +551,12 @@ namespace DDO_Launcher
                     pingPictureBox.BackgroundImage = Properties.Resources.Ping3;
                 }
 
-                else if(avg >= 90 && avg <= 180)
+                else if (avg >= 90 && avg <= 180)
                 {
                     pingPictureBox.BackgroundImage = Properties.Resources.Ping2;
                 }
 
-                else if(avg > 180 && avg <= 270)
+                else if (avg > 180 && avg <= 270)
                 {
                     pingPictureBox.BackgroundImage = Properties.Resources.Ping1;
                 }
@@ -693,6 +571,11 @@ namespace DDO_Launcher
             {
                 pingPictureBox.BackgroundImage = Properties.Resources.Ping0;
             }
+        }
+
+        private void dragPictureBox_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

@@ -29,42 +29,19 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(launcherPrincipal));
-            buttonLogin = new Button();
             buttonConfig = new Button();
             buttonClose = new Button();
             buttonMinimize = new Button();
             labelAccountID = new Label();
             labelPassword = new Label();
-            textAccount = new TextBox();
-            textPassword = new TextBox();
-            rememberCheckBox = new CheckBox();
-            buttonRegister = new Button();
             serverComboBox = new ComboBox();
             buttonTranslationPatch = new Button();
             buttonInstallMod = new Button();
-            dragPictureBox = new PictureBox();
             pingPictureBox = new PictureBox();
-            ((System.ComponentModel.ISupportInitialize)dragPictureBox).BeginInit();
+            webView21 = new Microsoft.Web.WebView2.WinForms.WebView2();
             ((System.ComponentModel.ISupportInitialize)pingPictureBox).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)webView21).BeginInit();
             SuspendLayout();
-
-            this.AutoScaleMode = AutoScaleMode.None;
-
-            // 
-            // buttonLogin
-            // 
-            buttonLogin.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            buttonLogin.BackColor = Color.Transparent;
-            buttonLogin.FlatAppearance.MouseDownBackColor = Color.Transparent;
-            buttonLogin.FlatAppearance.MouseOverBackColor = Color.Transparent;
-            buttonLogin.Font = new Font("Calibri", 16F, FontStyle.Bold, GraphicsUnit.Pixel);
-            buttonLogin.Location = new Point(50, 314);
-            buttonLogin.Name = "buttonLogin";
-            buttonLogin.Size = new Size(81, 29);
-            buttonLogin.TabIndex = 4;
-            buttonLogin.Text = "LOGIN";
-            buttonLogin.UseVisualStyleBackColor = false;
-            buttonLogin.Click += buttonLogin_Click;
             // 
             // buttonConfig
             // 
@@ -140,65 +117,6 @@
             labelPassword.Text = "Password:";
             labelPassword.Visible = false;
             // 
-            // textAccount
-            // 
-            textAccount.BackColor = SystemColors.InactiveBorder;
-            textAccount.BorderStyle = BorderStyle.FixedSingle;
-            textAccount.Cursor = Cursors.IBeam;
-            textAccount.Font = new Font("Microsoft Sans Serif", 11F, FontStyle.Bold, GraphicsUnit.Pixel);
-            textAccount.ForeColor = SystemColors.ActiveCaptionText;
-            textAccount.ImeMode = ImeMode.NoControl;
-            textAccount.Location = new Point(53, 155);
-            textAccount.MaxLength = 200;
-            textAccount.Name = "textAccount";
-            textAccount.Size = new Size(186, 20);
-            textAccount.TabIndex = 1;
-            // 
-            // textPassword
-            // 
-            textPassword.BackColor = SystemColors.InactiveBorder;
-            textPassword.BorderStyle = BorderStyle.FixedSingle;
-            textPassword.Cursor = Cursors.IBeam;
-            textPassword.Font = new Font("Microsoft Sans Serif", 11F, FontStyle.Bold, GraphicsUnit.Pixel);
-            textPassword.ForeColor = SystemColors.ActiveCaptionText;
-            textPassword.ImeMode = ImeMode.NoControl;
-            textPassword.Location = new Point(53, 228);
-            textPassword.MaxLength = 200;
-            textPassword.Name = "textPassword";
-            textPassword.PasswordChar = '•';
-            textPassword.Size = new Size(186, 20);
-            textPassword.TabIndex = 2;
-            // 
-            // rememberCheckBox
-            // 
-            rememberCheckBox.AllowDrop = true;
-            rememberCheckBox.AutoSize = true;
-            rememberCheckBox.BackColor = Color.Transparent;
-            rememberCheckBox.BackgroundImageLayout = ImageLayout.None;
-            rememberCheckBox.FlatAppearance.BorderSize = 0;
-            rememberCheckBox.FlatStyle = FlatStyle.System;
-            rememberCheckBox.Font = new Font("Calibri", 15F, FontStyle.Bold, GraphicsUnit.Pixel);
-            rememberCheckBox.ForeColor = SystemColors.ControlText;
-            rememberCheckBox.Location = new Point(90, 273);
-            rememberCheckBox.Name = "rememberCheckBox";
-            rememberCheckBox.Size = new Size(25, 13);
-            rememberCheckBox.TabIndex = 3;
-            rememberCheckBox.UseVisualStyleBackColor = true;
-            rememberCheckBox.CheckedChanged += rememberCheckBox_CheckedChanged;
-            // 
-            // buttonRegister
-            // 
-            buttonRegister.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            buttonRegister.BackColor = Color.Transparent;
-            buttonRegister.Font = new Font("Calibri", 16F, FontStyle.Bold, GraphicsUnit.Pixel);
-            buttonRegister.Location = new Point(158, 314);
-            buttonRegister.Name = "buttonRegister";
-            buttonRegister.Size = new Size(81, 29);
-            buttonRegister.TabIndex = 5;
-            buttonRegister.Text = "REGISTER";
-            buttonRegister.UseVisualStyleBackColor = false;
-            buttonRegister.Click += buttonRegister_Click;
-            // 
             // serverComboBox
             // 
             serverComboBox.DropDownStyle = ComboBoxStyle.DropDownList;
@@ -235,22 +153,6 @@
             buttonInstallMod.UseVisualStyleBackColor = false;
             buttonInstallMod.Click += buttonInstallMod_Click;
             // 
-            // dragPictureBox
-            // 
-            dragPictureBox.BackColor = Color.Transparent;
-            dragPictureBox.BackgroundImageLayout = ImageLayout.Stretch;
-            dragPictureBox.ErrorImage = null;
-            dragPictureBox.InitialImage = null;
-            dragPictureBox.Location = new Point(0, 0);
-            dragPictureBox.Name = "dragPictureBox";
-            dragPictureBox.Size = new Size(874, 427);
-            dragPictureBox.TabIndex = 10;
-            dragPictureBox.TabStop = false;
-            dragPictureBox.Paint += Background_Paint;
-            dragPictureBox.MouseDown += dragPictureBox_MouseDown;
-            dragPictureBox.MouseMove += dragPictureBox_MouseMove;
-            dragPictureBox.MouseUp += dragPictureBox_MouseUp;
-            // 
             // pingPictureBox
             // 
             pingPictureBox.BackColor = Color.White;
@@ -265,30 +167,35 @@
             pingPictureBox.TabIndex = 11;
             pingPictureBox.TabStop = false;
             // 
+            // webView21
+            // 
+            webView21.AllowExternalDrop = true;
+            webView21.CreationProperties = null;
+            webView21.DefaultBackgroundColor = Color.White;
+            webView21.Location = new Point(0, 0);
+            webView21.Name = "webView21";
+            webView21.Size = new Size(874, 427);
+            webView21.TabIndex = 12;
+            webView21.ZoomFactor = 1D;
+            // 
             // launcherPrincipal
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.Black;
-            BackgroundImage = Properties.Resources.Background;
             BackgroundImageLayout = ImageLayout.Stretch;
             ClientSize = new Size(874, 427);
             ControlBox = false;
-            Controls.Add(pingPictureBox);
             Controls.Add(buttonInstallMod);
             Controls.Add(buttonTranslationPatch);
             Controls.Add(serverComboBox);
-            Controls.Add(buttonRegister);
-            Controls.Add(rememberCheckBox);
-            Controls.Add(textPassword);
-            Controls.Add(textAccount);
-            Controls.Add(labelPassword);
-            Controls.Add(labelAccountID);
             Controls.Add(buttonMinimize);
             Controls.Add(buttonClose);
             Controls.Add(buttonConfig);
-            Controls.Add(buttonLogin);
-            Controls.Add(dragPictureBox);
+            Controls.Add(pingPictureBox);
+            Controls.Add(labelPassword);
+            Controls.Add(labelAccountID);
+            Controls.Add(webView21);
             DoubleBuffered = true;
             ForeColor = SystemColors.ControlText;
             FormBorderStyle = FormBorderStyle.None;
@@ -299,28 +206,22 @@
             Name = "launcherPrincipal";
             Text = "Dragon's Dogma Online Launcher";
             Load += Form1_Load;
-            ((System.ComponentModel.ISupportInitialize)dragPictureBox).EndInit();
             ((System.ComponentModel.ISupportInitialize)pingPictureBox).EndInit();
+            ((System.ComponentModel.ISupportInitialize)webView21).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
 
         #endregion
-
-        private Button buttonLogin;
         private Button buttonConfig;
         private Button buttonClose;
         private Button buttonMinimize;
         private Label labelAccountID;
         private Label labelPassword;
-        private TextBox textAccount;
-        private TextBox textPassword;
-        private CheckBox rememberCheckBox;
-        private Button buttonRegister;
         private ComboBox serverComboBox;
         private Button buttonTranslationPatch;
         private Button buttonInstallMod;
-        private PictureBox dragPictureBox;
         private PictureBox pingPictureBox;
+        private Microsoft.Web.WebView2.WinForms.WebView2 webView21;
     }
 }
